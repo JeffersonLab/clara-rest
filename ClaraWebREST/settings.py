@@ -48,7 +48,9 @@ INSTALLED_APPS = (
     'djcelery',
     'rest_framework',
     'portal',
-    'FrontEnd'
+    'FrontEnd',
+    'Nodes'
+
 )
 
 MIDDLEWARE_CLASSES = (

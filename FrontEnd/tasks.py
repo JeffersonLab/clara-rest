@@ -5,11 +5,11 @@ Created on 06-03-2015
 '''
 from ClaraWebREST import celery_app
 from src.sys.Platform import Platform
+from celery.task.control import revoke
 import json
 
 
 def get_task_status(task_id):
-
     # If you have a task_id, this is how you query that task 
     task = start_fe_task.AsyncResult(task_id)
     status = task.status
@@ -24,6 +24,9 @@ def get_task_status(task_id):
         
     data = json.dumps({'pid':task_id, 'status': status, 'progress': progress}, sort_keys=True, separators=(',', ': '), indent=4)
     return data
+
+def revoke_task(feid):
+    revoke(feid, terminate=True)
 
 @celery_app.task()
 def start_fe_task(message):

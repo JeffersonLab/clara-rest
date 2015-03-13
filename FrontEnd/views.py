@@ -37,12 +37,12 @@ def fe_list(request):
         return JSONResponse(serializer.errors, status=400)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def fe_detail(request, feid):
+def fe_detail(request, nodeid):
     """
     Retrieve, update or delete a frontend.
     """
     try:
-        fe_object = FrontEnd.objects.get(celery_id=feid)
+        fe_object = FrontEnd.objects.get(celery_id=nodeid)
     except FrontEnd.DoesNotExist:
         return HttpResponse(status=404)
 

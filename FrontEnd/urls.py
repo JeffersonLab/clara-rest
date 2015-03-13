@@ -8,7 +8,7 @@ import views
 
 
 urlpatterns = patterns('',
-    url(r'^frontends/$', views.fe_list),
-    url(r'^frontends/(?P<feid>[\w|-]{36})/$', views.fe_detail),
-    url(r'^frontends/(?P<feid>[\w|-]{36})/nodes', include('Nodes.urls'))
+    url(r'^\/?$', views.fe_list),
+    url(r'^(?P<feid>[\w|-]{36}/?)$', views.fe_detail),
+    url(r'^(?P<feid>[\w|-]{36})/nodes', include('Nodes.urls'))
 )

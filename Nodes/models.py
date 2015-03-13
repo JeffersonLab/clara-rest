@@ -1,8 +1,7 @@
 from django.db import models
-from FrontEnd.models import FrontEnd
-
-from xsys.xMsgNode import xMsgNode
 from datetime import datetime
+
+from FrontEnd.models import FrontEnd
 
 class Node(models.Model):
     frontend  = models.ForeignKey(FrontEnd)
@@ -18,6 +17,5 @@ class Node(models.Model):
         self.modified = datetime.now()
         super(Node, self).save()
 
-    def new_node(self):
-        node = xMsgNode()
-        node.__init__()
+    class Meta:
+        ordering = ('created')

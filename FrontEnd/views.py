@@ -1,12 +1,10 @@
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+
 from FrontEnd.serializers import FrontEndSerializer
 from FrontEnd.models import FrontEnd
-
-#from tasks import start_fe_task, get_task_status, revoke_task
 '''
 FrontEnd Views:
 Views for json responses for the Clara Frontend (PLATFORM) components
@@ -20,10 +18,10 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
     
-@csrf_exempt
-def fe_list(self, request):
+@api_view(['GET', 'POST'])
+def fe_list(request):
     """
-    List all code snippets, or create a new snippet.
+    List all frontends, or create a new one.
     """
     if request.method == 'GET':
         fe_objects = FrontEnd.objects.all()
@@ -38,13 +36,13 @@ def fe_list(self, request):
             return JSONResponse(serializer.data, status=201)
         return JSONResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def fe_detail(request, pk):
+@api_view(['GET', 'PUT', 'DELETE'])
+def fe_detail(request, feid):
     """
     Retrieve, update or delete a frontend.
     """
     try:
-        fe_object = FrontEnd.objects.get(pk=pk)
+        fe_object = FrontEnd.objects.get(celery_id=feid)
     except FrontEnd.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -63,30 +61,3 @@ def fe_detail(request, pk):
     elif request.method == 'DELETE':
         fe_object.delete()
         return HttpResponse(status=204)
-    
-# def index(request):
-#     data = serializers.serialize('json', FrontEnd.objects.filter(status='Active'), fields=('hostname','celery_id'))
-#     data = json.dumps(json.loads(data), indent=4)
-#     return HttpResponse(data, content_type="application/json")    
-# 
-# def show(request, feid,):
-#     data = get_task_status(feid)
-#     data = json.dumps(json.loads(data), indent=4)
-#     return HttpResponse(data, content_type="application/json")
-# 
-# def create(request):
-#     pid = start_fe_task.delay('Hello World!')
-#     fe_object = FrontEnd()
-#     fe_object.celery_id = pid
-#     fe_object.ip = '127.0.0.1'
-#     fe_object.status ='Active'
-#     fe_object.save()
-#     data = get_task_status(pid.id)
-#     return HttpResponse(data, content_type="application/json")
-# 
-# def destroy(request, feid):
-#     fe_object = FrontEnd.objects.get(celery_id=feid)
-#     fe_object.status = 'Stopped'
-#     fe_object.save()
-#     revoke_task(feid)
-#     return HttpResponse(json.dumps({'id' : feid, 'status' : 'DESTROYED'}))

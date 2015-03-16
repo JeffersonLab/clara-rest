@@ -4,10 +4,10 @@ Created on 10-03-2015
 @author: royarzun
 '''
 from django.conf.urls import patterns, url
-from views import node_list, node_detail
+import views
 
 
 urlpatterns = patterns('',
-    url(r'^$', node_list),
-    url(r'^(?P<nodeid>[\w|-]{36})/$', node_detail)
+    url(r'^$', views.NodeList.as_view()),
+    url(r'^(?P<nodeid>[\w|-]{36})/$', views.NodeDetail.as_view())
 )

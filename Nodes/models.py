@@ -18,4 +18,4 @@ class Node(models.Model):
         super(Node, self).save()
 
     class Meta:
-        ordering = ('created')
+        ordering = ('created',)

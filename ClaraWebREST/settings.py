@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import djcelery
+import rest_framework
 djcelery.setup_loader()
 
 BROKER_URL = 'redis://localhost:6379/0'
@@ -62,6 +63,17 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+                               'rest_framework.parsers.JSONParser',
+                               'rest_framework_yaml.parsers.YAMLParser'
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+                                 'rest_framework.renderers.JSONRenderer',
+                                 'rest_framework_yaml.renderers.YAMLRenderer',
+    ),
+}
 
 ROOT_URLCONF = 'ClaraWebREST.urls'
 

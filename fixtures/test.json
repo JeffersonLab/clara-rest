@@ -2,18 +2,6 @@
 {
   "fields": {
     "status": "Active",
-    "frontend": 1,
-    "created": "2015-03-17T18:00:56.741Z",
-    "hostname": "127.0.1.1",
-    "modified": "2015-03-17T18:00:56.741Z",
-    "celery_id": ""
-  },
-  "model": "Nodes.node",
-  "pk": 1
-},
-{
-  "fields": {
-    "status": "Active",
     "created": "2015-03-17T18:00:56.735Z",
     "hostname": "127.0.0.1",
     "modified": "2015-03-17T18:00:56.735Z",
@@ -22,5 +10,17 @@
   },
   "model": "FrontEnd.frontend",
   "pk": 1
-}
+},
+{
+  "fields": {
+    "status": "Active",
+    "frontend": 1,
+    "created": "2015-03-17T18:00:56.741Z",
+    "hostname": "127.0.1.1",
+    "modified": "2015-03-17T18:00:56.741Z",
+    "celery_id": "123456789012345678901234567890123456"
+  },
+  "model": "Nodes.node",
+  "pk": 1
+},
 ]

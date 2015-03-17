@@ -9,5 +9,5 @@ import views
 
 urlpatterns = patterns('',
     url(r'^$', views.NodeList.as_view()),
-    url(r'^(?P<nodeid>[\w|-]{36})/$', views.NodeDetail.as_view())
+    url(r'^(?P<nodeid>[\w|-]{36})$', views.NodeDetail.as_view())
 )

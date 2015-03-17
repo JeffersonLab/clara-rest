@@ -4,7 +4,7 @@ from datetime import datetime
 from FrontEnd.models import FrontEnd
 
 class Node(models.Model):
-    frontend  = models.ForeignKey(FrontEnd)
+    frontend  = models.ForeignKey(FrontEnd, related_name='nodes')
     hostname  = models.IPAddressField(null=True)
     celery_id = models.CharField(max_length=36)
     created   = models.DateTimeField()

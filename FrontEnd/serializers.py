@@ -11,7 +11,9 @@ from models import FrontEnd
 
 class FrontEndSerializer(serializers.ModelSerializer):
     nodes = NodeSerializer(many=True)
-    
+
     class Meta:
         model = FrontEnd
-        fields = ('hostname', 'celery_id', 'owner', 'created', 'status', 'nodes')
+        fields = ('hostname', 'celery_id', 'owner',
+                  'created', 'status', 'nodes'
+                  )

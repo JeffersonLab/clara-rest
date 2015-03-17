@@ -9,8 +9,6 @@ from time import sleep
 
 
 def get_task_status(task_id):
-
-    # If you have a task_id, this is how you query that task 
     task = start_node_task.AsyncResult(task_id)
     status = task.status
     progress = 0
@@ -22,7 +20,8 @@ def get_task_status(task_id):
     elif status == 'PROGRESS':
         progress = task.info['progress']
 
-    return {'pid':task_id, 'status': status, 'progress': progress}
+    return {'pid': task_id, 'status': status, 'progress': progress}
+
 
 @celery_app.task()
 def start_node_task(message):
@@ -35,9 +34,7 @@ def start_node_task(message):
         print "Oopsss..... Seems like the ip has been already taken"
         start_node_task.update_state(state='FAILURE', meta={'progress': -1})
         return False
-    
-    print "Este el PID"
-    print "..."
+
     start_node_task.update_state(state='SUCCESS', meta={'progress': 100})
     print "Node has been deployed (sleeping now!!!)"
     sleep(100)

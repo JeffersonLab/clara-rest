@@ -3,7 +3,7 @@ Created on 06-03-2015
 
 @author: royarzun
 '''
-from django.http import Http404 
+from django.http import Http404
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,6 +15,8 @@ from models import Node
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components
 '''
+
+
 class NodeList(APIView):
     """
     List all snippets, or create a new snippet.
@@ -30,7 +32,8 @@ class NodeList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 class NodeDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.

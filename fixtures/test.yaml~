@@ -1,0 +1,6 @@
+- fields: 
+{celery_id: '123456789012345678901234567890123456', created: !!timestamp '2015-03-17
+      17:46:36.208717+00:00', hostname: 127.0.0.1, modified: !!timestamp '2015-03-17
+      17:46:36.208738+00:00', owner: 1, status: Active}
+  model: FrontEnd.frontend
+  pk: 1

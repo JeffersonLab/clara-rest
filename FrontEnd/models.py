@@ -8,6 +8,9 @@ class FrontEnd(models.Model):
     created   = models.DateTimeField()
     modified  = models.DateTimeField()
     status    = models.CharField(max_length=15) #Status of the FE ('Active', 'Stopped')
+    
+    def __str__(self):
+        return self.hostname+"-"+str(self.status).upper()+"-"+str(self.created)
    
     def save(self):
         if self.created == None:

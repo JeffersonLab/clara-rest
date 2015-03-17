@@ -10,7 +10,10 @@ class Node(models.Model):
     created   = models.DateTimeField()
     modified  = models.DateTimeField()
     status    = models.CharField(max_length=15) #Status of the Node ('Active', 'Stopped')        
-
+    
+    def __str__(self):
+        return str(self.frontend.hostname)+":"+self.hostname+"-"+str(self.status).upper()+"-"+str(self.created)
+    
     def save(self):
         if self.created == None:
             self.created = datetime.now()

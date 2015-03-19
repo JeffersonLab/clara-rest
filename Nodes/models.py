@@ -8,9 +8,9 @@ class Node(models.Model):
     frontend = models.ForeignKey(FrontEnd, related_name='nodes')
     hostname = models.IPAddressField(null=True)
     celery_id = models.CharField(max_length=36)
-    created = models.DateTimeField()
-    modified = models.DateTimeField()
-    status = models.CharField(max_length=15)
+    created = models.DateTimeField(null=True)
+    modified = models.DateTimeField(null=True)
+    status = models.CharField(default="Active", max_length=15)
 
     def __str__(self):
         info_hosts = str(self.frontend.hostname)+":"+self.hostname

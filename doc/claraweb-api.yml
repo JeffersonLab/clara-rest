@@ -217,23 +217,23 @@ paths:
           schema:
             title: service ID
             type: string
-  /DPE/{DPE_id}/container/{container_id}/service/{service_id}/subscribe:
+  /subscription:
     post:
       parameters:
         - name: DPE_id
-          in: path
+          in: query
           description: ID of DPE
-          required: true
+          required: false
           type: string
         - name: container_id
-          in: path
+          in: query
           description: ID of container
-          required: true
+          required: false
           type: string
         - name: service_id
-          in: path
+          in: query
           description: ID of service
-          required: true
+          required: false
           type: string
         - name: subscription type
           in: query
@@ -242,8 +242,8 @@ paths:
           type: string
       # Describe this verb here. Note: you can use markdown
       description: |
-        Subscribe to messages sent by a service.
-        Use * for all DPEs, containers and/or services.
+        Subscribe to service messages by
+        DPE, container, and/or service ID.
       # Expected responses for this operation:
       responses:
         # Response code

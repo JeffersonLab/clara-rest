@@ -1,0 +1,270 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.0.0"
+  title: Clara WebApp
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /DPE:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the list of all known DPEs
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfDPE
+            type: array
+            items:
+              title: DPE
+              type: object
+              properties:
+                id:
+                  type: string
+  /DPE/{DPE_id}/container:
+   # This is a HTTP operation
+    get:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the list of containers at a DPE. Use * for all DPEs.
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfContainers
+            type: array
+            items:
+              title: Container
+              type: object
+              properties:
+                id:
+                  type: string
+                single:
+                  type: boolean
+  /DPE/{DPE_id}/container/{container_id}/service:
+   # This is a HTTP operation
+    get:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+        - name: container_id
+          paramType: body
+          description: ID of container
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the list of service engines at a DPE and container. 
+        Use * for all DPEs
+        Use * for all services
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfServices
+            type: array
+            items:
+              title: Service
+              type: object
+              properties:
+                id:
+                  type: string
+                single:
+                  type: boolean
+  /DPE/{DPE_id}/container/{container_id}/service/{service_id}:
+   # This is a HTTP operation
+    get:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+        - name: service_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the service detail for a service at a DPE and container. 
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ServiceDetail
+            type: object
+    delete:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+        - name: service_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Removes the service at a DPE and container. 
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+  /DPE/{DPE_id}/container/{container_id}/service:
+    post:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+        - name: service class
+          in: query
+          description: service engine class name
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Starts a new service at the DPE and container
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: service ID
+            type: string
+  /DPE/{DPE_id}/container/{container_id}/service/{service_id}/subscribe:
+    post:
+      parameters:
+        - name: DPE_id
+          in: path
+          description: ID of DPE
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: ID of container
+          required: true
+          type: string
+        - name: service_id
+          in: path
+          description: ID of service
+          required: true
+          type: string
+        - name: subscription type
+          in: query
+          description: type of messages to subscribe to (info, warn, error, data, done)
+          required: true
+          type: string
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Subscribe to messages sent by a service.
+        Use * for all DPEs, containers and/or services.
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: subscription ID
+            type: string
+  /subscription/{subscription_id}:
+    get:
+      parameters:
+        - name: subscription_id
+          in: path
+          description: ID of subscription
+          required: true
+          type: string
+          
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Poll for messages sent to this subscription. 
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: subscription data
+            type: string
+        400:
+          description: No messages available
+    delete:
+      parameters:
+        - name: subscription_id
+          in: path
+          description: ID of subscription
+          required: true
+          type: string
+          
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Remove the subscription. 
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          
+        
+            

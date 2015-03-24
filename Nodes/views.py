@@ -40,7 +40,7 @@ class NodeDetail(APIView):
     """
     def get_object(self, nodeid):
         try:
-            return Node.objects.get(celery_id=nodeid)
+            return Node.objects.get(node_id=nodeid)
         except Node.DoesNotExist:
             raise Http404
 

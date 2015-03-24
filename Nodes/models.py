@@ -1,21 +1,15 @@
 from django.db import models
 from datetime import datetime
 
-from FrontEnd.models import FrontEnd
-
 
 class Node(models.Model):
-    frontend = models.ForeignKey(FrontEnd, related_name='nodes')
-    hostname = models.IPAddressField(null=True)
-    celery_id = models.CharField(max_length=36)
+    node_id = models.IntegerField(primary_key=True)
+    hostname = models.IPAddressField()
     created = models.DateTimeField(null=True)
-    modified = models.DateTimeField(null=True)
-    status = models.CharField(default="Active", max_length=15)
+    modified = models.DateTimeField(null=True)    
 
     def __str__(self):
-        info_hosts = str(self.frontend.hostname)+":"+self.hostname
-        info_status = str(self.status).upper()+"-"+str(self.created)
-        return info_hosts+"-"+info_status
+        return self.hostname+"-"+str(self.created)
 
     def save(self):
         if self.created is None:

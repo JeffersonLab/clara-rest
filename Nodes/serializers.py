@@ -11,4 +11,3 @@ class NodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Node
-        fields = ('frontend', 'hostname', 'celery_id', 'created', 'status')

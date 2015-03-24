@@ -49,7 +49,6 @@ INSTALLED_APPS = (
     'djcelery',
     'rest_framework',
     'portal',
-    'FrontEnd',
     'Nodes'
 
 )
@@ -69,7 +68,8 @@ REST_FRAMEWORK = {
                                'rest_framework_yaml.parsers.YAMLParser'
                                ),
     'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',
-                                 'rest_framework_yaml.renderers.YAMLRenderer'
+                                 'rest_framework_yaml.renderers.YAMLRenderer',
+                                 'rest_framework.renderers.BrowsableAPIRenderer'
                                  ),
 }
 

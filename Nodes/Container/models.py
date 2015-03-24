@@ -1,26 +1,28 @@
 '''
-Created on 06-03-2015
+Created on 24-03-2015
 
 @author: royarzun
 '''
 from django.db import models
 from datetime import datetime
 
+from Nodes.models import Node
 
-class Node(models.Model):
-    node_id = models.IntegerField(primary_key=True)
-    hostname = models.IPAddressField()
+
+class Container(models.Model):
+    dpe_id = models.ForeignKey(Node)
+    container_id = models.AutoField()
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return self.hostname+"-"+str(self.created)
+        return "DPE:"+str(self.dpe_id)+"-Container:"+str(self.container_id)
 
     def save(self):
         if self.created is None:
             self.created = datetime.now()
         self.modified = datetime.now()
-        super(Node, self).save()
-
+        super(Container, self).save()
+    
     class Meta:
-        ordering = ('hostname',)
+        ordering = ('created',)

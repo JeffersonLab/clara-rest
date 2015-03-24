@@ -49,7 +49,9 @@ INSTALLED_APPS = (
     'djcelery',
     'rest_framework',
     'portal',
-    'Nodes'
+    'Nodes',
+    'Nodes.Container',
+    'Nodes.Container.Service'
 
 )
 

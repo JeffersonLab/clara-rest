@@ -14,4 +14,4 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ('dpe_id', 'name',)
+        fields = ('dpe_id', 'name','services')

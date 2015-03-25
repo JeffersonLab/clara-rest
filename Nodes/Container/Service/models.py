@@ -11,7 +11,7 @@ from Nodes.Container.models import Container
 
 class Service(models.Model):
     container_id = models.ForeignKey(Container)
-    name = models.CharField(max_length=20, null=True)
+    service_class = models.CharField(max_length=50, null=True)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 

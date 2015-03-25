@@ -10,19 +10,19 @@ from Nodes.models import Node
 
 
 class Container(models.Model):
-    dpe_id = models.ForeignKey(Node)
-    container_id = models.AutoField()
+    dpe_id = models.ForeignKey(Node, related_name='containers')
+    name = models.CharField(max_length=20, null=True)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return "DPE:"+str(self.dpe_id)+"-Container:"+str(self.container_id)
+        return str(self.dpe_id.hostname)+":"+str(self.name)
 
     def save(self):
         if self.created is None:
             self.created = datetime.now()
         self.modified = datetime.now()
         super(Container, self).save()
-    
+
     class Meta:
         ordering = ('created',)

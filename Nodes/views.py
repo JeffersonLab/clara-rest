@@ -19,7 +19,7 @@ Views for json responses for the Clara Nodes (DPE) components
 
 class NodeList(APIView):
     """
-    List all snippets, or create a new snippet.
+    List all Dpe Nodes, or create a new Node.
     """
     def get(self, request, format=None):
         node_objects = Node.objects.all()

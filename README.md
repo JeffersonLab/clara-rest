@@ -34,6 +34,13 @@ http://localhost:8000/subscriptions/
 http://localhost:8000/subscriptions/{subscription_id}
 ```
 
+###Testing the application
+Tests for each of the Django models can be found in each app package, if you want to run them, you can type the following in the main directory
+
+```sh
+$ python manage.py test
+```
+
 ###TODO
   - Complete the documentation of this README file
   - Complete the django data models

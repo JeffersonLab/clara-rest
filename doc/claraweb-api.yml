@@ -8,129 +8,415 @@ info:
   version: "0.0.0"
   title: Clara WebApp
 
-# Describe your paths here
+definitions:
+
+  # Applications
+  ApplicationInfo:
+    description: A concrete task running in the CLARA framework
+    properties:
+      id:
+        type: string
+      class:
+        $ref: "#/definitions/RegisteredClass"
+        default: defaultOrchestrator
+        description: provide a class with a "main" method that runs your application
+      chain:
+        description: the sequence describing message flow in your application
+        type: string
+      services:
+        description: the set of services that must be created to run this application
+        type: array
+        items:
+          $ref: "#/definitions/ServiceEngineInfo"
+    required:
+      - class
+      - chain
+    
+  # Services
+  ServiceEngineInfo:
+    description: A CLARA service engine runs in one container at one DPE. Must be threadsafe. Must implement CLARA service engine interface.
+    properties:
+      configuration:
+        $ref: "#/definitions/ServiceConfiguration"
+      id:
+        type: string
+      container_id:
+        type: string
+      DPE_id:
+        type: string
+      class:
+        $ref: "#/definitions/RegisteredClass"
+      threads:
+        type: integer
+        description: Number of threads that may be created to process messages for this single service instance
+    required:
+      - id
+      - container_id
+      - DPE_id
+      - class
+      
+  ServiceConfiguration:
+    description: Configuration options for one specific service
+    properties:
+      options:
+        type: array
+        items:
+          option_name:
+            type: string
+          option_value:
+            type: string
+
+  #
+  # Subscriptions
+  #
+  
+  # This is intended to be an abstract type
+  SubscriptionInfo:
+    description: Subscribe to a subset of logging or control messages
+    descriminator: subscriptionType
+    properties:
+      subscriptionType:
+        type: string
+    required:
+       - subscriptionType
+       
+  # This is intended to be an abstract type
+  LogMessageSubscription:
+    description: test
+    properties:
+      allOf:
+        $ref: "#/definitions/SubscriptionInfo"
+      minimum_severity:
+        type: string
+        enum: 
+          - info
+          - warn
+          - error
+      classification:
+        type: integer
+    required:
+      - minimum_severity
+      
+  # log messages from the cloud
+  ClaraLogMessageSubscription:
+    description: Subscribe to log messages from CLARA cloud
+    properties:
+      allOf:
+        $ref: "#/definitions/LogMessageSubscription"
+        
+  # log messages from services
+  ServiceLogMessageSubscription:
+    description: Subscribe to log messages from some subset of ervices
+    properties:
+      allOf:
+        $ref: "#/definitions/LogMessageSubscription"
+      DPE_regex:
+        type: string
+      container_regex:
+        type: string
+      service_regex:
+        type: string
+        
+  # control messages from services
+  ServiceControlMessageSubscription:
+    description: Subscribe to control messages from services
+    properties:
+      allOf:
+        $ref: "#/definitions/SubscriptionInfo"
+      controlType:
+        type: string
+        enum:
+          - data
+          - done
+          
+  SubscriptionData:
+    description: A delivered subscription message
+    properties:
+      deliveryTime:
+        type: string
+        format: dateTime
+      source:
+        type: string
+      message:
+        type: string
+        
+  # Other stuff      
+  ArrayOfIDs:
+    type: array
+    items:
+      type: string
+  DPErequest:
+    type: array
+    items:
+      type: string
+  RegisteredClass:
+    author:
+      type: string
+    classname:
+      type: string
+    language:
+      type: string
+      enum:
+        - java
+        - python
+        - C++
+        
 paths:
-  # This is a path endpoint. Change it.
-  /find/DPE:
-    # This is a HTTP operation
+
+  #
+  # A DPE is one process at one node which may host CLARA
+  #
+  
+  # Path to all DPEs
+  /DPE:
+    # Find DPEs
     get:
       parameters:
+        - name: DPE_regex
+          in: query
+          description: Regular expression of DPE ID
+          required: false
+          type: string
+        - name: container_regex
+          in: query
+          description: Regular expresion of container ID
+          required: false
+          type: string
+        - name: service_regex
+          in: query
+          description: Regular expression of service ID
+          required: false
+          type: string
+          
+      description: |
+        Find DPEs that match the optional query parametets. For all DPEs omit the parameters.
+   
+      responses:
+        200:
+          description: Returns a list of DPE IDs
+          schema:
+            $ref: "#/definitions/ArrayOfIDs"
+                  
+    # (future) create new DPEs on-demand        
+    post:
+      parameters:
+        - name: DPEinfo
+          description: Quantity and types of DPEs to start
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/DPErequest"
+      description: Start new DPE(s)
+      responses:
+        200:
+          description: Returns list of new DPE IDs
+          schema:
+            $ref: "#/definitions/ArrayOfIDs"
+  
+  # Path to one specific DPE    
+  /DPE/{DPE_id}:   
+    # (future) shutdown a DPE
+    delete:
+      parameters:
         - name: DPE_id
+          description: ID of DPE to shutdown
+          in: path
+          required: true
+          type: string
+            
+      description: Shutdown a DPE
+      responses:
+        200:
+          description: Successful completion
+
+  #
+  # A service container contains zero or more services at one specific DPE
+  #
+  
+  # Path to all containers
+  /container:
+    # find containers
+    get:
+      parameters:
+        - name: DPE_regex
           in: query
-          description: ID of DPE
+          description: Regular expression of DPE ID
           required: false
           type: string
-        - name: container_id
+        - name: container_regex
           in: query
-          description: ID of container
+          description: Regular expresion of container ID
           required: false
           type: string
-        - name: service_id
+        - name: service_regex
           in: query
-          description: ID of service
+          description: Regular expression of service ID
           required: false
           type: string
       # Describe this verb here. Note: you can use markdown
       description: |
-        Find DPEs.
-      # Expected responses for this operation:
+        Find containers that match the optional query parametets. For all containers omit the parameters.
+
       responses:
-        # Response code
         200:
-          description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
+          description: Returns a list of container IDs
           schema:
-            title: ArrayOfDPE
-            type: array
-            items:
-              title: DPE
-              type: object
-              properties:
-                id:
-                  type: string
-  /find/container:
-   # This is a HTTP operation
+            $ref: "#/definitions/ArrayOfIDs"
+    
+    # create container
+    post:
+      parameters:
+        - name: container ID
+          description: ID of container
+          in: body
+          required: true
+          schema:
+            containerID:
+              type: string
+      description: Start a service container at all DPEs
+      responses:
+        200:
+          description: Successful return
+  
+  # Path to a named container at all DPEs
+  /container/{container_id}:  
+    delete:
+      parameters:
+        - name: container_id
+          description: ID of container
+          in: path
+          required: true
+          type: string
+      description: Remove a service container all DPEs
+      responses:
+        200:
+          description: Successful return
+          
+  #
+  # A service runs in one container at one DPE. It receives input messages, performs processing, and generates an output message
+  #
+  
+  # Path to all services
+  /service:
     get:
       parameters:
-        - name: DPE_id
+        - name: DPE regex
           in: query
-          description: ID of DPE
+          description: Regular expression of DPE ID
           required: false
           type: string
-        - name: container_id
+        - name: container regex
           in: query
-          description: ID of container
+          description: Regular expresion of container ID
           required: false
           type: string
-        - name: service_id
+        - name: service regex
           in: query
-          description: ID of service
+          description: Regular expression of service ID
           required: false
           type: string
-      # Describe this verb here. Note: you can use markdown
+
       description: |
-        Find containers.
-      # Expected responses for this operation:
+        Find services that match the optional query parametets. For all services omit the parameters.
+
       responses:
-        # Response code
+        200:
+          description: Returns list of found service IDs
+          schema:
+            $ref: "#/definitions/ArrayOfIDs"
+        
+    post:
+      parameters:
+        - name: service detail
+          in: body
+          description: service engine detail
+          required: true
+          schema:
+            $ref: '#/definitions/ServiceEngineInfo'
+      description: |
+        Create a new service in one container at one DPE. The named container will be created if necessary.
+
+      responses:
         200:
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
-            title: ArrayOfContainers
-            type: array
-            items:
-              title: Container
-              type: object
-              properties:
-                id:
-                  type: string
-                single:
-                  type: boolean
-  /find/service:
-   # This is a HTTP operation
+            title: service ID
+            type: string
+            
+  
+  #
+  # An application represents a unique use of CLARA to perform a task
+  #
+  
+  # Path to all applications
+  /application:
     get:
       parameters:
-        - name: DPE_id
+        - name: Application regex
           in: query
-          description: ID of DPE
+          description: Regular expression of Application ID
           required: false
           type: string
-        - name: container_id
-          in: query
-          description: ID of container
-          required: false
-          type: string
-        - name: service_id
-          in: query
-          description: ID of service
-          required: false
-          type: string
-      # Describe this verb here. Note: you can use markdown
       description: |
-        Find service engines.
-      # Expected responses for this operation:
+        Find applications that match the optional query parameter
+
       responses:
-        # Response code
+        200:
+          description: Returns a list of Application IDs
+          schema:
+            $ref: "#/definitions/ArrayOfIDs"
+  
+    post:
+      parameters:
+        - name: Application Info
+          description: Application to register
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ApplicationInfo"
+            
+      description: Register a new Application with CLARA
+      responses:
+        200:
+          description: Returns new Application ID
+          schema:
+            type: string
+            
+  # Path to one specific application
+  /application/{application_id}:
+    get:
+      parameters:
+        - name: application_id
+          in: path
+          description: ID of application
+          required: true
+          type: string
+          
+      description: Retrieve an application by ID
+
+      responses:
         200:
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
-            title: ArrayOfServices
-            type: array
-            items:
-              title: Service
-              type: object
-              properties:
-                id:
-                  type: string
-                single:
-                  type: boolean
+            $ref: '#/definitions/ApplicationInfo' 
+        400:
+          description: No messages available
+          
+    delete:
+      parameters:
+        - name: application_id
+          in: path
+          description: ID of application
+          required: true
+          type: string
+      description: Remove the application and any services it is using 
+      responses:
+        200:
+          description: Successful response
+          
+  
+  # Path to one specific service instance
   /DPE/{DPE_id}/container/{container_id}/service/{service_id}:
-   # This is a HTTP operation
     get:
       parameters:
         - name: DPE_id
@@ -145,22 +431,19 @@ paths:
           type: string
         - name: service_id
           in: path
-          description: ID of container
+          description: ID of service
           required: true
           type: string
-      # Describe this verb here. Note: you can use markdown
+
       description: |
-        Gets the service detail for a service at a DPE and container. 
-      # Expected responses for this operation:
+        Returns the detail for one specific service at a DPE and container. 
+
       responses:
-        # Response code
         200:
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
-            title: ServiceDetail
-            type: object
+            $ref: '#/definitions/ServiceEngineInfo'
+            
     delete:
       parameters:
         - name: DPE_id
@@ -178,82 +461,38 @@ paths:
           description: ID of container
           required: true
           type: string
-      # Describe this verb here. Note: you can use markdown
       description: |
-        Removes the service at a DPE and container. 
-      # Expected responses for this operation:
+        Remove the single identified service instance 
       responses:
-        # Response code
         200:
           description: Successful response
-  /DPE/{DPE_id}/container/{container_id}/service:
-    post:
-      parameters:
-        - name: DPE_id
-          in: path
-          description: ID of DPE
-          required: true
-          type: string
-        - name: container_id
-          in: path
-          description: ID of container
-          required: true
-          type: string
-        - name: service class
-          in: query
-          description: service engine class name
-          required: true
-          type: string
-      # Describe this verb here. Note: you can use markdown
-      description: |
-        Starts a new service at the DPE and container
-      # Expected responses for this operation:
-      responses:
-        # Response code
-        200:
-          description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
-          schema:
-            title: service ID
-            type: string
+          
+ 
+  #
+  # A subscription represents messages that may be delivered to clients
+  #
+  
+  # Path to all subscriptions
   /subscription:
     post:
       parameters:
-        - name: DPE_id
-          in: query
-          description: ID of DPE
-          required: false
-          type: string
-        - name: container_id
-          in: query
-          description: ID of container
-          required: false
-          type: string
-        - name: service_id
-          in: query
-          description: ID of service
-          required: false
-          type: string
-        - name: subscription type
-          in: query
-          description: type of messages to subscribe to (info, warn, error, data, done)
+        - name: subscription info
+          in: body
+          description: type of message to subscribe to 
           required: true
-          type: string
-      # Describe this verb here. Note: you can use markdown
+          schema: 
+             $ref: '#/definitions/SubscriptionInfo' 
       description: |
-        Subscribe to service messages by
-        DPE, container, and/or service ID.
-      # Expected responses for this operation:
+        Subscribe to messages. Available subscription types are CloudLogMessageSubscription, ServiceLogMessageSubscription, and ServiceControlMessageSubscription. Clients must continuously poll for new messages.
+        
       responses:
-        # Response code
         200:
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: subscription ID
             type: string
+            
+  # Path to a specific subscription
   /subscription/{subscription_id}:
     get:
       parameters:
@@ -263,21 +502,17 @@ paths:
           required: true
           type: string
           
-      # Describe this verb here. Note: you can use markdown
       description: |
         Poll for messages sent to this subscription. 
-      # Expected responses for this operation:
+
       responses:
-        # Response code
         200:
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
-            title: subscription data
-            type: string
+            $ref: '#/definitions/SubscriptionData' 
         400:
           description: No messages available
+          
     delete:
       parameters:
         - name: subscription_id
@@ -286,12 +521,10 @@ paths:
           required: true
           type: string
           
-      # Describe this verb here. Note: you can use markdown
       description: |
         Remove the subscription. 
-      # Expected responses for this operation:
+
       responses:
-        # Response code
         200:
           description: Successful response
           

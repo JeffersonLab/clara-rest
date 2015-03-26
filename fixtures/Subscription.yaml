@@ -1,0 +1,20 @@
+-   fields: {created: ! '2015-03-26 18:25:50.610048+00:00', modified: ! '2015-03-26
+            18:25:50.610065+00:00', sender: CLOUD, type: INFO}
+    model: Subscription.subscriptionhandler
+    pk: 1
+-   fields: {created: ! '2015-03-26 18:26:15.095354+00:00', modified: ! '2015-03-26
+            18:26:15.095363+00:00', sender: CLOUD, type: WARNING}
+    model: Subscription.subscriptionhandler
+    pk: 2
+-   fields: {created: ! '2015-03-26 18:26:24.241315+00:00', modified: ! '2015-03-26
+            18:26:24.241336+00:00', sender: CLOUD, type: ERROR}
+    model: Subscription.subscriptionhandler
+    pk: 3
+-   fields: {created: ! '2015-03-26 18:26:35.298944+00:00', modified: ! '2015-03-26
+            18:26:35.298956+00:00', sender: CLOUD, type: DATA}
+    model: Subscription.subscriptionhandler
+    pk: 4
+-   fields: {created: ! '2015-03-26 18:26:55.647308+00:00', modified: ! '2015-03-26
+            18:26:55.647321+00:00', sender: CLOUD, type: DONE}
+    model: Subscription.subscriptionhandler
+    pk: 5

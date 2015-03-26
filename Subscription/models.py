@@ -4,6 +4,7 @@ Created on 24-03-2015
 @author: royarzun
 '''
 from django.db import models
+from datetime import datetime
 
 
 class SubscriptionHandler(models.Model):
@@ -12,6 +13,9 @@ class SubscriptionHandler(models.Model):
     ERROR = 'ERROR'
     DATA = 'DATA'
     DONE = 'DONE'
+    
+    CLOUD = 'CLOUD'
+
     MESSAGE_TYPE = (
         (INFO, 'INFO'),
         (WARNING, 'WARNING'),
@@ -19,9 +23,11 @@ class SubscriptionHandler(models.Model):
         (DATA, 'DATA'),
         (DONE, 'DONE')
     )
+    
     subscription_id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=10,choices=MESSAGE_TYPE,
                             default=INFO)
+    sender = models.CharField(max_length=30, default=CLOUD)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
     

@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'portal',
     'Nodes',
     'Nodes.Container',
-    'Nodes.Container.Service'
+    'Nodes.Container.Service',
+    'Subscription'
 )
 
 MIDDLEWARE_CLASSES = (

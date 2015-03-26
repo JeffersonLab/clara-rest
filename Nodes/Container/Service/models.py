@@ -10,13 +10,13 @@ from Nodes.Container.models import Container
 
 
 class Service(models.Model):
-    container_id = models.ForeignKey(Container)
-    service_id = models.AutoField()
+    container_id = models.ForeignKey(Container, related_name = 'services')
+    service_class = models.CharField(max_length=50, null=True)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return str(self.container_id)+":"+str(self.service_id)
+        return str(self.container_id)+":"+str(self.name)
 
     def save(self):
         if self.created is None:

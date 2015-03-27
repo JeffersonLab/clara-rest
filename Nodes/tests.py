@@ -20,6 +20,7 @@ class DPENodeTests(APITestCase):
         We must ensure that the DPE node instance gets created
         correctly into the database
         '''
+        print "\n- Testing Node create method"
         response = self.client.post(self.url, self.initial_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
@@ -28,6 +29,7 @@ class DPENodeTests(APITestCase):
         We must ensure that the DPE node instance gets updated
         correctly into the database
         '''
+        print "\n- Testing Node update method"
         updated_data = {"hostname" : "192.168.1.254"}
         response = self.client.put(self.url_put, updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -38,5 +40,6 @@ class DPENodeTests(APITestCase):
         We must ensure that the DPE node instance gets deleted
         correctly into the database under delete request
         '''
+        print "\n- Testing Node delete method"
         response = self.client.delete(self.url_del, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

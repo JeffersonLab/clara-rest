@@ -9,6 +9,6 @@ from views import NodeDetail, NodeList
 
 urlpatterns = patterns('',
                        url(r'^$', NodeList.as_view()),
-                       url(r'^(?P<nodeid>[\d+])/?$', NodeDetail.as_view()),
-                       url(r'^(?P<nodeid>[\d+])/containers/', include('Nodes.Container.urls'))
+                       url(r'^(?P<DPE_id>[\d+])/?$', NodeDetail.as_view()),
+                       url(r'^(?P<DPE_id>[\d+])/containers/', include('Nodes.Container.urls'))
                        )

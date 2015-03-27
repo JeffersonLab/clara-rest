@@ -1,8 +1,6 @@
--   fields: {created: ! '2015-03-26 17:08:14.339999+00:00', hostname: 192.168.0.1,
-        modified: ! '2015-03-26 17:39:20.139330+00:00'}
+-   fields: {hostname: 192.168.0.1}
     model: Nodes.node
     pk: 2
--   fields: {created: ! '2015-03-26 17:10:54.593839+00:00', hostname: 127.0.1.1, modified: ! '2015-03-26
-            17:10:54.593855+00:00'}
+-   fields: {hostname: 127.0.1.1}
     model: Nodes.node
     pk: 4

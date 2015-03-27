@@ -15,8 +15,8 @@ class NodeSerializer(serializers.ModelSerializer):
         model = Node
         fields = ('hostname', 'node_id', 'created', 'modified')
         read_only_fields = ('node_id', 'created', 'modified')
-    
-     
+
+
     def create(self, validated_data):
         node = Node(hostname=validated_data['hostname'])
         node.save()

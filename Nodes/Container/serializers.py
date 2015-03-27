@@ -14,4 +14,14 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ('dpe_id', 'name','services')
+        fields = ('id', 'dpe_id', 'name', 'services')
+        read_only_fields = ('services', 'id')
+        
+
+    def create(self, validated_data):
+        container = Container(
+                              dpe_id = validated_data['dpe_id'],
+                              name = validated_data['name']
+                            )
+        container.save()
+        return container

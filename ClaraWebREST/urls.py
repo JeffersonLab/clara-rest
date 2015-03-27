@@ -15,8 +15,10 @@ urlpatterns = patterns('',
                        url(r'^api-auth/', include('rest_framework.urls',
                                                   namespace='rest_framework')
                            ),
+                       url(r'^docs/', include('rest_framework_swagger.urls')),
                        url(r'^dpes/', include('Nodes.urls')),
-                       url(r'^subscriptions/', include('Subscription.urls'))
+                       url(r'^subscriptions/', include('Subscription.urls')),
+                       url(r'^containers/', include('Nodes.Container.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

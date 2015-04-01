@@ -10,15 +10,17 @@ from django.views.generic.base import RedirectView
 
 
 urlpatterns = patterns('',
-                       url(r'^/?$', RedirectView.as_view(url='/dpes', permanent=True, query_string=False)),  
+                       url(r'^/?$', RedirectView.as_view(url='/dpes',
+                                                         permanent=True,
+                                                         query_string=False)),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls',
-                                                  namespace='rest_framework')
-                           ),
+                                                  namespace='rest_framework')),
                        url(r'^docs/', include('rest_framework_swagger.urls')),
                        url(r'^dpes/', include('Nodes.urls')),
                        url(r'^subscriptions/', include('Subscription.urls')),
                        url(r'^containers/', include('Nodes.Container.urls')),
+                       url(r'^services/', include('Nodes.Container.Service.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

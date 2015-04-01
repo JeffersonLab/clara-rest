@@ -10,15 +10,16 @@ from Container.models import Container
 
 
 class ContainerInline(TabularInline):
-    model  = Container
+    model = Container
     fields = ('name',)
 
 
 class NodeAdmin(ModelAdmin):
     model = Node
-    readonly_fields = ('created','modified')
+    readonly_fields = ('created', 'modified')
     inlines = (ContainerInline, )
 
-    
+
 site.register(Node, NodeAdmin)
 site.register(Container)
+

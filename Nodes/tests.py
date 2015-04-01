@@ -8,33 +8,20 @@ from rest_framework.test import APITestCase
 
 
 class DPENodeTests(APITestCase):
-    fixtures = ['fixtures/Nodes.yaml',]
+    fixtures = ['fixtures/Nodes.yaml', ]
     url = '/dpes/'
-    url_put = url+'2'
     url_del = url+'4'
-    initial_data = {'hostname':'127.0.0.1'}
-    
-    
+    initial_data = {'DPEInfo': 2}
+
     def test_create_node(self):
         '''
         We must ensure that the DPE node instance gets created
         correctly into the database
         '''
-        print "\n- Testing Node create method"
+        print "\n- Testing Node create DPEs method"
         response = self.client.post(self.url, self.initial_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
-    def test_update_node(self):
-        '''
-        We must ensure that the DPE node instance gets updated
-        correctly into the database
-        '''
-        print "\n- Testing Node update method"
-        updated_data = {"hostname" : "192.168.1.254"}
-        response = self.client.put(self.url_put, updated_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    
+
     def test_delete_node(self):
         '''
         We must ensure that the DPE node instance gets deleted

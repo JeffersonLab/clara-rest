@@ -37,6 +37,8 @@ http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
 http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
 http://localhost:8000/subscriptions/
 http://localhost:8000/subscriptions/{subscription_id}
+# You Check documentation and test the API directly at:
+http://localhost:8000/docs
 ```
 
 ###Testing the application

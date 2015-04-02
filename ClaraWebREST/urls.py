@@ -18,9 +18,12 @@ urlpatterns = patterns('',
                                                   namespace='rest_framework')),
                        url(r'^docs/', include('rest_framework_swagger.urls')),
                        url(r'^dpes/', include('Nodes.urls')),
+                       url(r'^dpes/', include('Nodes.Container.nestedUrls')),
                        url(r'^subscriptions/', include('Subscription.urls')),
                        url(r'^containers/', include('Nodes.Container.urls')),
-                       url(r'^services/', include('Nodes.Container.Service.urls')),
+                       url(r'^services/',
+                           include('Nodes.Container.Service.urls')
+                           )
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -3,7 +3,7 @@ Created on 10-03-2015
 
 @author: royarzun
 '''
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
 from views import NodeDetail, NodeList
 

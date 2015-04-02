@@ -76,9 +76,12 @@ class NodeDetail(APIView):
               type: string
         response_serializer: Nodes.serializers.NodeSerializer
         """
-        node_object = self.get_object(DPE_id)
-        serializer = NodeSerializer(node_object)
-        return Response(serializer.data)
+        try:
+            node_object = self.get_object(DPE_id)
+            serializer = NodeSerializer(node_object)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, DPE_id, format=None):
         """

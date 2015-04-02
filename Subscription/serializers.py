@@ -16,9 +16,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         read_only_fields = ('subscription_id', 'created', 'modified')
 
     def create(self, validated_data):
-        subscription = SubscriptionHandler(
-                                          type = validated_data['type'],
-                                          sender = validated_data['sender']
-                                          )
+        subscription = SubscriptionHandler(type=validated_data['type'],
+                                           sender=validated_data['sender'])
         subscription.save()
         return subscription

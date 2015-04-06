@@ -4,18 +4,48 @@ Created on 13-03-2015
 @author: royarzun
 '''
 from rest_framework import serializers
-from models import ServiceEngineInfo
+
+from Nodes.Container.models import Container
+from models import ServiceEngine
 
 
-class ServiceConfigSerializer(serializers.Serializer):
-    option = serializers.CharField(max_length=50)
-    value = serializers.CharField(max_length=50)
+# class ServiceConfigSerializer(serializers.Serializer):
+#     option = serializers.CharField(max_length=50)
+#     value = serializers.CharField(max_length=50)
 
 
-class ServiceEngineInfoSerializer(serializers.ModelSerializer):
-    configuration = ServiceConfigSerializer(many=True, read_only=True)
+class ServiceEngineSerializer(serializers.ModelSerializer):
+    #configuration = ServiceConfigSerializer(many=True, read_only=True)
 
     class Meta:
-        model = ServiceEngineInfo
+        model = ServiceEngine
         fields = ('container_id', 'engine_class', 'configuration', 'threads')
-        read_only_fields = ('configuration', ) 
+        read_only_fields = ('container_id', 'configuration', )
+
+
+class ServiceEngineNestedSerializer(serializers.ModelSerializer):
+    parent_id = None
+    
+    def __init__(self, *args, **kwargs):
+        self.parent_id = kwargs.pop('container_id', None)
+        super(ServiceEngineNestedSerializer, self).__init__(*args, **kwargs)
+    
+    class Meta:
+        model = ServiceEngine
+        fields = ('container_id', 'engine_class', 'configuration', 'threads')
+        read_only_fields = ('container_id',)
+        
+    def create(self, validated_data):
+        service = ServiceEngine(engine_class=validated_data['engine_class'],
+                                threads=validated_data['threads'],
+                                configuration=validated_data['configuration'])
+        # TODO: Check what to do with empty configuration
+        try:
+            parent = Container.objects.get(id=self.parent_id)
+            parent.services.add(service)
+            service.save()
+            parent.save()
+            return service
+        except:
+            print service
+            raise serializers.ValidationError("Container must be registered and available!")

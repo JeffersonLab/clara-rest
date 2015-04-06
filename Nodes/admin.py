@@ -7,6 +7,7 @@ from django.contrib.admin import ModelAdmin, TabularInline, site
 
 from Nodes.models import Node
 from Container.models import Container
+from Container.Service.models import ServiceEngine
 
 
 class ContainerInline(TabularInline):
@@ -22,4 +23,4 @@ class NodeAdmin(ModelAdmin):
 
 site.register(Node, NodeAdmin)
 site.register(Container)
-
+site.register(ServiceEngine)

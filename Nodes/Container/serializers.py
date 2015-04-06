@@ -5,13 +5,13 @@ Created on 13-03-2015
 '''
 from rest_framework import serializers
 
-from Service.serializers import ServiceSerializer
+from Service.serializers import ServiceEngineInfoSerializer
 from Nodes.models import Node
 from models import Container
 
 
 class ContainerSerializer(serializers.ModelSerializer):
-    services = ServiceSerializer(many=True, read_only=True)
+    services = ServiceEngineInfoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Container

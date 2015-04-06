@@ -7,11 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from serializers import ServiceSerializer
+from serializers import ServiceEngineInfoSerializer
 from models import ServiceEngineInfo
 """
 Services Views:
-Views for json responses for the Clara Services
+Views for json responses for the Clara ServiceEngines
 """
 
 
@@ -30,18 +30,18 @@ class ServiceEngineList(APIView):
               required: False
             - name: container_regex
               type: string
-              in: query
-              paramType: string
-              description: Regular expression of the DPE id
+              paramType: query
+              description: Regular expression of container id
               required: False
             - name: service_regex
               type: string
-              located: query
-              description: Regular expression of the DPE id
+              paramType: query
+              description: Regular expression for the Service Engine name
               required: False
+        response_serializer: Nodes.Container.Service.serializers.ServiceEngineInfoSerializer
         """
         service_objects = ServiceEngineInfo.objects.all()
-        serializer = ServiceSerializer(service_objects, many=True)
+        serializer = ServiceEngineInfoSerializer(service_objects, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -49,11 +49,23 @@ class ServiceEngineList(APIView):
         Create a new service in one container at one DPE. The named container will be created if necessary.
         ---
         parameters:
-            - name: DPEInfo
-              type: string
-              description: Quantity and types of DPEs to start
+            - name: container_id
+              description: Container Id for the Service Engine
+              required: True
+            - name: engine_class
+              description: Class name of the Service Engine
+              required: True
+            - name: configuration
+              description: Service Configuration
+              required: False
+            - name: threads
+              description: Number of threads for the Service Engine
+              type: integer
+              required: True
+        request_serializer: Nodes.Container.Service.serializers.ServiceEngineInfoSerializer
+        response_serializer: Nodes.Container.Service.serializers.ServiceEngineInfoSerializer
         """
-        serializer = ServiceSerializer(data=request.data)
+        serializer = ServiceEngineInfoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -124,7 +124,7 @@ class ServiceEngineNestedList(APIView):
         request_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         """
-        serializer = ServiceEngineNestedSerializer(data=request.data, container_id=container_id)
+        serializer = ServiceEngineNestedSerializer(data=request.data, container=container_id)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -155,7 +155,7 @@ class ServiceEngineNestedDetail(APIView):
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         """
         try:
-            serv_object = Node.objects.get(node_id=DPE_id).containers.get(id=container_id).services.get(id=service_id)
+            serv_object = Node.objects.get(node_id=DPE_id).containers.get(container_id=container_id).services.get(service_id=service_id)
             serializer = ServiceEngineSerializer(serv_object)
             return Response(serializer.data)            
         except Node.DoesNotExist:

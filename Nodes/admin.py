@@ -20,7 +20,10 @@ class NodeAdmin(ModelAdmin):
     readonly_fields = ('created', 'modified')
     inlines = (ContainerInline, )
 
-
+class ServiceEngineAdmin(ModelAdmin):
+    model = ServiceEngine
+    readonly_fields = ('created', 'modified')
+    
 site.register(Node, NodeAdmin)
 site.register(Container)
-site.register(ServiceEngine)
+site.register(ServiceEngine, ServiceEngineAdmin)

@@ -1,21 +1,12 @@
-- fields: {configuration: '[]', container_id: 1, created: ! '2015-04-06 17:19:48',
-    dpe_id: 1, engine_class: superReconstructorService, modified: ! '2015-04-06 17:21:46.191669',
-    threads: 4}
-  model: Service.serviceengine
-  pk: 1
-- fields: {created: ! '2015-04-05 15:38:30.748123', dpe_id: 1, modified: ! '2015-04-05
-      15:38:30.752527', name: abc}
-  model: Container.container
-  pk: 1
-- fields: {created: ! '2015-04-05 15:38:46.404457', dpe_id: 1, modified: ! '2015-04-05
-      15:38:46.409186', name: def}
-  model: Container.container
-  pk: 2
-- fields: {created: ! '2015-04-05 15:38:59.584014', dpe_id: 1, modified: ! '2015-04-05
-      15:38:59.587665', name: ghi}
-  model: Container.container
-  pk: 3
-- fields: {created: ! '2015-04-05 15:35:56.313793', hostname: 192.168.1.1, modified: ! '2015-04-05
-      15:38:59.593076'}
-  model: Nodes.node
-  pk: 1
+-   fields: {hostname: 192.168.0.1}
+    model: Nodes.node
+    pk: 1
+-   fields: {created: ! '2015-03-27 17:52:37', dpe: 1, modified: ! '2015-03-27 17:52:46.327131',
+        name: abc}
+    model: Container.container
+    pk: 1
+-   fields: {configuration: '---', container: 1, created: ! '2015-04-07 03:41:03.475573',
+        engine_class: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
+        threads: 4}
+    model: Service.serviceengine
+    pk: 1

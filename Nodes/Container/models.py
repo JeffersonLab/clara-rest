@@ -10,13 +10,14 @@ from Nodes.models import Node
 
 
 class Container(models.Model):
-    dpe_id = models.ForeignKey(Node, related_name='containers')
+    container_id = models.AutoField(primary_key=True, null=False)
+    dpe = models.ForeignKey(Node, related_name='containers')
     name = models.CharField(max_length=20, null=True)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return str(self.dpe_id.hostname)+":"+str(self.name)
+        return str(self.dpe.hostname)+":"+str(self.name)
 
     def save(self):
         if self.created is None:

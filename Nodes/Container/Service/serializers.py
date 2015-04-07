@@ -19,21 +19,21 @@ class ServiceEngineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceEngine
-        fields = ('container_id', 'engine_class', 'configuration', 'threads')
-        read_only_fields = ('container_id', 'configuration', )
+        fields = ('service_id', 'container', 'engine_class', 'configuration', 'threads')
+        read_only_fields = ('service_id', 'container', 'configuration', )
 
 
 class ServiceEngineNestedSerializer(serializers.ModelSerializer):
     parent_id = None
     
     def __init__(self, *args, **kwargs):
-        self.parent_id = kwargs.pop('container_id', None)
+        self.parent_id = kwargs.pop('container', None)
         super(ServiceEngineNestedSerializer, self).__init__(*args, **kwargs)
     
     class Meta:
         model = ServiceEngine
-        fields = ('container_id', 'engine_class', 'configuration', 'threads')
-        read_only_fields = ('container_id',)
+        fields = ('container', 'engine_class', 'configuration', 'threads')
+        read_only_fields = ('container',)
         
     def create(self, validated_data):
         service = ServiceEngine(engine_class=validated_data['engine_class'],
@@ -41,7 +41,7 @@ class ServiceEngineNestedSerializer(serializers.ModelSerializer):
                                 configuration=validated_data['configuration'])
         # TODO: Check what to do with empty configuration
         try:
-            parent = Container.objects.get(id=self.parent_id)
+            parent = Container.objects.get(container_id=self.parent_id)
             parent.services.add(service)
             service.save()
             parent.save()

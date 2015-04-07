@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 
 
 class ServiceEngineTests(APITestCase):
-    fixtures = ['fixtures/Services.yaml']
+    fixtures = ['fixtures/Services.yaml',]
     url_create = '/dpes/1/containers/1/services/'
     url_get = '/dpes/1/containers/1/services/1'
     initial_data = {

@@ -15,11 +15,11 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ('id', 'dpe_id', 'name', 'services')
-        read_only_fields = ('services', 'id')
+        fields = ('container_id', 'dpe', 'name', 'services')
+        read_only_fields = ('services', 'container_id')
 
     def create(self, validated_data):
-        container = Container(dpe_id=validated_data['dpe_id'],
+        container = Container(dpe=validated_data['dpe'],
                               name=validated_data['name'])
         container.save()
         return container
@@ -30,13 +30,13 @@ class ContainerNestedSerializer(serializers.ModelSerializer):
     parent_dpe = None
 
     def __init__(self, *args, **kwargs):
-        self.parent_id = kwargs.pop('dpe_id', None)
+        self.parent_id = kwargs.pop('dpe', None)
         super(ContainerNestedSerializer, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Container
-        fields = ('id', 'dpe_id', 'name')
-        read_only_fields = ('id', 'dpe_id')
+        fields = ('container_id', 'dpe', 'name')
+        read_only_fields = ('container_id', 'dpe')
 
     def create(self, validated_data):
         # TODO: Get the exception for not found

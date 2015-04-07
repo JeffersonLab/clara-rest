@@ -19,8 +19,8 @@ class ServiceEngine(models.Model):
     A CLARA service engine runs in one container at one DPE.
     Must be threadsafe. Must implement CLARA service engine interface.
     """
-    dpe_id = models.IntegerField(null=True)
-    container_id = models.ForeignKey(Container, related_name='services')
+    service_id = models.AutoField(primary_key=True)
+    container = models.ForeignKey(Container, related_name='services')
     engine_class = models.CharField(max_length=50, null=True)
     configuration = models.TextField(default="")
     # Number of threads that may be created to process messages 
@@ -31,7 +31,7 @@ class ServiceEngine(models.Model):
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return str(self.container_id)+":"+str(self.engine_class)
+        return str(self.container)+":"+str(self.engine_class)
 
     def save(self):
         if self.created is None:

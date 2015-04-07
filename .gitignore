@@ -3,3 +3,6 @@ db.sqlite3
 *.pyc
 .project
 .pydevproject
+
+Nodes/Container/migrations
+Nodes/Container/Service/migrations

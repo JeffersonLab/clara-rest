@@ -51,7 +51,7 @@ class ContainerDetail(APIView):
 
     def get_object(self, container_id):
         try:
-            return Container.objects.get(id=container_id)
+            return Container.objects.get(container_id=container_id)
         except Container.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
@@ -132,7 +132,7 @@ class ContainerNestedList(APIView):
         request_serializer: Nodes.Container.serializers.ContainerNestedSerializer
         """
         serializer = ContainerNestedSerializer(data=request.data,
-                                               dpe_id=DPE_id)
+                                               dpe=DPE_id)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -143,7 +143,7 @@ class ContainerNestedDetail(APIView):
 
     def get_object(self, container_id):
         try:
-            return Container.objects.get(id=container_id)
+            return Container.objects.get(container_id=container_id)
         except Container.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

@@ -10,7 +10,7 @@ from rest_framework.test import APITestCase
 class DPENodeTests(APITestCase):
     fixtures = ['fixtures/Nodes.yaml', ]
     url = '/dpes/'
-    url_del = url+'4'
+    url_del = url+'2'
     initial_data = {'DPEInfo': 2}
 
     def test_create_node(self):

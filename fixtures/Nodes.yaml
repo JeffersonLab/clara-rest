@@ -1,6 +1,6 @@
 -   fields: {hostname: 192.168.0.1}
     model: Nodes.node
-    pk: 2
+    pk: 1
 -   fields: {hostname: 127.0.1.1}
     model: Nodes.node
-    pk: 4
+    pk: 2

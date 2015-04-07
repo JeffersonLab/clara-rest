@@ -11,8 +11,8 @@ class ContainerTests(APITestCase):
     fixtures = ['fixtures/Nodes.yaml', 'fixtures/Container.yaml']
     url_nested = '/dpes/2/containers/'
     url_container = '/containers/'
-    url_del = url_nested+'5'
-    url_del_container = url_container+'5'
+    url_del = url_nested+'1'
+    url_del_container = url_container+'1'
     url_container_bad = url_container+'2000'
     initial_data = {'name': 'abc'}
 
@@ -44,8 +44,8 @@ class ContainerTests(APITestCase):
         correctly into the database
         '''
         print "\n- Testing Container create method"
-        container_data = {'name': 'abcdefghijk', 'dpe_id': '2'}
-        container_bad_data = {'name': 'abcdefghijk', 'dpe_id': '2000'}
+        container_data = {'name': 'abcdefghijk', 'dpe': '2'}
+        container_bad_data = {'name': 'abcdefghijk', 'dpe': '2000'}
         response = self.client.post(self.url_container,
                                     container_data,
                                     format='json')

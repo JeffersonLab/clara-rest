@@ -41,6 +41,9 @@ class ServiceEngineList(APIView):
               description: Regular expression for the Service Engine name
               required: False
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
+        responseMessages:
+            - code: 401
+              message: Not authenticated
         """
         service_objects = ServiceEngine.objects.all()
         serializer = ServiceEngineSerializer(service_objects, many=True)
@@ -66,6 +69,11 @@ class ServiceEngineList(APIView):
               required: True
         request_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
         """
         serializer = ServiceEngineSerializer(data=request.data)
         if serializer.is_valid():
@@ -91,6 +99,14 @@ class ServiceEngineNestedList(APIView):
               required: True
               paramType: path
               type: string
+        response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         service_objects = ServiceEngine.objects.all()
         serializer = ServiceEngineSerializer(service_objects, many=True)
@@ -123,6 +139,13 @@ class ServiceEngineNestedList(APIView):
               required: True
         request_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         serializer = ServiceEngineNestedSerializer(data=request.data, container=container_id)
         if serializer.is_valid():
@@ -153,6 +176,13 @@ class ServiceEngineNestedDetail(APIView):
               paramType: path
               type: string
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         try:
             serv_object = Node.objects.get(node_id=DPE_id).containers.get(container_id=container_id).services.get(service_id=service_id)

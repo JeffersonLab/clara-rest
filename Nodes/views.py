@@ -32,6 +32,9 @@ class NodeList(APIView):
             - name: service_regex
               type: string
               description: Regular expression of service ID
+        responseMessages:
+            - code: 401
+              message: Not authenticated
         """
         node_objects = Node.objects.all()
         serializer = NodeSerializer(node_objects, many=True)
@@ -47,6 +50,12 @@ class NodeList(APIView):
             - name: DPEInfo
               type: string
               description: Quantity and types of DPEs to start
+        response_serializer: Nodes.serializers.NodeSerializer
+        responseMessages:
+            - code: 400
+              message: Bad Request
+            - code: 401
+              message: Not authenticated
         """
         # TODO: Types of DPE?
         serializer = NodeDeployerSerializer(data=request.data)
@@ -75,6 +84,13 @@ class NodeDetail(APIView):
               paramType: path
               type: string
         response_serializer: Nodes.serializers.NodeSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         try:
             node_object = self.get_object(DPE_id)

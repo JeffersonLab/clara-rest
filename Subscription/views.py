@@ -18,15 +18,24 @@ Views for json responses for the Clara Subscription feature
 
 
 class SubscriptionList(APIView):
-    """
-    List all Subscriptions, or create a new one.
-    """
+    
     def get(self, request, format=None):
+        """
+        List all Subscriptions
+        ---
+
+        """
         subs_objects = SubscriptionHandler.objects.all()
         serializer = SubscriptionSerializer(subs_objects, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """
+        Create new subscription
+        ---
+        request_serializer: Subscription.serializers.SubscriptionSerializer
+        response_serializer: Subscription.serializers.SubscriptionSerializer
+        """
         serializer = SubscriptionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -35,9 +44,7 @@ class SubscriptionList(APIView):
 
 
 class SubscriptionDetail(APIView):
-    """
-    Retrieve, update or delete a subscription instance.
-    """
+    
     def get_object(self, subscription_id):
         try:
             return SubscriptionHandler.objects.get(subscription_id=subscription_id)
@@ -45,19 +52,44 @@ class SubscriptionDetail(APIView):
             raise Http404
 
     def get(self, request, subscription_id, format=None):
+        """
+        Retrieve a subscription
+        ---
+        parameters:
+            - name: subscription_id
+              description: Id of the subscription
+              paramType: path
+              required: True
+        response_serializer: Subscription.serializers.SubscriptionSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
+        """
         sub_object = self.get_object(subscription_id)
         serializer = SubscriptionSerializer(sub_object)
         return Response(serializer.data)
 
-    def put(self, request, subscription_id, format=None):
-        sub_object = self.get_object(subscription_id)
-        serializer = SubscriptionSerializer(sub_object, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def delete(self, request, subscription_id, format=None):
+        """
+        Deletes a subscription
+        ---
+        parameters:
+            - name: subscription_id
+              description: Id of the subscription
+              paramType: path
+              required: True
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
+        """
         sub_object = self.get_object(subscription_id)
         sub_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

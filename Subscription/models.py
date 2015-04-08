@@ -28,6 +28,7 @@ class SubscriptionHandler(models.Model):
                             choices=MESSAGE_TYPE,
                             default=INFO)
     sender = models.CharField(max_length=30, default=CLOUD)
+    message_body = models.TextField(default="") 
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 

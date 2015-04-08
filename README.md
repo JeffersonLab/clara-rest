@@ -29,17 +29,33 @@ $ python manage.py runserver
 In order to access the django site, try the URLs, like in the following example. As you can see the URLs follow the hierarchy of the Clara Framework 
 
 ```sh
-http://localhost:8000/dpes
-http://localhost:8000/dpes/{dpe_id}/
-http://localhost:8000/dpes/{dpe_id}/containers
-http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
-http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
-http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
-http://localhost:8000/subscriptions/
-http://localhost:8000/subscriptions/{subscription_id}
+# HTTP Method	URL
+GET		http://localhost:8000/dpes
+POST	http://localhost:8000/dpes
+GET  	http://localhost:8000/dpes/{dpe_id}/
+DELETE  http://localhost:8000/dpes/{dpe_id}/
+GET 	http://localhost:8000/dpes/{dpe_id}/containers
+POST 	http://localhost:8000/dpes/{dpe_id}/containers
+DELETE	http://localhost:8000/dpes/{dpe_id}/containers
+GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
+DELETE	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
+GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
+POST	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
+GET 	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
+GET		http://localhost:8000/containers/
+POST	http://localhost:8000/containers/
+GET		http://localhost:8000/containers/{container_id}
+DELETE	http://localhost:8000/containers/{container_id}
+GET		http://localhost:8000/services/
+POST	http://localhost:8000/services/
+GET		http://localhost:8000/subscriptions/
+POST	http://localhost:8000/subscriptions/
+GET		http://localhost:8000/subscriptions/{subscription_id}
+DELETE	http://localhost:8000/subscriptions/{subscription_id}
 # You Check documentation and test the API directly at:
 http://localhost:8000/docs
 ```
+More details about the URLs in: docs/API-current_urls_methods.png
 
 ###Testing the application
 Tests for each of the Django models can be found in each app package, if you want to run them, you can type the following in the main directory

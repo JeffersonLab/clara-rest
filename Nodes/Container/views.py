@@ -21,6 +21,10 @@ class ContainerList(APIView):
     def get(self, request, DPE_id=None, format=None):
         """
         Find all containers
+        ---
+        responseMessages:
+            - code: 401
+              message: Not authenticated
         """
         container_objects = Container.objects.all()
         serializer = ContainerSerializer(container_objects, many=True)
@@ -39,6 +43,10 @@ class ContainerList(APIView):
               description: ID of container
               paramType: string
               type: string
+        response_serializer: Nodes.Container.serializers.ContainerSerializer
+        responseMessages:
+            - code: 401
+              message: Not authenticated
         """
         serializer = ContainerSerializer(data=request.data)
         if serializer.is_valid():
@@ -114,6 +122,13 @@ class ContainerNestedList(APIView):
         Find all containers for determined dpe
         ---
         response_serializer: Nodes.Container.serializers.ContainerSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         try:
             container_objects = Node.objects.get(node_id=DPE_id).containers.all()
@@ -130,6 +145,13 @@ class ContainerNestedList(APIView):
         Create a new Clara Container
         ---
         request_serializer: Nodes.Container.serializers.ContainerNestedSerializer
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
         """
         serializer = ContainerNestedSerializer(data=request.data)
         if serializer.is_valid():

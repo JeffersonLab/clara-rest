@@ -131,11 +131,14 @@ class ContainerNestedList(APIView):
         ---
         request_serializer: Nodes.Container.serializers.ContainerNestedSerializer
         """
-        serializer = ContainerNestedSerializer(data=request.data,
-                                               dpe=DPE_id)
+        serializer = ContainerNestedSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                node_object = Node.objects.get(node_id=DPE_id)
+                serializer.save(dpe=node_object)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Node.DoesNotExist:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -46,6 +46,5 @@ class ServiceEngineNestedSerializer(serializers.ModelSerializer):
             service.save()
             parent.save()
             return service
-        except:
-            print service
+        except Container.DoesNotExist:
             raise serializers.ValidationError("Container must be registered and available!")

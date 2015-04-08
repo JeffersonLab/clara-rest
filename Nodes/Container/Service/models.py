@@ -19,7 +19,7 @@ class ServiceEngine(models.Model):
     A CLARA service engine runs in one container at one DPE.
     Must be threadsafe. Must implement CLARA service engine interface.
     """
-    service_id = models.AutoField(primary_key=True)
+    service_id = models.AutoField(primary_key=True, null=False)
     container = models.ForeignKey(Container, related_name='services')
     engine_class = models.CharField(max_length=50, null=True)
     configuration = models.TextField(default="")

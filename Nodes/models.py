@@ -15,6 +15,9 @@ class Node(models.Model):
 
     def __str__(self):
         return self.hostname
+    
+    def __int__(self):
+        return int(self.node_id)
 
     def save(self):
         if self.created is None:

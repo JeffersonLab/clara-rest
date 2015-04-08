@@ -25,6 +25,7 @@ class ServiceEngineSerializer(serializers.ModelSerializer):
 
 class ServiceEngineNestedSerializer(serializers.ModelSerializer):
     parent_id = None
+    parent_dpe_id = None
     
     def __init__(self, *args, **kwargs):
         self.parent_id = kwargs.pop('container', None)
@@ -38,13 +39,5 @@ class ServiceEngineNestedSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         service = ServiceEngine(engine_class=validated_data['engine_class'],
                                 threads=validated_data['threads'],
-                                configuration=validated_data['configuration'])
-        # TODO: Check what to do with empty configuration
-        try:
-            parent = Container.objects.get(container_id=self.parent_id)
-            parent.services.add(service)
-            service.save()
-            parent.save()
-            return service
-        except Container.DoesNotExist:
-            raise serializers.ValidationError("Container must be registered and available!")
+                                configuration=validated_data['configuration'])    
+        return service

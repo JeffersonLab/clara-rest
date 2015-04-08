@@ -147,10 +147,14 @@ class ServiceEngineNestedList(APIView):
             - code: 404
               message: Resource not found
         """
-        serializer = ServiceEngineNestedSerializer(data=request.data, container=container_id)
+        serializer = ServiceEngineNestedSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                container_object = Container.objects.get(dpe=DPE_id, container_id=container_id)
+                serializer.save(container=container_object)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Container.DoesNotExist:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ServiceEngineNestedDetail(APIView):

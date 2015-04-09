@@ -1,8 +1,8 @@
--   fields: {chain: 'Service1, Service2, Service3', created: ! '2015-04-09 14:44:57.601224',
+-   fields: {created: ! '2015-04-09 14:44:57.601224',
         modified: ! '2015-04-09 14:45:08.347632', registered_class: SomeClass}
     model: Applications.app
     pk: 1
--   fields: {chain: 'Service3, Service4, Service5', created: ! '2015-04-09 14:45:33.300974',
+-   fields: {created: ! '2015-04-09 14:45:33.300974',
         modified: ! '2015-04-09 14:45:33.300986', registered_class: SomeOtherClass}
     model: Applications.app
     pk: 2

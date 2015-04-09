@@ -9,9 +9,9 @@ from datetime import datetime
 
 class App(models.Model):
     app_id = models.AutoField(primary_key=True)
-    chain = models.TextField(default="")
     registered_class = models.CharField(max_length=50, default="")
-    # services to be defined 
+    # services to be defined
+    input
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
     
@@ -23,3 +23,8 @@ class App(models.Model):
             self.created = datetime.now()
         self.modified = datetime.now()
         super(App, self).save()
+
+        
+class Chain(models.Model):
+    app = models.OneToOneField(App, related_name='chain')
+    services = models.TextField(default="")

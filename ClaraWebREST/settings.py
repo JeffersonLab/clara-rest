@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
-    'Subscription'
+    'Subscription',
+    'Applications'
 )
 
 MIDDLEWARE_CLASSES = (

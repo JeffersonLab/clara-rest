@@ -23,7 +23,9 @@ urlpatterns = patterns('',
                        url(r'^containers/', include('Nodes.Container.urls')),
                        url(r'^services/',
                            include('Nodes.Container.Service.urls')
-                           )
+                           ),
+                       url(r'^applications/', include('Applications.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+

@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 class AppTests(APITestCase):
+    fixtures = ['fixtures/Applications.yaml', ]
     url = '/applications/'
     url_bad = '/applications/1000'
     query = 'something'
@@ -26,7 +27,7 @@ class AppTests(APITestCase):
         '''
         print "\n- Testing get applications all"
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
     
     def test_get_applications_query(self):
         '''
@@ -55,7 +56,7 @@ class AppTests(APITestCase):
         '''
         print "\n- Testing get applications by application_id"
         response = self.client.get(self.url+self.app_id)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
     
     def test_get_application_bad(self):
         '''
@@ -83,7 +84,7 @@ class AppTests(APITestCase):
         '''
         print "\n- Testing delete applications by application_id"
         response = self.client.delete(self.url+self.app_id)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
     
     def test_delete_application_bad(self):
         '''

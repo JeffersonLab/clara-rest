@@ -10,8 +10,8 @@ from datetime import datetime
 class App(models.Model):
     app_id = models.AutoField(primary_key=True)
     registered_class = models.CharField(max_length=50, default="")
-    # services to be defined
-    input
+    input = models.FilePathField(path="/work/input/", match="*.bin", default="")
+    output = models.FilePathField(path="/work/output/", match="*.bin", default="")
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
     

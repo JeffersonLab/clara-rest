@@ -5,6 +5,7 @@ Created on 08-04-2015
 '''
 from rest_framework import status
 from rest_framework.test import APITestCase
+from Applications.serializers import AppSerializer
 
 class AppTests(APITestCase):
     fixtures = ['fixtures/Applications.yaml', ]
@@ -44,7 +45,7 @@ class AppTests(APITestCase):
         response = self.client.get(self.url+self.query)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
     
-    def test_get_application(self):
+    def test_get_application(self, app_id=None):
         '''
         We must ensure we get the app by its app_id correctly
         
@@ -55,7 +56,11 @@ class AppTests(APITestCase):
         Should Return HTTP_200_OK
         '''
         print "\n- Testing get applications by application_id"
-        response = self.client.get(self.url+self.app_id)
+        if app_id is None:
+            url = self.url+self.app_id
+        else:
+            url = self.url+app_id
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     
     def test_get_application_bad(self):
@@ -99,3 +104,25 @@ class AppTests(APITestCase):
         print "\n- Testing delete applications by application_id (bad)"
         response = self.client.delete(self.url+self.app_id_bad)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+    def test_create_and_run_app(self):
+        '''
+        Tests the creation in the DB of an application and
+        makes sure it runs properly and registers its activity
+        
+        Parameters
+        ==========
+        URL:/applications/1000
+        method: POST
+        Should Return HTTP_201_CREATED
+        '''
+        print "\n- Testing app deployment in the cloud"
+        
+        data = {"registered_class": "SomeOtherClass.Other.More",
+                "chain": {"services": "Service1, Service2, Service3"},
+                "input": "","output": ""}
+        
+        
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        

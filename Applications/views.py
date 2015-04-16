@@ -17,7 +17,7 @@ Views for json responses for the Clara Applications
 '''
 
 
-class AppList(APIView):
+class ClaraApps(APIView):
     
     def get(self, request, format=None):
         """
@@ -43,7 +43,7 @@ class AppList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AppDetail(APIView):
+class ClaraApp(APIView):
     
     def get_object(self, application_id):
         try:
@@ -55,11 +55,6 @@ class AppDetail(APIView):
         """
         Retrieve an application
         ---
-        parameters:
-            - name: subscription_id
-              description: Id of the subscription
-              paramType: path
-              required: True
         response_serializer: Applications.serializers.AppSerializer
         responseMessages:
             - code: 400
@@ -77,11 +72,6 @@ class AppDetail(APIView):
         """
         Removes an application
         ---
-        parameters:
-            - name: subscription_id
-              description: Id of the subscription
-              paramType: path
-              required: True
         responseMessages:
             - code: 400
               message: Bad request

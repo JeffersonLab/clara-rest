@@ -125,4 +125,3 @@ class AppTests(APITestCase):
         
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        

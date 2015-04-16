@@ -15,7 +15,7 @@ Views for json responses for the Clara Nodes (DPE) components
 """
 
 
-class NodeList(APIView):
+class Dpes(APIView):
 
     def get(self, request, format=None):
         """
@@ -25,17 +25,27 @@ class NodeList(APIView):
         parameters:
             - name: DPE_regex
               type: string
+              paramType: query
               description: Regular expression of DPE ID
             - name: container_regex
               type: string
+              paramType: query
               description: Regular expression of container ID
             - name: service_regex
               type: string
+              paramType: query
               description: Regular expression of service ID
         responseMessages:
             - code: 401
               message: Not authenticated
         """
+        # Regex filters
+        dpe_regex = request.GET.get('DPE_regex')
+        container_regex = request.GET.get('container_regex')
+        service_regex = request.GET.get('service_regex')
+        print "dpe_regex : "+dpe_regex
+        print "container_regex : "+container_regex
+        print "service_regex : "+service_regex
         node_objects = Node.objects.all()
         serializer = NodeSerializer(node_objects, many=True)
         return Response(serializer.data)
@@ -65,7 +75,7 @@ class NodeList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class NodeDetail(APIView):
+class Dpe(APIView):
 
     def get_object(self, DPE_id):
         try:

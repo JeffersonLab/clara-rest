@@ -30,27 +30,27 @@ In order to access the django site, try the URLs, like in the following example.
 
 ```sh
 # HTTP Method	URL
-GET		http://localhost:8000/dpes
-POST	http://localhost:8000/dpes
-GET  	http://localhost:8000/dpes/{dpe_id}/
+GET http://localhost:8000/dpes
+POST    http://localhost:8000/dpes
+GET http://localhost:8000/dpes/{dpe_id}/
 DELETE  http://localhost:8000/dpes/{dpe_id}/
-GET 	http://localhost:8000/dpes/{dpe_id}/containers
+GET http://localhost:8000/dpes/{dpe_id}/containers
 POST 	http://localhost:8000/dpes/{dpe_id}/containers
-DELETE	http://localhost:8000/dpes/{dpe_id}/containers
-GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
-DELETE	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
-GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
+DELETE  http://localhost:8000/dpes/{dpe_id}/containers
+GET	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
+DELETE  http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
+GET	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
 POST	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
-GET 	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
-GET		http://localhost:8000/containers/
-POST	http://localhost:8000/containers/
-GET		http://localhost:8000/containers/{container_id}
+GET http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
+GET	http://localhost:8000/containers/
+POST    http://localhost:8000/containers/
+GET	http://localhost:8000/containers/{container_id}
 DELETE	http://localhost:8000/containers/{container_id}
-GET		http://localhost:8000/services/
+GET	http://localhost:8000/services/
 POST	http://localhost:8000/services/
-GET		http://localhost:8000/subscriptions/
+GET	http://localhost:8000/subscriptions/
 POST	http://localhost:8000/subscriptions/
-GET		http://localhost:8000/subscriptions/{subscription_id}
+GET	http://localhost:8000/subscriptions/{subscription_id}
 DELETE	http://localhost:8000/subscriptions/{subscription_id}
 # You Check documentation and test the API directly at:
 http://localhost:8000/docs
@@ -63,7 +63,14 @@ Tests for each of the Django models can be found in each app package, if you wan
 ```sh
 $ python manage.py test
 ```
+####Test Coverage Report
+To get a report about the test coverage
+
+```sh
+$ coverage run --source='.' --omit=./ClaraWebREST/wsgi.py manage.py test
+$ coverage report 
+```
 
 ###TODO
   - Complete the documentation of this README file
-  - Complete the django data models
+  - Connecting with Clara

@@ -12,6 +12,8 @@ class ContainerTests(APITestCase):
     url_nested = '/dpes/2/containers/'
     url_nested_bad = '/dpes/200/containers/'
     url_container = '/containers/'
+    url_container_query = '/containers/?DPE_regex=1&container_regex=1'
+    url_container_query_bad = '/containers/?DPE_regex=bad&container_regex=bad'
     url_del = url_nested+'1'
     url_del_bad = url_nested+'1000'
     url_del_container = url_container+'1'
@@ -156,3 +158,31 @@ class ContainerTests(APITestCase):
         print "\n- Testing Container delete method (bad container_id)"
         response = self.client.delete(self.url_container_bad, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_get_container_query(self):
+        '''
+        We must ensure that the container's queries work properly
+        
+        Parameters
+        ==========
+        URL:/containers/?DPE_regex=1&container_regex=1
+        method: GET
+        Should Return HTTP_200_OK
+        '''
+        print "\n- Testing Container get method (query)"
+        response = self.client.get(self.url_container_query)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_get_container_query_bad(self):
+        '''
+        We must ensure that the container's queries work properly with bad filter data
+        
+        Parameters
+        ==========
+        URL:/containers/?DPE_regex=bad&container_regex=bad
+        method: GET
+        Should Return HTTP_200_OK
+        '''
+        print "\n- Testing Container get method (bad query)"
+        response = self.client.get(self.url_container_query_bad)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

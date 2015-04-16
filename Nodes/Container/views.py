@@ -22,10 +22,33 @@ class ContainerList(APIView):
         """
         Find all containers
         ---
+        parameters:
+            - name: DPE_regex
+              type: string
+              paramType: query
+              description: Regular expression of DPE ID
+            - name: container_regex
+              type: string
+              paramType: query
+              description: Regular expression of container ID
+            - name: service_regex
+              type: string
+              paramType: query
+              description: Regular expression of service ID
         responseMessages:
             - code: 401
               message: Not authenticated
         """
+        # Regex filters
+        dpe_regex = request.GET.get('DPE_regex')
+        container_regex = request.GET.get('container_regex')
+        service_regex = request.GET.get('service_regex')
+        if dpe_regex is not None:
+            print "dpe_regex : "+dpe_regex
+        if container_regex is not None: 
+            print "container_regex : "+container_regex
+        if service_regex is not None:
+            print "service_regex : "+service_regex
         container_objects = Container.objects.all()
         serializer = ContainerSerializer(container_objects, many=True)
         return Response(serializer.data)

@@ -43,9 +43,12 @@ class Dpes(APIView):
         dpe_regex = request.GET.get('DPE_regex')
         container_regex = request.GET.get('container_regex')
         service_regex = request.GET.get('service_regex')
-        print "dpe_regex : "+dpe_regex
-        print "container_regex : "+container_regex
-        print "service_regex : "+service_regex
+        if dpe_regex is not None:
+            print "dpe_regex : "+dpe_regex
+        if container_regex is not None: 
+            print "container_regex : "+container_regex
+        if service_regex is not None:
+            print "service_regex : "+service_regex
         node_objects = Node.objects.all()
         serializer = NodeSerializer(node_objects, many=True)
         return Response(serializer.data)

@@ -45,6 +45,16 @@ class ServiceEngineList(APIView):
             - code: 401
               message: Not authenticated
         """
+        dpe_regex = request.GET.get('DPE_regex')
+        container_regex = request.GET.get('container_regex')
+        service_regex = request.GET.get('service_regex')
+        if dpe_regex is not None:
+            print "Hola Mundo!" 
+            print "dpe_regex : "+dpe_regex
+        if container_regex is not None: 
+            print "container_regex : "+container_regex
+        if service_regex is not None:
+            print "service_regex : "+service_regex
         service_objects = ServiceEngine.objects.all()
         serializer = ServiceEngineSerializer(service_objects, many=True)
         return Response(serializer.data)

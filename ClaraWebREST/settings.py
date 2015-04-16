@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
-    'portal',
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',

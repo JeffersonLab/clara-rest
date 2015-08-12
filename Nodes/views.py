@@ -1,14 +1,30 @@
-'''
-Created on 06-03-2015
+#
+# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for educational, research, and not-for-profit purposes,
+# without fee and without a signed licensing agreement.
+#
+# Author Ricardo Oyarzun
+# Department of Experimental Nuclear Physics, Jefferson Lab.
+#
+# IN NO EVENT SHALL JLAB BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+# INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF
+# THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
+# HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
+# SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+#
 
-@author: royarzun
-'''
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from serializers import NodeSerializer, NodeDeployerSerializer
-from models import Node
+from Nodes.serializers import NodeSerializer, NodeDeployerSerializer
+from Nodes.models import Node
 """
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components
@@ -43,14 +59,17 @@ class Dpes(APIView):
         dpe_regex = request.GET.get('DPE_regex')
         container_regex = request.GET.get('container_regex')
         service_regex = request.GET.get('service_regex')
+
         if dpe_regex is not None:
-            print "dpe_regex : "+dpe_regex
-        if container_regex is not None: 
-            print "container_regex : "+container_regex
+            print "dpe_regex : %s" % dpe_regex
+
+        if container_regex is not None:
+            print "container_regex : %s" % container_regex
+
         if service_regex is not None:
-            print "service_regex : "+service_regex
-        node_objects = Node.objects.all()
-        serializer = NodeSerializer(node_objects, many=True)
+            print "service_regex : %s" % service_regex
+
+        serializer = NodeSerializer(Node.objects.all(), many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -75,6 +94,7 @@ class Dpes(APIView):
         if serializer.is_valid():
             # TODO: Here we use the methods to deploy new(s) DPE Instances
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -83,6 +103,7 @@ class Dpe(APIView):
     def get_object(self, DPE_id):
         try:
             return Node.objects.get(node_id=DPE_id)
+
         except Node.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
@@ -109,6 +130,7 @@ class Dpe(APIView):
             node_object = self.get_object(DPE_id)
             serializer = NodeSerializer(node_object)
             return Response(serializer.data)
+
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

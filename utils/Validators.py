@@ -19,6 +19,8 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
+from utils.CWConstants import Constants
+
 def limit_validator(value):
-    if value > DPE_CREATION_LIMIT:
+    if value > Constants.DPE_CREATION_LIMIT:
         raise ValidationError(u'%s bigger than the DPE creation limit' % value)

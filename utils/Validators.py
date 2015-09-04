@@ -19,8 +19,10 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from utils.CWConstants import Constants
+from django.core.exceptions import ValidationError
+from utils.CWConstants import DPE_CREATION_LIMIT
+
 
 def limit_validator(value):
-    if value > Constants.DPE_CREATION_LIMIT:
+    if value > DPE_CREATION_LIMIT:
         raise ValidationError(u'%s bigger than the DPE creation limit' % value)

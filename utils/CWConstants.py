@@ -20,10 +20,9 @@
 #
 
 
-class Constants:
-
-    def __init__(self, params):
-        pass
-
-    DPE_CREATION_LIMIT = 100
-
+DPE_CREATION_LIMIT = 100
+CLARA_SUPPORTED_LANGUAGES = (
+                             (u'_java', u'JAVA'),
+                             (u'_python', u'PYTHON'),
+                             (u'_cpp', u'CPP'),
+                            )

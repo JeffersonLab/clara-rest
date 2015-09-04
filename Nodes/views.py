@@ -23,7 +23,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from Nodes.serializers import NodeSerializer, NodeDeployerSerializer
+from Nodes.serializers import NodeSerializer
 from Nodes.models import Node
 """
 Nodes Views:
@@ -82,6 +82,12 @@ class Dpes(APIView):
             - name: DPEInfo
               type: string
               description: Quantity and types of DPEs to start
+            - name: hostname
+              type: string
+              description: hostname of the DPE to register
+            - name: language
+              type: string
+              description: programming language of the DPE to register
         response_serializer: Nodes.serializers.NodeSerializer
         responseMessages:
             - code: 400
@@ -90,9 +96,10 @@ class Dpes(APIView):
               message: Not authenticated
         """
         # TODO: Types of DPE?
-        serializer = NodeDeployerSerializer(data=request.data)
+        serializer = NodeSerializer(data=request.data)
         if serializer.is_valid():
             # TODO: Here we use the methods to deploy new(s) DPE Instances
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

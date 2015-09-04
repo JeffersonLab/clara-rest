@@ -30,13 +30,17 @@ class NodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Node
-        fields = ('hostname', 'node_id', 'created', 'modified')
-        read_only_fields = ('node_id', 'created', 'modified')
+        fields = ('node_id', 'hostname', 'language', 'canonical_name',
+                  'created', 'modified')
+        write_only_fields = ('hostname', 'language')
+        read_only_fields = ('node_id', 'created', 'modified',
+                            'canonical_name')
 
     def create(self, validated_data):
         # TODO: Need to rethink about parameters for creation.
         # TODO: Figure who is in charge of assign the DPE Resources
-        node = Node(hostname=validated_data['hostname'])
+        node = Node(hostname=validated_data['hostname'],
+                    language=validated_data['language'])
         node.save()
         return node
 
@@ -44,3 +48,4 @@ class NodeSerializer(serializers.ModelSerializer):
 class NodeDeployerSerializer(serializers.Serializer):
     # TODO: Maybe we should think about bounds?
     DPEInfo = serializers.IntegerField(default=1, validators=[limit_validator])
+    hostname = serializers.CharField(max_length=40)

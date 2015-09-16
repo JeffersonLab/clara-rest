@@ -22,7 +22,7 @@
 from django.db import models
 from datetime import datetime
 
-from utils.CWConstants import CLARA_SUPPORTED_LANGUAGES
+from claraweb.utils.CWConstants import CLARA_SUPPORTED_LANGUAGES
 
 
 class Node(models.Model):

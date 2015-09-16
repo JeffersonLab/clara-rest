@@ -22,7 +22,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from utils.Validators import limit_validator
+from claraweb.utils.Validators import limit_validator
 from Nodes.models import Node
 
 

@@ -78,7 +78,7 @@ class WebOrchestrator:
                 * topic: ACTOR_LABEL_IDENTIFIER (DPE, CONTAINER, SERVICE)
                 * data: action to be performed by xMsg actor
         """
-        message.get_metadata().dataType="text/string"
+        message.get_metadata().dataType = "text/string"
         try:
             self.base.generic_send(message)
         except Exception as e:
@@ -145,6 +145,30 @@ class WebOrchestrator:
 
         topic = self.__build_topic(CConstants.DPE, dpe)
         data = self.__build_data(CConstants.REMOVE_CONTAINER, name)
+
+        msg = self.__build_message(topic, data)
+        self.__send_message(msg)
+
+    def deploy_service(self, service_name, service_class, pool_size=1):
+        """Sends a request to deploy a service.
+
+        If the container does not exist, the message is lost.
+        If there is a service with the given name in the container, the request
+        is ignored.
+
+        Args:
+            service_name (String): the canonical name of the service
+            service_class (String): the classpath of the service engine
+            pool_size (int): the maximum number of parallel engines to be
+                created
+        """
+        host = ClaraUtils.get_hostname(service_name)
+        container = ClaraUtils.get_container_canonical_name(service_name)
+        engine_name = ClaraUtils.get_engine_name(service_name)
+
+        topic = self.__build_topic(CConstants.CONTAINER, container)
+        data = self.__build_data(CConstants.DEPLOY_SERVICE, engine_name,
+                                 service_class, pool_size)
 
         msg = self.__build_message(topic, data)
         self.__send_message(msg)

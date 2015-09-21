@@ -60,11 +60,11 @@ class ContainerList(APIView):
         container_regex = request.GET.get('container_regex')
         service_regex = request.GET.get('service_regex')
         if dpe_regex is not None:
-            print "dpe_regex : "+dpe_regex
+            pass
         if container_regex is not None: 
-            print "container_regex : "+container_regex
+            pass
         if service_regex is not None:
-            print "service_regex : "+service_regex
+            pass
         container_objects = Container.objects.all()
         serializer = ContainerSerializer(container_objects, many=True)
         return Response(serializer.data)

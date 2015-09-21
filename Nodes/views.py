@@ -61,13 +61,13 @@ class Dpes(APIView):
         service_regex = request.GET.get('service_regex')
 
         if dpe_regex is not None:
-            print "dpe_regex : %s" % dpe_regex
+            pass
 
         if container_regex is not None:
-            print "container_regex : %s" % container_regex
+            pass
 
         if service_regex is not None:
-            print "service_regex : %s" % service_regex
+            pass
 
         serializer = NodeSerializer(Node.objects.all(), many=True)
         return Response(serializer.data)

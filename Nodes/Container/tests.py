@@ -24,7 +24,7 @@ from rest_framework.test import APITestCase
 
 
 class ContainerTests(APITestCase):
-    fixtures = ['fixtures/Nodes.yaml', 'fixtures/Container.yaml']
+    fixtures = ['tests/fixtures/Nodes.yaml', 'tests/fixtures/Container.yaml']
     url_nested = '/dpes/2/containers/'
     url_nested_bad = '/dpes/200/containers/'
     url_container = '/containers/'

@@ -25,7 +25,7 @@ from rest_framework.test import APITestCase
 
 
 class SubscriptionTests(APITestCase):
-    fixtures = ['fixtures/Subscription.yaml', ]
+    fixtures = ['tests/fixtures/Subscription.yaml', ]
     url = '/subscriptions/'
     url_get = url+'1'
     url_del = url+'2'

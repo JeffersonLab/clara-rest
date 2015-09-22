@@ -24,7 +24,7 @@ from rest_framework.test import APITestCase
 
 
 class AppTests(APITestCase):
-    fixtures = ['fixtures/Applications.yaml', ]
+    fixtures = ['tests/fixtures/Applications.yaml', ]
     url = '/applications/'
     url_bad = '/applications/1000'
     query = 'something'

@@ -28,7 +28,7 @@ from claraweb.orchestrators.orchestrator import WebOrchestrator
 
 
 class DPENodeTests(APITestCase):
-    fixtures = ['fixtures/Nodes.yaml', ]
+    fixtures = ['tests/fixtures/Nodes.yaml', ]
     url = '/dpes/'
     url_del = url+'2'
     initial_data = {'DPEInfo': 2, 'hostname': '129.57.114.94',

@@ -19,19 +19,12 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from datetime import datetime
 
 from claraweb.orchestrators.orchestrator import WebOrchestrator
+from claraweb.utils.Validators import validate_node_existence
 from Nodes.models import Node
-
-
-def validate_node_existence(node_id):
-    try:
-        Node.objects.get(node_id=node_id)
-    except Node.DoesNotExist:
-        raise ValidationError(u'Dpe node must be registered and available')
 
 
 class Container(models.Model):

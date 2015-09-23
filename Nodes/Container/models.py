@@ -31,12 +31,13 @@ class Container(models.Model):
     container_id = models.AutoField(primary_key=True, null=False)
     dpe = models.ForeignKey(Node, related_name='containers',
                             validators=[validate_node_existence])
-    name = models.CharField(max_length=20, null=True)
+    name = models.CharField(blank=False, max_length=20)
     created = models.DateTimeField(null=True)
+    language = models.CharField(blank=False, max_length=20)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return str(self.dpe.canonical_name)+":"+str(self.name)
+        return "%s:%s" % (str(self.dpe.canonical_name),str(self.name))
 
     def save(self):
         if self.created is None:

@@ -82,16 +82,12 @@ class ServiceEngineList(APIView):
             - name: container_id
               description: Container Id for the Service Engine
               required: True
-            - name: engine_class
-              description: Class name of the Service Engine
+            - name: engine_name
+              description: Service Engine canonical name
               required: True
-            - name: configuration
-              description: Service Configuration
-              required: False
-            - name: threads
-              description: Number of threads for the Service Engine
-              type: integer
-              required: True
+            - name: class_name
+              description: Name of class
+              required: True 
         request_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer: Nodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:

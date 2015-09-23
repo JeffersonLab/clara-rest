@@ -29,13 +29,15 @@ class ServiceEngineTests(APITestCase):
     url_create = '/dpes/1/containers/1/services/'
     url_get = '/dpes/1/containers/1/services/1'
     initial_data = {
-                    "engine_class": "some_class",
-                    "threads": 1,
-                    "configuration": "some_config"
+                    "engine_name": "some_class",
+                    "class_name": "some_class",
+                    "author": "Jarvis",
+                    "version": "1.0",
+                    "language": "Java",
+                    "description": "algo"
                     }
     bad_data = {
-                "threads": 1,
-                "configuration": "some_config"
+
                 }
     
     def test_deploy_service(self):
@@ -84,7 +86,7 @@ class ServiceEngineTests(APITestCase):
         response = self.client.get(self.url_get)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertContains(response=response,
-                            text="\"engine_class\":\"superReconstructorService\"", 
+                            text="\"engine_name\":\"superReconstructorService\"", 
                             count=1, status_code=200, msg_prefix="", html=False)
         
     def test_delete_service_engine(self):

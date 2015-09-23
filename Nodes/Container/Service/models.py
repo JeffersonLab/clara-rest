@@ -1,8 +1,25 @@
-'''
-Created on 24-03-2015
+#!/usr/bin/env python
+#
+# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for educational, research, and not-for-profit purposes,
+# without fee and without a signed licensing agreement.
+#
+# Author Ricardo Oyarzun
+# Department of Experimental Nuclear Physics, Jefferson Lab.
+#
+# IN NO EVENT SHALL JLAB BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+# INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF
+# THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
+# HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
+# SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+#
 
-@author: royarzun
-'''
 from django.db import models
 from datetime import datetime
 
@@ -19,19 +36,21 @@ class ServiceEngine(models.Model):
     A CLARA service engine runs in one container at one DPE.
     Must be threadsafe. Must implement CLARA service engine interface.
     """
-    service_id = models.AutoField(primary_key=True, null=False)
+    service_id = models.AutoField(primary_key=True)
     container = models.ForeignKey(Container, related_name='services')
-    engine_class = models.CharField(max_length=50, null=True)
-    configuration = models.TextField(default="")
-    # Number of threads that may be created to process messages 
-    # for this single service instance
-    threads = models.IntegerField(null=True)
+    class_name = models.CharField(blank=False, max_length=40)
+    engine_name = models.TextField(blank=True, default="")
+    
+    author = models.CharField(blank=False, max_length=40)
+    version = models.CharField(blank=False, max_length=40)
+    language = models.CharField(blank=False, max_length=40)
+    description = models.CharField(blank=False, max_length=100)
 
-    created = models.DateTimeField(null=True)
-    modified = models.DateTimeField(null=True)
+    created = models.DateTimeField()
+    modified = models.DateTimeField()
 
     def __str__(self):
-        return str(self.container)+":"+str(self.engine_class)
+        return "%s:%s" % (str(self.container), self.engine_name)
 
     def save(self):
         if self.created is None:

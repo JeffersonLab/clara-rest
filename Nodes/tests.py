@@ -32,7 +32,7 @@ class DPENodeTests(APITestCase):
     url = '/dpes/'
     url_del = url+'2'
     initial_data = {'DPEInfo': 2, 'hostname': '129.57.114.94',
-                    'language': '_java'}
+                    'language': '_java', 'n_cores': 8}
 
     def test_create_node(self):
         """

@@ -31,8 +31,8 @@ class NodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Node
         fields = ('node_id', 'hostname', 'language', 'canonical_name',
-                  'created', 'modified')
-        write_only_fields = ('hostname', 'language')
+                  'n_cores', 'created', 'modified')
+        write_only_fields = ('hostname', 'language', 'n_cores')
         read_only_fields = ('node_id', 'created', 'modified',
                             'canonical_name')
 
@@ -40,7 +40,8 @@ class NodeSerializer(serializers.ModelSerializer):
         # TODO: Need to rethink about parameters for creation.
         # TODO: Figure who is in charge of assign the DPE Resources
         node = Node(hostname=validated_data['hostname'],
-                    language=validated_data['language'])
+                    language=validated_data['language'],
+                    n_cores=validated_data['n_cores'])
         node.save()
         return node
 

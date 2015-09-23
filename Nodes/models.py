@@ -27,10 +27,13 @@ from claraweb.utils.CWConstants import CLARA_SUPPORTED_LANGUAGES
 
 class Node(models.Model):
     node_id = models.AutoField(primary_key=True)
-    hostname = models.GenericIPAddressField()
-    canonical_name = models.CharField(max_length=40)
-    language = models.CharField(max_length=40,
+    hostname = models.GenericIPAddressField(blank=False)
+    canonical_name = models.CharField(blank=False, max_length=40)
+    language = models.CharField(blank=False,
+                                max_length=20,
                                 choices=CLARA_SUPPORTED_LANGUAGES)
+    n_cores = models.IntegerField(blank=False)
+    memory_size = models.CharField(blank=False, max_length=20)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
@@ -40,7 +43,7 @@ class Node(models.Model):
     def save(self):
         if self.created is None:
             self.created = datetime.now()
-            self.canonical_name = str(self.hostname)+str(self.language)
+            self.canonical_name = "%s:%s" % (str(self.hostname), self.language)
         self.modified = datetime.now()
         super(Node, self).save()
 

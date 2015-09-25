@@ -1,36 +1,48 @@
-"""
-Django settings for ClaraWebREST project.
+#!/usr/bin/env python
+#
+# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for educational, research, and not-for-profit purposes,
+# without fee and without a signed licensing agreement.
+#
+# Author Ricardo Oyarzun
+# Department of Experimental Nuclear Physics, Jefferson Lab.
+#
+# IN NO EVENT SHALL JLAB BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+# INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF
+# THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
+# HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
+# SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+#
 
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from __future__ import absolute_import
 import os
 import rest_framework
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# CELERY definitions
+BROKER_URL = 'amqp://royarzun:jojojo@localhost:5672/clara_vhost'
+CELERY_TIMEZONE = 'America/Santiago'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
+# Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,11 +52,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'djcelery',
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
     'Subscription',
-    'Applications'
+    'Applications',
+    'claraweb.monitoring.PeriodicTasks',
 )
 
 MIDDLEWARE_CLASSES = (

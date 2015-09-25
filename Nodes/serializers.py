@@ -30,11 +30,9 @@ class NodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Node
-        fields = ('node_id', 'hostname', 'language', 'canonical_name',
-                  'n_cores', 'created', 'modified')
+        fields = ('node_id', 'hostname', 'language', 'n_cores', 'modified')
         write_only_fields = ('hostname', 'language', 'n_cores')
-        read_only_fields = ('node_id', 'created', 'modified',
-                            'canonical_name')
+        read_only_fields = ('node_id', 'modified')
 
     def create(self, validated_data):
         # TODO: Need to rethink about parameters for creation.

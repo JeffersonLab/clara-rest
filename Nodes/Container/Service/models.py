@@ -21,10 +21,8 @@
 #
 
 from django.db import models
-from datetime import datetime
 
 from Nodes.Container.models import Container
-
 """
 A CLARA service engine runs in one container at one DPE.<br>
 Must be threadsafe. Must implement CLARA service engine interface.
@@ -40,23 +38,14 @@ class ServiceEngine(models.Model):
     container = models.ForeignKey(Container, related_name='services')
     class_name = models.CharField(blank=False, max_length=40)
     engine_name = models.TextField(blank=True, default="")
-    
+
     author = models.CharField(blank=False, max_length=40)
     version = models.CharField(blank=False, max_length=40)
     language = models.CharField(blank=False, max_length=40)
     description = models.CharField(blank=False, max_length=100)
 
-    created = models.DateTimeField()
-    modified = models.DateTimeField()
+    start_time = models.DateTimeField(null=True)
+    modified = models.DateTimeField(null=True)
 
     def __str__(self):
         return "%s:%s" % (str(self.container), self.engine_name)
-
-    def save(self):
-        if self.created is None:
-            self.created = datetime.now()
-        self.modified = datetime.now()
-        super(ServiceEngine, self).save()
-
-    class Meta:
-        ordering = ('created',)

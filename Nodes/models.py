@@ -20,35 +20,24 @@
 #
 
 from django.db import models
-from datetime import datetime
 
 from claraweb.utils.CWConstants import CLARA_SUPPORTED_LANGUAGES
 
 
 class Node(models.Model):
     node_id = models.AutoField(primary_key=True)
-    hostname = models.GenericIPAddressField(blank=False)
-    canonical_name = models.CharField(blank=False, max_length=40)
+    hostname = models.CharField(max_length=40, blank=False)
     language = models.CharField(blank=False,
                                 max_length=20,
                                 choices=CLARA_SUPPORTED_LANGUAGES)
     n_cores = models.IntegerField(blank=False)
     memory_size = models.CharField(blank=False, max_length=20)
-    created = models.DateTimeField(null=True)
+
+    start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
-    class Meta:
-        ordering = ('hostname',)
-
-    def save(self):
-        if self.created is None:
-            self.created = datetime.now()
-            self.canonical_name = "%s:%s" % (str(self.hostname), self.language)
-        self.modified = datetime.now()
-        super(Node, self).save()
-
     def __str__(self):
-        return str(self.canonical_name)
+        return "%s:_%s" % (self.hostname, self.language)
 
     def __int__(self):
         return int(self.node_id)

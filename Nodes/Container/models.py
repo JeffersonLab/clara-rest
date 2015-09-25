@@ -31,28 +31,15 @@ class Container(models.Model):
     container_id = models.AutoField(primary_key=True, null=False)
     dpe = models.ForeignKey(Node, related_name='containers',
                             validators=[validate_node_existence])
-    name = models.CharField(blank=False, max_length=20)
-    created = models.DateTimeField(null=True)
+    author = models.CharField(blank=False, max_length=40)
+    name = models.CharField(blank=False, max_length=40)
     language = models.CharField(blank=False, max_length=20)
+
+    start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return "%s:%s" % (str(self.dpe.canonical_name),str(self.name))
-
-    def save(self):
-        if self.created is None:
-            self.created = datetime.now()
-
-        self.modified = datetime.now()
-        super(Container, self).save()
-
-        try:
-            orchestrator = WebOrchestrator()
-            orchestrator.deploy_container(str(self))
-
-        except Exception as e:
-            self.delete()
-            raise Exception("Could not create container: %s" % e)
+        return self.name
 
     def delete(self):
         try:
@@ -64,6 +51,3 @@ class Container(models.Model):
             return
 
         super(Container, self).delete()
-
-    class Meta:
-        ordering = ('created',)

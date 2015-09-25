@@ -34,18 +34,18 @@ class ContainerInline(TabularInline):
 
 class NodeAdmin(ModelAdmin):
     model = Node
-    readonly_fields = ('created', 'modified')
+    readonly_fields = ('modified',)
     inlines = (ContainerInline, )
 
 
 class ServiceEngineAdmin(ModelAdmin):
     model = ServiceEngine
-    readonly_fields = ('created', 'modified')
+    readonly_fields = ('modified',)
 
 
 class ContainerAdmin(ModelAdmin):
     model = Container
-    readonly_fields = ('created', 'modified')
+    readonly_fields = ('modified',)
 
 
 class ChainInline(TabularInline):

@@ -35,10 +35,17 @@ class RegMsgHelper(object):
         ds_message = xMsgData_pb2.xMsgData()
         ds_message.ParseFromString(message)
         self.message = ds_message.STRING
-        self.message_json = json.loads(ds_message.STRING)
 
-    def get_dpe_info(self):
-        """Gets the dpe registration information in JSON format
+    def get_data(self):
+        """Returns the registration message in raw JSON
+
+        Returns:
+            message (JSON object): message as JSON object
+        """
+        return json.loads(self.message)
+
+    def get_dpe_data(self):
+        """Gets the dpe registration data in JSON format
 
         It will return:
 
@@ -49,7 +56,8 @@ class RegMsgHelper(object):
         Returns:
             DPE_Registration (JSON object)
         """
-        return self.message_json['DPERegistration']
+
+        return json.loads(self.message)['DPERegistration']
 
     def get_containers(self):
         """Returns the containers registered in DPE
@@ -57,7 +65,7 @@ class RegMsgHelper(object):
         Returns:
             containers (Array): array with the containers information
         """
-        return self.message_json['DPERegistration']['containers']
+        return json.loads(self.message)['DPERegistration']['containers']
 
     def get_services(self):
         """Returns the services registered in DPE
@@ -78,11 +86,3 @@ class RegMsgHelper(object):
             message (String): message as a python string
         """
         return str(self.message)
-
-    def get_json_object(self):
-        """Returns the registration message in raw JSON
-
-        Returns:
-            message (JSON object): message as JSON object
-        """
-        return self.message_json

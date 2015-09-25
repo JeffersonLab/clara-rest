@@ -197,7 +197,7 @@ class TestRegMsgHelper(unittest.TestCase):
 
     def test_convert_message_to_json(self):
         parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_1))
-        self.assertTrue("DPERegistration" in parser.get_json_object())
+        self.assertTrue("DPERegistration" in parser.get_data())
 
     def test_get_containers(self):
         parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_2))
@@ -212,7 +212,7 @@ class TestRegMsgHelper(unittest.TestCase):
 
     def test_get_the_two_services_in_container(self):
         parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_3))
-        self.assertEqual(len(parser.get_services()), 2)
+        self.assertEqual(len(parser.get_services()), 2) 
 
     def test_get_no_services_in_container(self):
         parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_2))

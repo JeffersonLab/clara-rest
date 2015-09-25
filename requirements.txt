@@ -1,7 +1,10 @@
+git+https://git.earthdata.nasa.gov/scm/naiads/xmsg-python.git
+git+https://git.earthdata.nasa.gov/scm/naiads/clara-python.git@dev
 Django==1.7.7
 djangorestframework==3.1.1
 djangorestframework-yaml==1.0.2
 django-rest-swagger==0.2.9
+django-celery==3.1.16
 mercurial==3.0.1
 nose==1.3.1
 numpy==1.8.1

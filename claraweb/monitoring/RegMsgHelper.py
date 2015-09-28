@@ -56,8 +56,8 @@ class RegMsgHelper(object):
         Returns:
             DPE_Registration (JSON object)
         """
-
-        return json.loads(self.message)['DPERegistration']
+        json_object = json.loads(self.message) 
+        return json_object['DPERegistration']
 
     def get_containers(self):
         """Returns the containers registered in DPE
@@ -65,7 +65,8 @@ class RegMsgHelper(object):
         Returns:
             containers (Array): array with the containers information
         """
-        return json.loads(self.message)['DPERegistration']['containers']
+        json_object = json.loads(self.message) 
+        return json_object['DPERegistration']['containers']
 
     def get_services(self):
         """Returns the services registered in DPE

@@ -31,8 +31,15 @@ class DPENodeTests(APITestCase):
     fixtures = ['tests/fixtures/Nodes.yaml', ]
     url = '/dpes/'
     url_del = url+'2'
-    initial_data = {'DPEInfo': 2, 'hostname': '129.57.114.94',
-                    'language': '_java', 'n_cores': 8}
+
+    initial_data = {
+                    "language": "java",
+                    "start_time": "2015-09-25T11:33:21.783",
+                    "hostname": "1.1.1.21",
+                    "modified": "2015-09-29T16:29:27.711",
+                    "n_cores": 24,
+                    "memory_size": "64M"
+                    }
 
     def test_create_node(self):
         """

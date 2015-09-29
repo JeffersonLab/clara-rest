@@ -89,7 +89,7 @@ class Dpes(APIView):
               type: string
               description: programming language of the DPE to register
             - name: n_cores
-              type: string
+              type: int
               description: number of cores of the DPE to register
         response_serializer: Nodes.serializers.NodeSerializer
         responseMessages:

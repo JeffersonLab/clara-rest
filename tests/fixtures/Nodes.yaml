@@ -1,6 +1,8 @@
--   fields: {hostname: 192.168.0.1, n_cores: 8, language: '_java'}
+-   fields: {hostname: 192.168.0.1, language: java, memory_size: 64M, modified: ! '2015-09-29
+      13:15:56.824229', n_cores: 8, start_time: ! '2015-09-25 11:33:21.783116'}
     model: Nodes.node
     pk: 1
--   fields: {hostname: 127.0.1.1, n_cores: 8, language: '_java'}
+-   fields: {hostname: 127.0.1.1, language: java, memory_size: 64M, modified: ! '2015-09-29
+      13:15:56.824229', n_cores: 8, start_time: ! '2015-09-25 11:33:21.783116'}
     model: Nodes.node
     pk: 2

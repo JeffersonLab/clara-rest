@@ -19,16 +19,10 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-import os, sys
-
-proj_path = "/Users/royarzun/src/repo/naiads/clara-webapp/"
-# This is so Django knows where to find stuff.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
-sys.path.append(proj_path)
-
-# This is so my local_settings.py gets loaded.
-os.chdir(proj_path)
-
+import os
+import sys
+import django
+from argparse import ArgumentParser
 from celery.schedules import crontab
 from celery.task.base import periodic_task
 from celery.utils.log import get_task_logger
@@ -36,17 +30,30 @@ from xmsg.core.xMsg import xMsg
 from xmsg.core.xMsgUtil import xMsgUtil
 from xmsg.core.xMsgTopic import xMsgTopic
 from xmsg.net.xMsgAddress import xMsgAddress
+
+proj_path = "/Users/royarzun/src/repo/naiads/clara-webapp/"
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
+sys.path.append(proj_path)
+# This is so my local_settings.py gets loaded.
+os.chdir(proj_path)
+django.setup()
 from claraweb.monitoring.PeriodicTasksCallBacks import *
 
+
 logger = get_task_logger(__name__)
+parser = ArgumentParser(description='Periodic Subscriber tasks')
+parser.add_argument('data', type=str,
+                    help='registration or runtime data')
+args = parser.parse_args()
 
 
 class RegistrationDataSubscriber(xMsg):
 
     def __init__(self):
-        super(RegistrationDataSubscriber, self).__init__("DPERegDataSubscriber",
+        super(RegistrationDataSubscriber, self).__init__("DPERegDataSub",
                                                          "localhost",
-                                                         "localhost", pool_size=1)
+                                                         "localhost",
+                                                         pool_size=1)
         self.callback = RegistrationSubscriberDataCallBack()
         self.connection = self.get_new_connection(xMsgAddress("localhost"))
         self.topic = xMsgTopic.wrap("registration_topic")
@@ -58,7 +65,7 @@ class RegistrationDataSubscriber(xMsg):
 class RuntimeDataSubscriber(xMsg):
 
     def __init__(self):
-        super(RegistrationDataSubscriber, self).__init__("RuntimeDataSubscriber",
+        super(RegistrationDataSubscriber, self).__init__("DPERunDataSub",
                                                          "localhost",
                                                          "localhost")
         self.callback = RuntimeSubscriberDataCallBack()
@@ -66,7 +73,9 @@ class RuntimeDataSubscriber(xMsg):
         self.topic = xMsgTopic.wrap("runtime_topic")
 
     def subscribe(self):
-        super(RegistrationDataSubscriber, self).subscribe(self.connection, self.topic, self.callback)
+        super(RegistrationDataSubscriber, self).subscribe(self.connection,
+                                                          self.topic,
+                                                          self.callback)
 
 
 @periodic_task(run_every=(crontab()))
@@ -106,17 +115,41 @@ def periodic_cleandb_task():
     logger.info("called: periodic_cleandb_task method...")
 
 
-def main():
+def run_registration_subscriber():
     try:
         reg_subscriber = RegistrationDataSubscriber()
         reg_subscription = reg_subscriber.subscribe()
-        print "Subscribed to registration messages..."
+        xMsgUtil.log("WebServer Subscribed to registration messages...")
         xMsgUtil.keep_alive()
 
     except KeyboardInterrupt:
         reg_subscriber.unsubscribe(reg_subscription)
         reg_subscriber.destroy()
-        print "Exiting..."
+        xMsgUtil.log("WebServer: Registration subscription terminated")
+        return
+
+
+def run_runtime_subscriber():
+    try:
+        run_subscriber = RuntimeDataSubscriber()
+        run_subscription = run_subscriber.subscribe()
+        xMsgUtil.log("WebServer Subscribed to runtime messages...")
+        xMsgUtil.keep_alive()
+
+    except KeyboardInterrupt:
+        run_subscriber.unsubscribe(run_subscription)
+        run_subscriber.destroy()
+        xMsgUtil.log("WebServer: Runtime subscription terminated")
+        return
+
+
+def main():
+    if args.data == "registration":
+        run_registration_subscriber()
+    elif args.data == "runtime":
+        run_runtime_subscriber()
+    else:
+        print "usage: valid type options are \"registration\" or \"runtime\""
         return
 
 if __name__ == "__main__":

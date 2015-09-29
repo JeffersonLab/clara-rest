@@ -20,22 +20,12 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-import django
-import os
-import sys
 from xmsg.core.xMsgCallBack import xMsgCallBack
+from xmsg.core.xMsgUtil import xMsgUtil
 from claraweb.monitoring.RegMsgHelper import RegMsgHelper
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node
-django.setup()
-proj_path = "/Users/royarzun/src/repo/naiads/clara-webapp/"
-# This is so Django knows where to find stuff.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
-sys.path.append(proj_path)
-
-# This is so my local_settings.py gets loaded.
-os.chdir(proj_path)
 
 
 class RegistrationSubscriberDataCallBack(xMsgCallBack):
@@ -48,38 +38,48 @@ class RegistrationSubscriberDataCallBack(xMsgCallBack):
 
             node, created = Node.objects.get_or_create(defaults={'hostname': dpe_data['hostname']},
                                                        **dpe_data)
+
             node.save()
+            if created:
+                xMsgUtil.log("dpe@%s: Database entry created..." % dpe_data['hostname'])
 
             for reg_container in containers:
-                filtered_container = reg_container["ContainerRegistration"]
-                services = filtered_container.pop("services")
+                cur_container = reg_container['ContainerRegistration']
                 container, created = Container.objects.get_or_create(dpe=node,
-                                                                     author=filtered_container['author'],
-                                                                     name=filtered_container['name'],
-                                                                     language=filtered_container['language'],
-                                                                     start_time=filtered_container['start_time'])
+                                                                     author=cur_container['author'],
+                                                                     name=cur_container['name'],
+                                                                     language=cur_container['language'],
+                                                                     start_time=cur_container['start_time'])
                 container.save()
 
-                for reg_service in services:
-                    filtered_service = reg_service["ServiceRegistration"]
+                for reg_service in cur_container.pop('services'):
+                    cur_service = reg_service['ServiceRegistration']
                     service, created = ServiceEngine.objects.get_or_create(container=container,
-                                                                           class_name=filtered_service['class_name'],
-                                                                           engine_name=filtered_service['engine_name'],
-                                                                           author=filtered_service['author'],
-                                                                           version=filtered_service['version'],
-                                                                           language=filtered_service['language'],
-                                                                           description=filtered_service['description'],
-                                                                           start_time=filtered_service['start_time'])
+                                                                           class_name=cur_service['class_name'],
+                                                                           engine_name=cur_service['engine_name'],
+                                                                           author=cur_service['author'],
+                                                                           version=cur_service['version'],
+                                                                           language=cur_service['language'],
+                                                                           description=cur_service['description'],
+                                                                           start_time=cur_service['start_time'])
                     service.save()
         except Exception as e:
             print e
+            xMsgUtil.log("Something went wrong...")
             return msg
 
-        print "Registration saved..."
+        xMsgUtil.log("Registration saved for node : %s" % str(node))
         return msg
 
 
 class RuntimeSubscriberDataCallBack(xMsgCallBack):
 
     def callback(self, msg):
-        pass
+        try:
+            pass
+        except Exception as e:
+            print e
+            return msg
+
+        xMsgUtil.log("Registration saved...")
+        return msg

@@ -22,7 +22,9 @@
 
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
+from claraweb.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
 from claraweb.monitoring.RegMsgHelper import RegMsgHelper
+from RuntimeDataRegistrar.models import DPESnapshot
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node
@@ -76,10 +78,13 @@ class RunDataCallBack(xMsgCallBack):
 
     def callback(self, msg):
         try:
-            pass
+            run_msg = RuntimeMsgHelper(msg.get_data())
+            snap = DPESnapshot.builder(run_msg.get_json_object())
+            snap.save()
         except Exception as e:
             print e
+            xMsgUtil.log("Something went wrong...")
             return msg
 
-        xMsgUtil.log("Registration saved...")
+        xMsgUtil.log("dpe@%s: Database entry created..." % snap.name)
         return msg

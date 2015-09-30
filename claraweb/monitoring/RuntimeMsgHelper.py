@@ -34,7 +34,6 @@ class RuntimeMsgHelper(object):
         ds_message = xMsgData_pb2.xMsgData()
         ds_message.ParseFromString(message)
         self.message = ds_message.STRING
-        self.message_json = json.loads(ds_message.STRING)
 
     def __str__(self):
         """Returns the runtime message (JSON) in string format
@@ -56,7 +55,7 @@ class RuntimeMsgHelper(object):
         Returns:
             DPE_Registration (JSON object)
         """
-        return self.message_json['DPERuntime']
+        return json.loads(self.message)['DPERuntime']
 
     def get_containers(self):
         """Returns the containers registered in DPE and its runtime data
@@ -64,7 +63,7 @@ class RuntimeMsgHelper(object):
         Returns:
             containers (Array): array with the containers runtime data
         """
-        return self.message_json['DPERuntime']['containers']
+        return json.loads(self.message)['DPERuntime']['containers']
 
     def get_services(self):
         """Returns the services runtime data
@@ -84,4 +83,4 @@ class RuntimeMsgHelper(object):
         Returns:
             message (JSON object): message as JSON object
         """
-        return self.message_json
+        return json.loads(self.message)

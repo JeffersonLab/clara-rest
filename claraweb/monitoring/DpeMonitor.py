@@ -32,7 +32,7 @@ sys.path.append(proj_path)
 os.chdir(proj_path)
 django.setup()
 from claraweb.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
-from claraweb.monitoring.PeriodicTasksCallBacks import RegDataCallBack, RunDataCallBack
+from claraweb.monitoring.DpeMonitorCallBacks import RegDataCallBack, RunDataCallBack
 
 
 logger = get_task_logger(__name__)
@@ -45,8 +45,7 @@ def run_registration_subscriber():
     try:
         reg_subscriber = PeriodicDataSubscriber("RegDataSubscriber",
                                                 "registration_topic")
-        registration_data_callback = RegDataCallBack()
-        reg_subscription = reg_subscriber.subscribe(registration_data_callback)
+        reg_subscription = reg_subscriber.subscribe(RegDataCallBack())
         xMsgUtil.log("WebServer Subscribed to registration messages...")
         xMsgUtil.keep_alive()
 
@@ -59,10 +58,9 @@ def run_registration_subscriber():
 
 def run_runtime_subscriber():
     try:
-        run_subscriber = PeriodicDataSubscriber("RegDataSubscriber",
+        run_subscriber = PeriodicDataSubscriber("RunDataSubscriber",
                                                 "runtime_topic")
-        runtime_data_callback = RunDataCallBack()
-        run_subscription = run_subscriber.subscribe(runtime_data_callback)
+        run_subscription = run_subscriber.subscribe(RunDataCallBack())
         xMsgUtil.log("WebServer Subscribed to runtime messages...")
         xMsgUtil.keep_alive()
 

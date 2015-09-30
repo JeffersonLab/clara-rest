@@ -58,7 +58,7 @@ INSTALLED_APPS = (
     'Nodes.Container.Service',
     'Subscription',
     'Applications',
-    #'claraweb.monitoring.PeriodicTasks',
+    'RuntimeDataRegistrar',
 )
 
 MIDDLEWARE_CLASSES = (

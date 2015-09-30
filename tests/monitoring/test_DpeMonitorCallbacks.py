@@ -26,7 +26,7 @@ import datetime
 from xmsg.data import xMsgData_pb2
 from xmsg.core.xMsgMessage import xMsgMessage
 
-from claraweb.monitoring.PeriodicTasksCallBacks import RegistrationSubscriberDataCallBack
+from claraweb.monitoring.DpeMonitorCallBacks import RegDataCallBack
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node
@@ -69,9 +69,6 @@ reg_msg = {
 
 class TestPeriodicTasksCallbacks(unittest.TestCase):
 
-    def setUp(self):
-        self.reg_callback = RegistrationSubscriberDataCallBack()
-
     def check_in_db(self):
         nodes = Node.objects.count()
         containers = Container.objects.count()
@@ -87,7 +84,7 @@ class TestPeriodicTasksCallbacks(unittest.TestCase):
         return xMsgMessage("topic", data.SerializeToString())
 
     def test_register_dpe_first_time_should_register_dpe_in_db(self):
-        self.reg_callback.callback(self.make_serialized_msg(reg_msg))
+        RegDataCallBack().callback(self.make_serialized_msg(reg_msg))
         self.assertTrue(self.check_in_db())
 
     def test_register_dpe_second_time_should_not_save_but_should_register_modification(self):

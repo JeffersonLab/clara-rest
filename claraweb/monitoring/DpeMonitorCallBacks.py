@@ -28,7 +28,7 @@ from Nodes.Container.models import Container
 from Nodes.models import Node
 
 
-class RegistrationSubscriberDataCallBack(xMsgCallBack):
+class RegDataCallBack(xMsgCallBack):
 
     def callback(self, msg):
         try:
@@ -72,7 +72,7 @@ class RegistrationSubscriberDataCallBack(xMsgCallBack):
         return msg
 
 
-class RuntimeSubscriberDataCallBack(xMsgCallBack):
+class RunDataCallBack(xMsgCallBack):
 
     def callback(self, msg):
         try:

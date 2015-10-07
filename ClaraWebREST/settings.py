@@ -23,6 +23,7 @@
 from __future__ import absolute_import
 import os
 import rest_framework
+#from corsheaders.defaults import CORS_ORIGIN_ALLOW_ALL
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
@@ -30,8 +31,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = []
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 # CELERY definitions
 BROKER_URL = 'amqp://royarzun:jojojo@localhost:5672/clara_vhost'
@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'djcelery',
+    'corsheaders',
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
@@ -63,6 +64,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

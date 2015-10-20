@@ -19,14 +19,15 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-import simplejson as json
+from datetime import datetime
+from jsonfield import JSONField
 from django.db import models
 
 
 class DPESnapshot(models.Model):
     name = models.CharField(blank=False, max_length=40)
     date = models.DateTimeField(blank=False)
-    json_dump = models.TextField(blank=False)
+    json_dump = JSONField()
 
     def __str__(self):
         return str("%s-%s" % (self.name, self.date))
@@ -34,9 +35,7 @@ class DPESnapshot(models.Model):
     @classmethod
     def builder(cls, serialized_json):
         name = serialized_json['DPERuntime']['host']
-        date = serialized_json["DPERuntime"]["snapshot_time"]
-        return cls(name=name, json_dump=json.dumps(serialized_json),
-                   date=date)
-        
+        return cls(name=name, json_dump=serialized_json, date=datetime.now())
+
     def get_data(self):
-        return json.loads(self.json_dump)
+        return self.json_dump

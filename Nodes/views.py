@@ -23,8 +23,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
+from RuntimeDataRegistrar.models import DPESnapshot
 from Nodes.serializers import NodeSerializer
 from Nodes.models import Node
+from hgext.extdiff import snapshot
 """
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components
@@ -33,7 +35,7 @@ Views for json responses for the Clara Nodes (DPE) components
 
 class Dpes(APIView):
 
-    def get(self, request, format=None):
+    def get(self, request):
         """
         Find DPEs that match the optional query parameters.
         For all DPEs omit the parameters.
@@ -55,19 +57,10 @@ class Dpes(APIView):
             - code: 401
               message: Not authenticated
         """
-        # Regex filters
+        # TODO: Regex filters
         dpe_regex = request.GET.get('DPE_regex')
         container_regex = request.GET.get('container_regex')
         service_regex = request.GET.get('service_regex')
-
-        if dpe_regex is not None:
-            pass
-
-        if container_regex is not None:
-            pass
-
-        if service_regex is not None:
-            pass
 
         serializer = NodeSerializer(Node.objects.all(), many=True)
         return Response(serializer.data)
@@ -117,7 +110,7 @@ class Dpe(APIView):
         except Node.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
-    def get(self, request, DPE_id, format=None):
+    def get(self, request, DPE_id):
         """
         Retrieve, update or delete a DPE instance.
         ---
@@ -127,6 +120,10 @@ class Dpe(APIView):
               required: True
               paramType: path
               type: string
+            - name: runtime
+              type: string
+              paramType: query
+              description: Regular expression of DPE ID
         response_serializer: Nodes.serializers.NodeSerializer
         responseMessages:
             - code: 400
@@ -136,15 +133,43 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            node_object = self.get_object(DPE_id)
-            serializer = NodeSerializer(node_object)
-            return Response(serializer.data)
+        runtime = request.GET.get('runtime')
 
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        if not runtime:
+            try:
+                node_object = self.get_object(DPE_id)
+                serializer = NodeSerializer(node_object)
+                return Response(serializer.data)
 
-    def delete(self, request, DPE_id, format=None):
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+        else:
+            try:
+                host = self.get_object(DPE_id).hostname
+                snapshots = DPESnapshot.objects.order_by('date').filter(name=host)
+                snapshot = snapshots.order_by('date').last().get_data()['DPERuntime']
+
+                if runtime == "mem_usage":
+                    return Response({'dpe_id': DPE_id,
+                                     'host': str(host),
+                                     'snapshot_time': snapshot['snapshot_time'],
+                                     'mem_usage': float(snapshot['mem_usage'])})
+
+                elif runtime == "cpu_usage":
+                    return Response({'dpe_id': DPE_id,
+                                     'host': str(host),
+                                     'snapshot_time': snapshot['snapshot_time'],
+                                     'mem_usage': float(snapshot['cpu_usage'])})
+
+                elif runtime == "all":
+                    return Response(snapshot)
+
+            except Exception as e:
+                print e
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, DPE_id):
         """
         Shutdown a Dpe
         ---

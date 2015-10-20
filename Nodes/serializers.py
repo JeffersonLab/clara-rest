@@ -29,12 +29,10 @@ class NodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Node
-        fields = ('node_id', 'hostname', 'language', 'n_cores', 'start_time',
-                  'modified')
+        fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
+                  'start_time','modified')
 
     def create(self, validated_data):
-        # TODO: Need to rethink about parameters for creation.
-        # TODO: Figure who is in charge of assign the DPE Resources
         node = Node(**validated_data)
         node.save()
         return node

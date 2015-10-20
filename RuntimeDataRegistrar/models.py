@@ -19,7 +19,6 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from datetime import datetime
 from jsonfield import JSONField
 from django.db import models
 
@@ -35,7 +34,8 @@ class DPESnapshot(models.Model):
     @classmethod
     def builder(cls, serialized_json):
         name = serialized_json['DPERuntime']['host']
-        return cls(name=name, json_dump=serialized_json, date=datetime.now())
+        return cls(name=name, json_dump=serialized_json,
+                   date=serialized_json['DPERuntime']['snapshot_time'])
 
     def get_data(self):
         return self.json_dump

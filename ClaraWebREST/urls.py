@@ -37,9 +37,7 @@ urlpatterns = patterns('',
                        url(r'^dpes/', include('Nodes.Container.nestedUrls')),
                        url(r'^subscriptions/', include('Subscription.urls')),
                        url(r'^containers/', include('Nodes.Container.urls')),
-                       url(r'^services/',
-                           include('Nodes.Container.Service.urls')
-                           ),
+                       url(r'^services/', include('Nodes.Container.Service.urls')),   
                        url(r'^applications/', include('Applications.urls')),
                        )
 

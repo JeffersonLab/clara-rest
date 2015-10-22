@@ -91,10 +91,8 @@ class Dpes(APIView):
             - code: 401
               message: Not authenticated
         """
-        # TODO: Types of DPE?
         serializer = NodeSerializer(data=request.data)
         if serializer.is_valid():
-            # TODO: Here we use the methods to deploy new(s) DPE Instances
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -124,7 +122,8 @@ class Dpe(APIView):
               type: string
               paramType: query
               description: Regular expression of DPE ID
-        response_serializer: Nodes.serializers.NodeSerializer
+        response_serializer:
+            Nodes.serializers.NodeSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -133,41 +132,34 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
-        runtime = request.GET.get('runtime')
+        runtime_flag = request.GET.get('runtime')
 
-        if not runtime:
+        node_object = self.get_object(DPE_id)
+
+        if runtime_flag:
             try:
-                node_object = self.get_object(DPE_id)
-                serializer = NodeSerializer(node_object)
-                return Response(serializer.data)
-
-            except:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-
-        else:
-            try:
-                host = self.get_object(DPE_id).hostname
-                snapshots = DPESnapshot.objects.order_by('date').filter(name=host)
+                dpe_name = str(node_object)
+                snapshots = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
                 snapshot = snapshots.order_by('date').last().get_data()['DPERuntime']
 
-                if runtime == "mem_usage":
-                    return Response({'dpe_id': DPE_id,
-                                     'host': str(host),
-                                     'snapshot_time': snapshot['snapshot_time'],
-                                     'mem_usage': float(snapshot['mem_usage'])})
-
-                elif runtime == "cpu_usage":
-                    return Response({'dpe_id': DPE_id,
-                                     'host': str(host),
-                                     'snapshot_time': snapshot['snapshot_time'],
-                                     'mem_usage': float(snapshot['cpu_usage'])})
-
-                elif runtime == "all":
+                if runtime_flag == "all":
                     return Response(snapshot)
+
+                else:
+                    return Response({'dpe_id': DPE_id,
+                                     'host': dpe_name,
+                                     'snapshot_time': snapshot['snapshot_time'],
+                                     runtime_flag: snapshot[runtime_flag]})
+            except KeyError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
             except Exception as e:
                 print e
                 return Response(status=status.HTTP_404_NOT_FOUND)
+
+        else:
+            serializer = NodeSerializer(node_object)
+            return Response(serializer.data)
 
     def delete(self, request, DPE_id):
         """

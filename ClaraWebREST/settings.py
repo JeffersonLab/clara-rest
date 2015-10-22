@@ -23,7 +23,6 @@
 from __future__ import absolute_import
 import os
 import rest_framework
-#from corsheaders.defaults import CORS_ORIGIN_ALLOW_ALL
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
@@ -53,7 +52,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'djcelery',
-    'corsheaders',
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
@@ -64,7 +62,6 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -57,6 +57,11 @@ class DPENodeTests(APITestCase):
         response = self.client.delete(self.url_del, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_filter_dpe_request_obtains_filtered_data(self):
+        response = self.client.get('/dpes/?filter_by_name=1.1')
+        self.assertEqual(3, len(response.data))
+        response = self.client.get('/dpes/?filter_by_cores=8')
+        self.assertEqual(4, len(response.data))
 
 class OrchestratorTests(unittest.TestCase):
 

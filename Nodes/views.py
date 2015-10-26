@@ -31,13 +31,14 @@ from hgext.extdiff import snapshot
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components
 """
+
+
 def find_node_object(DPE_id):
     try:
         return Node.objects.get(node_id=DPE_id)
 
     except Node.DoesNotExist:
         raise status.HTTP_404_NOT_FOUND
-
 
 
 class Dpes(APIView):
@@ -66,18 +67,19 @@ class Dpes(APIView):
         """
         name_filter = request.GET.get('filter_by_name')
         cores_filter = request.GET.get('filter_by_cores')
+        mem_filter = request.GET.get('filter_by_memory')
+        nodes_data = Node.objects.all()
 
         if name_filter:
-            serializer = NodeSerializer(Node.objects.filter(hostname__contains=name_filter),
-                                        many=True)
-            return Response(serializer.data)
+            nodes_data = nodes_data.filter(hostname__contains=name_filter)
 
-        if cores_filter:
-            serializer = NodeSerializer(Node.objects.filter(n_cores=cores_filter),
-                                        many=True)
-            return Response(serializer.data)
+        elif cores_filter:
+            nodes_data = nodes_data.filter(n_cores=cores_filter)
 
-        serializer = NodeSerializer(Node.objects.all(), many=True)
+        elif mem_filter:
+            nodes_data = nodes_data.filter(memory_size=mem_filter)
+
+        serializer = NodeSerializer(nodes_data, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):

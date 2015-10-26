@@ -62,6 +62,8 @@ class DPENodeTests(APITestCase):
         self.assertEqual(3, len(response.data))
         response = self.client.get('/dpes/?filter_by_cores=8')
         self.assertEqual(4, len(response.data))
+        response = self.client.get('/dpes/?filter_by_memory=64M')
+        self.assertEqual(4, len(response.data))
 
 class OrchestratorTests(unittest.TestCase):
 

@@ -18,17 +18,15 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-
-from mockito import *
 import unittest
+from mockito import *
 from rest_framework import status
 from rest_framework.test import APITestCase
-
 from claraweb.orchestrators.orchestrator import WebOrchestrator
 
 
 class DPENodeTests(APITestCase):
-    fixtures = ['tests/fixtures/Nodes.yaml', ]
+    fixtures = ['tests/fixtures/Services.yaml']
     url = '/dpes/'
     url_del = url+'2'
 
@@ -58,12 +56,17 @@ class DPENodeTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_filter_dpe_request_obtains_filtered_data(self):
-        response = self.client.get('/dpes/?filter_by_name=1.1')
+        response = self.client.get('/dpes/?filter_by_name=192.')
         self.assertEqual(3, len(response.data))
         response = self.client.get('/dpes/?filter_by_cores=8')
-        self.assertEqual(4, len(response.data))
+        self.assertEqual(3, len(response.data))
         response = self.client.get('/dpes/?filter_by_memory=64M')
-        self.assertEqual(4, len(response.data))
+        self.assertEqual(2, len(response.data))
+        response = self.client.get('/dpes/?filter_by_containername=abc')
+        self.assertEqual(2, len(response.data))
+        response = self.client.get('/dpes/?filter_by_servicename=super')
+        self.assertEqual(3, len(response.data))
+
 
 class OrchestratorTests(unittest.TestCase):
 

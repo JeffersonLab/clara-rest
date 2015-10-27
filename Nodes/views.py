@@ -25,6 +25,8 @@ from rest_framework import status
 
 from RuntimeDataRegistrar.models import DPESnapshot
 from Nodes.serializers import NodeSerializer
+from Nodes.Container.Service.models import ServiceEngine
+from Nodes.Container.models import Container
 from Nodes.models import Node
 from hgext.extdiff import snapshot
 """
@@ -68,6 +70,8 @@ class Dpes(APIView):
         name_filter = request.GET.get('filter_by_name')
         cores_filter = request.GET.get('filter_by_cores')
         mem_filter = request.GET.get('filter_by_memory')
+        container_filter = request.GET.get('filter_by_containername')
+        service_filter = request.GET.get('filter_by_servicename')
         nodes_data = Node.objects.all()
 
         if name_filter:
@@ -79,10 +83,19 @@ class Dpes(APIView):
         elif mem_filter:
             nodes_data = nodes_data.filter(memory_size=mem_filter)
 
+        elif container_filter:
+            filtered_containers = Container.objects.filter(name__contains=container_filter)
+            nodes_data = Node.objects.filter(containers=filtered_containers)
+
+        elif service_filter:
+            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
+            filtered_containers = Container.objects.filter(services=filtered_services)
+            nodes_data = Node.objects.filter(containers=filtered_containers)
+
         serializer = NodeSerializer(nodes_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Start new DPE(s)
         ---

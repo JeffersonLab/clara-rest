@@ -1,8 +1,7 @@
--   fields: {hostname: 192.168.0.1, n_cores: 8, language: '_java'}
+-   fields: {hostname: 192.168.0.1, n_cores: 8, language: '_java', memory_size: '64M'}
     model: Nodes.node
     pk: 1
--   fields: {dpe: 1, modified: ! '2015-03-27 17:52:46.327131',
-        name: abc}
+-   fields: {dpe: 1, modified: ! '2015-03-27 17:52:46.327131', name: abc}
     model: Container.container
     pk: 1
 -   fields: {container: 1, start_time: ! '2015-04-07 03:41:03.475573',
@@ -10,3 +9,25 @@
         author: Jarvis, version: 1.0, language: Java, description: algo}
     model: Service.serviceengine
     pk: 1
+-   fields: {hostname: 192.168.1.1, n_cores: 8, language: '_java', memory_size: '64M'}
+    model: Nodes.node
+    pk: 2
+-   fields: {dpe: 2, modified: ! '2015-03-27 17:52:46.327131', name: dca}
+    model: Container.container
+    pk: 2
+-   fields: {container: 2, start_time: ! '2015-04-07 03:41:03.475573',
+        engine_name: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
+        author: Jarvis, version: 1.0, language: Java, description: algo}
+    model: Service.serviceengine
+    pk: 2
+-   fields: {hostname: 192.168.2.1, n_cores: 8, language: '_java', memory_size: '128M'}
+    model: Nodes.node
+    pk: 3
+-   fields: {dpe: 3, modified: ! '2015-03-27 17:52:46.327131', name: abc}
+    model: Container.container
+    pk: 3
+-   fields: {container: 3, start_time: ! '2015-04-07 03:41:03.475573',
+        engine_name: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
+        author: Jarvis, version: 1.0, language: Java, description: algo}
+    model: Service.serviceengine
+    pk: 3

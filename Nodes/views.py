@@ -18,7 +18,7 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -40,7 +40,7 @@ def find_node_object(DPE_id):
         return Node.objects.get(node_id=DPE_id)
 
     except Node.DoesNotExist:
-        raise status.HTTP_404_NOT_FOUND
+        raise Http404("Dpe not found!")
 
 
 class Dpes(APIView):

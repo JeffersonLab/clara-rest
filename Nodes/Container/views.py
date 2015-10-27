@@ -163,6 +163,15 @@ class ContainerNestedList(APIView):
         """
         Find all containers for determined dpe
         ---
+        parameters:
+            - name: filter_by_containername
+              type: string
+              paramType: query
+              description: container name to filter
+            - name: filter_by_servicename
+              type: string
+              paramType: query
+              description: containers containing service
         response_serializer:
             Nodes.Container.serializers.ContainerSerializer
         responseMessages:
@@ -173,18 +182,19 @@ class ContainerNestedList(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            container_objects = Node.objects.get(node_id=DPE_id).containers.all()
-            serializer = ContainerSerializer(container_objects, many=True)
-            if serializer:
-                return Response(serializer.data, status=status.HTTP_200_OK)
+        container_filter = request.GET.get('filter_by_containername')
+        service_filter = request.GET.get('filter_by_servicename')
+        containers_data = Node.objects.get(node_id=DPE_id).containers.all()
 
-            else:
-                return Response(serializer.errors,
-                                status=status.HTTP_404_NOT_FOUND)
+        if container_filter:
+            containers_data = containers_data.filter(name__contains=container_filter)
 
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        elif service_filter:
+            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
+            containers_data = containers_data.filter(services=filtered_services)
+
+        serializer = ContainerSerializer(containers_data, many=True)
+        return Response(serializer.data)
 
     def post(self, request, DPE_id):
         """

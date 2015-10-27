@@ -154,3 +154,13 @@ class ContainerTests(APITestCase):
         self.assertEqual(2, len(response.data))
         response = self.client.get(self.url_container + '?filter_by_servicename=calibration')
         self.assertEqual(2, len(response.data))
+
+    def test_filter_container_request_obtains_filtered_data_for_specific_dpe(self):
+        response = self.client.get('/dpes/3/containers/?filter_by_containername=abc')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/?filter_by_servicename=calibration')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/2/containers/?filter_by_servicename=calibration')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/?filter_by_servicename=super')
+        self.assertEqual(1, len(response.data))

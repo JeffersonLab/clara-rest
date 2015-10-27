@@ -9,6 +9,7 @@
         author: Jarvis, version: 1.0, language: Java, description: algo}
     model: Service.serviceengine
     pk: 1
+
 -   fields: {hostname: 192.168.1.1, n_cores: 8, language: '_java', memory_size: '64M'}
     model: Nodes.node
     pk: 2
@@ -20,6 +21,12 @@
         author: Jarvis, version: 1.0, language: Java, description: algo}
     model: Service.serviceengine
     pk: 2
+-   fields: {container: 2, start_time: ! '2015-04-07 03:41:03.475573',
+        engine_name: calibrationService, modified: ! '2015-04-07 03:41:03.475586',
+        author: Jarvis, version: 1.0, language: Java, description: algo}
+    model: Service.serviceengine
+    pk: 4
+
 -   fields: {hostname: 192.168.2.1, n_cores: 8, language: '_java', memory_size: '128M'}
     model: Nodes.node
     pk: 3
@@ -31,3 +38,8 @@
         author: Jarvis, version: 1.0, language: Java, description: algo}
     model: Service.serviceengine
     pk: 3
+-   fields: {container: 3, start_time: ! '2015-04-07 03:41:03.475573',
+        engine_name: calibrationService, modified: ! '2015-04-07 03:41:03.475586',
+        author: Jarvis, version: 1.0, language: Java, description: algo}
+    model: Service.serviceengine
+    pk: 5

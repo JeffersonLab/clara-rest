@@ -24,8 +24,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from serializers import ContainerSerializer, ContainerNestedSerializer
+from Nodes.Container.Service.models import ServiceEngine
+from Nodes.Container.models import Container
 from Nodes.models import Node
-from models import Container
 """
 Container views:
 Views for json responses for the Clara Containers at Specific Hostname (DPE)
@@ -34,42 +35,38 @@ Views for json responses for the Clara Containers at Specific Hostname (DPE)
 
 class ContainerList(APIView):
 
-    def get(self, request, DPE_id=None, format=None):
+    def get(self, request, DPE_id=None):
         """
         Find all containers
         ---
         parameters:
-            - name: DPE_regex
+            - name: filter_by_containername
               type: string
               paramType: query
-              description: Regular expression of DPE ID
-            - name: container_regex
+              description: container name to filter containers
+            - name: filter_by_servicename
               type: string
               paramType: query
-              description: Regular expression of container ID
-            - name: service_regex
-              type: string
-              paramType: query
-              description: Regular expression of service ID
+              description: service name to filter containers
         responseMessages:
             - code: 401
               message: Not authenticated
         """
-        # Regex filters
-        dpe_regex = request.GET.get('DPE_regex')
-        container_regex = request.GET.get('container_regex')
-        service_regex = request.GET.get('service_regex')
-        if dpe_regex is not None:
-            pass
-        if container_regex is not None: 
-            pass
-        if service_regex is not None:
-            pass
-        container_objects = Container.objects.all()
-        serializer = ContainerSerializer(container_objects, many=True)
+        container_filter = request.GET.get('filter_by_containername')
+        service_filter = request.GET.get('filter_by_servicename')
+        containers_data = Container.objects.all()
+
+        if container_filter:
+            containers_data = containers_data.filter(name__contains=container_filter)
+
+        elif service_filter:
+            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
+            containers_data = containers_data.filter(services=filtered_services)
+
+        serializer = ContainerSerializer(containers_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, DPE_id=None, format=None):
+    def post(self, request, DPE_id=None):
         """
         Create a new Clara Container
         ---

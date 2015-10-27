@@ -18,7 +18,7 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -38,7 +38,7 @@ def find_container_object(container_id):
         return Container.objects.get(container_id=container_id)
 
     except Container.DoesNotExist:
-        raise status.HTTP_404_NOT_FOUND
+        raise Http404("Container not found!")
 
 
 class ContainerList(APIView):
@@ -123,13 +123,9 @@ class ContainerDetail(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            container_object = find_container_object(container_id)
-            serializer = ContainerSerializer(container_object)
-            return Response(serializer.data)
-
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        container_object = find_container_object(container_id)
+        serializer = ContainerSerializer(container_object)
+        return Response(serializer.data)
 
     def delete(self, request, container_id):
         """
@@ -149,12 +145,9 @@ class ContainerDetail(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            find_container_object(container_id).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        container_object = find_container_object(container_id)
+        container_object.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ContainerNestedList(APIView):
@@ -252,13 +245,9 @@ class ContainerNestedDetail(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            container_object = find_container_object(container_id)
-            serializer = ContainerSerializer(container_object)
-            return Response(serializer.data)
-
-        except container_object.DoesNotExist:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        container_object = find_container_object(container_id)
+        serializer = ContainerSerializer(container_object)
+        return Response(serializer.data)
 
     def delete(self, request, DPE_id, container_id):
         """
@@ -284,9 +273,6 @@ class ContainerNestedDetail(APIView):
             - code: 404
               message: Resource not found
         """
-        try:
-            find_container_object(container_id).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        container_object = find_container_object(container_id)
+        container_object.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -25,12 +25,22 @@ from rest_framework import status
 
 from RuntimeDataRegistrar.models import DPESnapshot
 from Nodes.serializers import NodeSerializer
+from Nodes.Container.Service.models import ServiceEngine
+from Nodes.Container.models import Container
 from Nodes.models import Node
 from hgext.extdiff import snapshot
 """
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components
 """
+
+
+def find_node_object(DPE_id):
+    try:
+        return Node.objects.get(node_id=DPE_id)
+
+    except Node.DoesNotExist:
+        raise status.HTTP_404_NOT_FOUND
 
 
 class Dpes(APIView):
@@ -57,15 +67,35 @@ class Dpes(APIView):
             - code: 401
               message: Not authenticated
         """
-        # TODO: Regex filters
-        dpe_regex = request.GET.get('DPE_regex')
-        container_regex = request.GET.get('container_regex')
-        service_regex = request.GET.get('service_regex')
+        name_filter = request.GET.get('filter_by_name')
+        cores_filter = request.GET.get('filter_by_cores')
+        mem_filter = request.GET.get('filter_by_memory')
+        container_filter = request.GET.get('filter_by_containername')
+        service_filter = request.GET.get('filter_by_servicename')
+        nodes_data = Node.objects.all()
 
-        serializer = NodeSerializer(Node.objects.all(), many=True)
+        if name_filter:
+            nodes_data = nodes_data.filter(hostname__contains=name_filter)
+
+        elif cores_filter:
+            nodes_data = nodes_data.filter(n_cores=cores_filter)
+
+        elif mem_filter:
+            nodes_data = nodes_data.filter(memory_size=mem_filter)
+
+        elif container_filter:
+            filtered_containers = Container.objects.filter(name__contains=container_filter)
+            nodes_data = Node.objects.filter(containers=filtered_containers)
+
+        elif service_filter:
+            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
+            filtered_containers = Container.objects.filter(services=filtered_services)
+            nodes_data = Node.objects.filter(containers=filtered_containers)
+
+        serializer = NodeSerializer(nodes_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Start new DPE(s)
         ---
@@ -101,13 +131,6 @@ class Dpes(APIView):
 
 class Dpe(APIView):
 
-    def get_object(self, DPE_id):
-        try:
-            return Node.objects.get(node_id=DPE_id)
-
-        except Node.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
-
     def get(self, request, DPE_id):
         """
         Retrieve, update or delete a DPE instance.
@@ -134,7 +157,7 @@ class Dpe(APIView):
         """
         runtime_flag = request.GET.get('runtime')
 
-        node_object = self.get_object(DPE_id)
+        node_object = find_node_object(DPE_id)
 
         if runtime_flag:
             try:
@@ -179,6 +202,6 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
-        node_object = self.get_object(DPE_id)
+        node_object = find_node_object(DPE_id)
         node_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

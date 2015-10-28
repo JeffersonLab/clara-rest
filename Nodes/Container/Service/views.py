@@ -158,8 +158,25 @@ class ServiceEngineNestedList(APIView):
             - code: 404
               message: Resource not found
         """
-        service_objects = ServiceEngine.objects.all()
-        serializer = ServiceEngineSerializer(service_objects, many=True)
+        desc_filter = request.GET.get('filter_by_description')
+        name_filter = request.GET.get('filter_by_servicename')
+        lang_filter = request.GET.get('filter_by_language')
+        auth_filter = request.GET.get('filter_by_author')
+        services_data = find_node_object(DPE_id).containers.get(container_id=container_id).services
+
+        if desc_filter:
+            services_data = services_data.filter(description__contains=desc_filter)
+
+        elif name_filter:
+            services_data = services_data.filter(engine_name__contains=name_filter)
+
+        elif lang_filter:
+            services_data = services_data.filter(language__contains=lang_filter)
+
+        elif auth_filter:
+            services_data = services_data.filter(author__contains=auth_filter)
+
+        serializer = ServiceEngineSerializer(services_data, many=True)
         return Response(serializer.data)
 
     def post(self, request, DPE_id, container_id):

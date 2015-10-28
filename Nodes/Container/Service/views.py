@@ -19,6 +19,7 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -34,36 +35,41 @@ Views for json responses for the Clara ServiceEngines
 """
 
 
-def get_node_object(DPE_id):
+def find_node_object(DPE_id):
         try:
             return Node.objects.get(node_id=DPE_id)
 
         except Node.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
+            raise Http404("Dpe not found!")
 
 
 class ServiceEngineList(APIView):
 
-    def get(self, request, format=None):
+    def get(self, request):
         """
         Find services that match the optional query parameters.<br>
         For all services omit the parameters.
         ---
         parameters:
-            - name: DPE_regex
+            - name: filter_by_description
               type: string
               paramType: query
-              description: Regular expression of the DPE id
+              description: filter services by description
               required: False
-            - name: container_regex
+            - name: filter_by_name
               type: string
               paramType: query
-              description: Regular expression of container id
+              description: filter services by name
               required: False
-            - name: service_regex
+            - name: filter_by_author
               type: string
               paramType: query
-              description: Regular expression for the Service Engine name
+              description: filter services by author
+              required: False
+            - name: filter_by_language
+              type: string
+              paramType: query
+              description: filter services by language
               required: False
         response_serializer:
             Nodes.Container.Service.serializers.ServiceEngineSerializer
@@ -71,17 +77,25 @@ class ServiceEngineList(APIView):
             - code: 401
               message: Not authenticated
         """
-        dpe_regex = request.GET.get('DPE_regex')
-        container_regex = request.GET.get('container_regex')
-        service_regex = request.GET.get('service_regex')
-        if dpe_regex is not None:
-            pass
-        if container_regex is not None:
-            pass
-        if service_regex is not None:
-            pass
-        service_objects = ServiceEngine.objects.all()
-        serializer = ServiceEngineSerializer(service_objects, many=True)
+        desc_filter = request.GET.get('filter_by_description')
+        name_filter = request.GET.get('filter_by_servicename')
+        lang_filter = request.GET.get('filter_by_language')
+        auth_filter = request.GET.get('filter_by_author')
+        services_data = ServiceEngine.objects.all()
+
+        if desc_filter:
+            services_data = services_data.filter(description__contains=desc_filter)
+
+        elif name_filter:
+            services_data = services_data.filter(engine_name__contains=name_filter)
+
+        elif lang_filter:
+            services_data = services_data.filter(language__contains=lang_filter)
+
+        elif auth_filter:
+            services_data = services_data.filter(author__contains=auth_filter)
+
+        serializer = ServiceEngineSerializer(services_data, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -244,7 +258,7 @@ class ServiceEngineNestedDetail(APIView):
 
         if runtime_flag:
             try:
-                dpe_name = str(get_node_object(DPE_id))
+                dpe_name = str(find_node_object(DPE_id))
                 snap_group = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
                 snapshot = snap_group.order_by('date').last().get_data()
 

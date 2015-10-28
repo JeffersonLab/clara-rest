@@ -26,6 +26,7 @@ from rest_framework.test import APITestCase
 
 class ServiceEngineTests(APITestCase):
     fixtures = ['tests/fixtures/Services.yaml',]
+    url_services = '/services/'
     url_create = '/dpes/1/containers/1/services/'
     url_get = '/dpes/1/containers/1/services/1'
     initial_data = {
@@ -36,9 +37,7 @@ class ServiceEngineTests(APITestCase):
                     "language": "Java",
                     "description": "algo"
                     }
-    bad_data = {
-
-                }
+    bad_data = {}
     
     def test_deploy_service(self):
         """
@@ -89,5 +88,16 @@ class ServiceEngineTests(APITestCase):
                             text="\"engine_name\":\"superReconstructorService\"", 
                             count=1, status_code=200, msg_prefix="", html=False)
         
-    def test_delete_service_engine(self):
-        pass
+    def test_filter_service_request_obtains_filtered_data(self):
+        response = self.client.get(self.url_services + '?filter_by_servicename=calibration')
+        self.assertEqual(2, len(response.data))
+        response = self.client.get(self.url_services + '?filter_by_description=BUGGGGGSS')
+        self.assertEqual(2, len(response.data))
+        response = self.client.get(self.url_services + '?filter_by_language=java')
+        self.assertEqual(4, len(response.data))
+        response = self.client.get(self.url_services + '?filter_by_language=python')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get(self.url_services + '?filter_by_author=Jarvis')
+        self.assertEqual(4, len(response.data))
+        response = self.client.get(self.url_services + '?filter_by_author=Vardan')
+        self.assertEqual(1, len(response.data))

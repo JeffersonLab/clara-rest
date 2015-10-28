@@ -6,7 +6,7 @@
     pk: 1
 -   fields: {container: 1, start_time: ! '2015-04-07 03:41:03.475573',
         engine_name: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
-        author: Jarvis, version: 1.0, language: Java, description: algo}
+        author: Vardan, version: 1.0, language: java, description: BUGGGGGSS}
     model: Service.serviceengine
     pk: 1
 
@@ -18,12 +18,12 @@
     pk: 2
 -   fields: {container: 2, start_time: ! '2015-04-07 03:41:03.475573',
         engine_name: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
-        author: Jarvis, version: 1.0, language: Java, description: algo}
+        author: Jarvis, version: 1.0, language: java, description: algo}
     model: Service.serviceengine
     pk: 2
 -   fields: {container: 2, start_time: ! '2015-04-07 03:41:03.475573',
         engine_name: calibrationService, modified: ! '2015-04-07 03:41:03.475586',
-        author: Jarvis, version: 1.0, language: Java, description: algo}
+        author: Jarvis, version: 1.0, language: java, description: algo}
     model: Service.serviceengine
     pk: 4
 
@@ -35,11 +35,11 @@
     pk: 3
 -   fields: {container: 3, start_time: ! '2015-04-07 03:41:03.475573',
         engine_name: superReconstructorService, modified: ! '2015-04-07 03:41:03.475586',
-        author: Jarvis, version: 1.0, language: Java, description: algo}
+        author: Jarvis, version: 1.0, language: java, description: algo}
     model: Service.serviceengine
     pk: 3
 -   fields: {container: 3, start_time: ! '2015-04-07 03:41:03.475573',
         engine_name: calibrationService, modified: ! '2015-04-07 03:41:03.475586',
-        author: Jarvis, version: 1.0, language: Java, description: algo}
+        author: Jarvis, version: 1.0, language: python, description: BUGGGGGSS}
     model: Service.serviceengine
     pk: 5

@@ -98,7 +98,7 @@ class ServiceEngineList(APIView):
         serializer = ServiceEngineSerializer(services_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Create a new service in one container at one DPE. The named container
         will be created if necessary.
@@ -132,7 +132,7 @@ class ServiceEngineList(APIView):
 
 class ServiceEngineNestedList(APIView):
 
-    def get(self, request, DPE_id, container_id, format=None):
+    def get(self, request, DPE_id, container_id):
         """
         Get the registration information of the Service Engines for a specific
         container
@@ -162,7 +162,7 @@ class ServiceEngineNestedList(APIView):
         serializer = ServiceEngineSerializer(service_objects, many=True)
         return Response(serializer.data)
 
-    def post(self, request, DPE_id, container_id, format=None):
+    def post(self, request, DPE_id, container_id):
         """
         Deploy a new service at Container. The name of the container will be
         created if is not provided.
@@ -217,7 +217,7 @@ class ServiceEngineNestedList(APIView):
 
 class ServiceEngineNestedDetail(APIView):
 
-    def get(self, request, DPE_id, container_id, service_id, format=None):
+    def get(self, request, DPE_id, container_id, service_id):
         """
         Get the registration information of a Service Engine for specific
         container
@@ -249,20 +249,15 @@ class ServiceEngineNestedDetail(APIView):
               message: Resource not found
         """
         runtime_flag = request.GET.get('runtime')
-
-        try:
-            service_object = Node.objects.get(node_id=DPE_id).containers.get(container_id=container_id).services.get(service_id=service_id)
-
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        node_parent = find_node_object(DPE_id)
+        service_object = node_parent.containers.get(container_id=container_id).services.get(service_id=service_id)
 
         if runtime_flag:
             try:
-                dpe_name = str(find_node_object(DPE_id))
+                dpe_name = str(node_parent)
                 snap_group = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
                 snapshot = snap_group.order_by('date').last().get_data()
 
-                print service_object.engine_name
                 for c in snapshot['DPERuntime']['containers']:
                     for s in c['ContainerRuntime']['services']:
                         if s['ServiceRuntime']['name'] == service_object.engine_name:

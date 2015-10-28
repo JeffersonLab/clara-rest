@@ -98,7 +98,7 @@ class ServiceEngineList(APIView):
         serializer = ServiceEngineSerializer(services_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Create a new service in one container at one DPE. The named container
         will be created if necessary.
@@ -132,7 +132,7 @@ class ServiceEngineList(APIView):
 
 class ServiceEngineNestedList(APIView):
 
-    def get(self, request, DPE_id, container_id, format=None):
+    def get(self, request, DPE_id, container_id):
         """
         Get the registration information of the Service Engines for a specific
         container
@@ -158,11 +158,28 @@ class ServiceEngineNestedList(APIView):
             - code: 404
               message: Resource not found
         """
-        service_objects = ServiceEngine.objects.all()
-        serializer = ServiceEngineSerializer(service_objects, many=True)
+        desc_filter = request.GET.get('filter_by_description')
+        name_filter = request.GET.get('filter_by_servicename')
+        lang_filter = request.GET.get('filter_by_language')
+        auth_filter = request.GET.get('filter_by_author')
+        services_data = find_node_object(DPE_id).containers.get(container_id=container_id).services
+
+        if desc_filter:
+            services_data = services_data.filter(description__contains=desc_filter)
+
+        elif name_filter:
+            services_data = services_data.filter(engine_name__contains=name_filter)
+
+        elif lang_filter:
+            services_data = services_data.filter(language__contains=lang_filter)
+
+        elif auth_filter:
+            services_data = services_data.filter(author__contains=auth_filter)
+
+        serializer = ServiceEngineSerializer(services_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, DPE_id, container_id, format=None):
+    def post(self, request, DPE_id, container_id):
         """
         Deploy a new service at Container. The name of the container will be
         created if is not provided.
@@ -212,12 +229,13 @@ class ServiceEngineNestedList(APIView):
                 return Response(serializer.errors,
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ServiceEngineNestedDetail(APIView):
 
-    def get(self, request, DPE_id, container_id, service_id, format=None):
+    def get(self, request, DPE_id, container_id, service_id):
         """
         Get the registration information of a Service Engine for specific
         container
@@ -249,20 +267,15 @@ class ServiceEngineNestedDetail(APIView):
               message: Resource not found
         """
         runtime_flag = request.GET.get('runtime')
-
-        try:
-            service_object = Node.objects.get(node_id=DPE_id).containers.get(container_id=container_id).services.get(service_id=service_id)
-
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        node_parent = find_node_object(DPE_id)
+        service_object = node_parent.containers.get(container_id=container_id).services.get(service_id=service_id)
 
         if runtime_flag:
             try:
-                dpe_name = str(find_node_object(DPE_id))
+                dpe_name = str(node_parent)
                 snap_group = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
                 snapshot = snap_group.order_by('date').last().get_data()
 
-                print service_object.engine_name
                 for c in snapshot['DPERuntime']['containers']:
                     for s in c['ContainerRuntime']['services']:
                         if s['ServiceRuntime']['name'] == service_object.engine_name:
@@ -279,7 +292,7 @@ class ServiceEngineNestedDetail(APIView):
                                      'snapshot_time': s_run_data['snapshot_time'],
                                      runtime_flag: s_run_data[runtime_flag]})
 
-            except KeyError as e:
+            except KeyError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             except Exception as e:

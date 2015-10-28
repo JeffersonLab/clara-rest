@@ -101,3 +101,17 @@ class ServiceEngineTests(APITestCase):
         self.assertEqual(4, len(response.data))
         response = self.client.get(self.url_services + '?filter_by_author=Vardan')
         self.assertEqual(1, len(response.data))
+
+    def test_filter_service_request_obtains_filtered_data_for_specific_container(self):
+        response = self.client.get('/dpes/1/containers/1/services/?filter_by_name=BUGGGGGSS')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/3/services/?filter_by_description=BUGGGGGSS')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/3/services/?filter_by_description=algo')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/3/services/?filter_by_language=java')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/3/services/?filter_by_language=python')
+        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/3/containers/3/services/?filter_by_author=Jarvis')
+        self.assertEqual(2, len(response.data))

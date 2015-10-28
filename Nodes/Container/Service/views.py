@@ -229,7 +229,8 @@ class ServiceEngineNestedList(APIView):
                 return Response(serializer.errors,
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ServiceEngineNestedDetail(APIView):
@@ -291,7 +292,7 @@ class ServiceEngineNestedDetail(APIView):
                                      'snapshot_time': s_run_data['snapshot_time'],
                                      runtime_flag: s_run_data[runtime_flag]})
 
-            except KeyError as e:
+            except KeyError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             except Exception as e:

@@ -32,15 +32,6 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CELERY definitions
-BROKER_URL = 'amqp://royarzun:jojojo@localhost:5672/clara_vhost'
-CELERY_TIMEZONE = 'America/Santiago'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -51,11 +42,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
-    'djcelery',
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
-    'Subscription',
     'Applications',
     'RuntimeDataRegistrar',
 )

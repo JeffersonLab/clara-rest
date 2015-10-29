@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	{% load staticfiles %}
+		<title>Clara Cloud - {% block title %}{% endblock %}</title>
+		<link href="{% static 'css/primer.css' %}" rel="stylesheet">
+		<link href="{% static 'css/octicons/octicons.css' %}" rel="stylesheet">
+	</head>
+	<body>
+		{% block content %} {% endblock %}
+	</body>
+</html>

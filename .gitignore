@@ -9,4 +9,5 @@ Nodes/Container/migrations
 Nodes/Container/Service/migrations
 RuntimeDataRegistrar/migrations
 Applications/migrations
+ui/migrations
 

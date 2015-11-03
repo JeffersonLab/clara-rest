@@ -11,3 +11,5 @@ RuntimeDataRegistrar/migrations
 Applications/migrations
 ui/migrations
 
+ui/assets/bower_components
+

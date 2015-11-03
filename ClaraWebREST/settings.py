@@ -22,7 +22,6 @@
 
 from __future__ import absolute_import
 import os
-import rest_framework
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
@@ -40,8 +39,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # REST Framework
     'rest_framework',
     'rest_framework_swagger',
+
+    # Pipeline
+    'pipeline',
+
+    # Clara apps
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
@@ -58,16 +64,20 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pipeline.middleware.MinifyHTMLMiddleware',
+
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_PARSER_CLASSES': ('rest_framework.parsers.JSONParser',
-                               'rest_framework_yaml.parsers.YAMLParser'
-                               ),
-    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',
-                                 'rest_framework_yaml.renderers.YAMLRenderer',
-                                 'rest_framework.renderers.BrowsableAPIRenderer'
-                                 ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework_yaml.parsers.YAMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework_yaml.renderers.YAMLRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
 }
 
 ROOT_URLCONF = 'ClaraWebREST.urls'
@@ -81,19 +91,49 @@ DATABASES = {
     }
 }
 
+# STATICS ###################################################################
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STATIC_URL = '/static/'
+# CHANGE FOR PRODUCTION #
+STATIC_ROOT = 'ui/assets'
+#########################
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+STATIC_FILES_DIRS = (
+    os.path.join(BASE_DIR, 'ui/assets/'),
+)
+
+# PIPELINE ##################################################################
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'ui/assets')
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
+PIPELINE_CSSMIN_BINARY = '/usr/bin/env cssmin'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuiCompressor'
+PIPELINE_CSS = {
+    'base': {
+        'source_filenames': (
+            'bower_components/primer-css/css/primer.css',
+            'bower_components/octicons/octicons/octicons.css',
+            'css/style.css',
+        ),
+        'output_filename': 'libs.min.css',
+    }
+}
+PIPELINE_JS = {
+    'libraries': {
+        'source_filenames': (
+            'bower_components/highcharts-release/highcharts.src.js',
+            'js/runtime_graphs.js',
+        ),
+        'output_filename': 'libs.min.js',
+    }
+}
+
+# LOCAL AND INTERNATIONALIZATION ############################################
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
-# Set to false for development 
 USE_TZ = False
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_ROOT = ''
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "claraweb/static/"),
-)

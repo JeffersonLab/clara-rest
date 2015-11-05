@@ -21,7 +21,6 @@
 
 from rest_framework import serializers
 
-from claraweb.utils.Validators import limit_validator
 from Nodes.models import Node
 
 
@@ -30,15 +29,9 @@ class NodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Node
         fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
-                  'start_time','modified')
+                  'start_time', 'modified')
 
     def create(self, validated_data):
         node = Node(**validated_data)
         node.save()
         return node
-
-
-class NodeDeployerSerializer(serializers.Serializer):
-    # TODO: Maybe we should think about bounds?
-    DPEInfo = serializers.IntegerField(default=1, validators=[limit_validator])
-    hostname = serializers.CharField(max_length=40)

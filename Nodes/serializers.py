@@ -30,7 +30,7 @@ class NodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Node
         fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
-                  'start_time','modified')
+                  'start_time', 'modified')
 
     def create(self, validated_data):
         node = Node(**validated_data)

@@ -28,7 +28,6 @@ from Nodes.serializers import NodeSerializer
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node
-from hgext.extdiff import snapshot
 """
 Nodes Views:
 Views for json responses for the Clara Nodes (DPE) components

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
@@ -20,11 +21,12 @@
 #
 
 from django.conf.urls import patterns, url
+from ui.views import DpeDetail, DpeList
 
-from Nodes.views import Dpe, Dpes
+urlpatterns = patterns(
+                '',
+                url(r'^dpes/?$', DpeList, name="ui-dpes-list"),
+                url(r'^dpes/(?P<DPE_id>[\d+])/?$', DpeDetail,
+                    name="ui-dpe-detail"),
+                )
 
-urlpatterns = patterns('',
-                       url(r'^$', Dpes.as_view(), name="rest-dpes-list"),
-                       url(r'^(?P<DPE_id>[\d+])/?$', Dpe.as_view(),
-                           name="rest-dpe-detail"),
-                       )

@@ -45,6 +45,5 @@ function RealtimeChart(div, name, main_label, xlabel, ylabel, json_src){
 }
 
 function get_charts(url){
-	cpu_chart = new RealtimeChart('cpu_div', 'cpu_usage', 'Clara DPE Load', 'Snapshot Time', 'CPU Usage / 100',
-			url + '/?format=json&runtime=cpu_usage');
+	cpu_chart = new RealtimeChart('cpu_div', 'cpu_usage', 'Clara DPE Load', 'Snapshot Time', 'CPU Usage / 100', url);
 }

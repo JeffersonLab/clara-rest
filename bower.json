@@ -1,7 +1,0 @@
-{
-  "name": "ClaraWebREST",
-  "dependencies": {
-    "primer-css": "2.4.0",
-    "highcharts-release": "4.1.9"
-  }
-}

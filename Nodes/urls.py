@@ -24,6 +24,7 @@ from django.conf.urls import patterns, url
 from Nodes.views import Dpe, Dpes
 
 urlpatterns = patterns('',
-                       url(r'^$', Dpes.as_view()),
-                       url(r'^(?P<DPE_id>[\d+])/?$', Dpe.as_view()),
+                       url(r'^$', Dpes.as_view(), name="rest-dpes-list"),
+                       url(r'^(?P<DPE_id>[\d+])/?$', Dpe.as_view(),
+                           name="rest-dpe-detail"),
                        )

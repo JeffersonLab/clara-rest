@@ -1,0 +1,20 @@
+{% extends "base/base.html" %}
+
+{% block title %}DPES{% endblock %}
+
+{% block dpe_menuflag %}selected{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+	{% for dpe in nodes %}
+	<div class="span3 statbox green" onTablet="span6" onDesktop="span3">
+		<div class="boxchart">5,6,7,2,0,4,2,4,8,2,3,3,2</div>
+		<div class="number"><i class="glyphicons-icon database_plus white"></i> {{ dpe.n_cores}}</div>
+		<div class="title">{{ dpe.hostname }}_{{ dpe.language }}</div>
+		<div class="footer">
+			<a href="{% url 'ui-dpe-detail' dpe.node_id %}"> read full report</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

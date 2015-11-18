@@ -1,0 +1,103 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}{{dpe_name}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+	<div id="cpu_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+	<div id="mem_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+</div>
+<div class="container">
+	<div class="row-fluid hideInIE8 circleStats">
+		<div class="span2" onTablet="span4" onDesktop="span4">
+			<div class="circleStatsItemBox green">
+				<div class="header">CPU</div>
+				<span class="percent">percent</span>
+				<div class="circleStat"><input type="text" value="{{cpu_ratio}}" class="whiteCircle" /></div>
+				<div class="footer">
+					<span class="count">
+						<span class="number">1</span>
+						<span class="unit">Ghz</span>
+					</span>
+					<span class="sep"> / </span>
+					<span class="value">
+						<span class="number">3.7</span>
+						<span class="unit">Ghz</span>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="span2" onTablet="span4" onDesktop="span4">
+			<div class="circleStatsItemBox greenDark">
+				<div class="header">Memory</div>
+				<span class="percent">percent</span>
+				<div class="circleStat"><input type="text" value="{{mem_ratio}}" class="whiteCircle" /></div>
+				<div class="footer">
+					<span class="count">
+						<span class="number">{{mem_usage}}</span>
+						<span class="unit"></span>
+					</span>
+					<span class="sep"> / </span>
+					<span class="value">
+						<span class="number">{{mem_size}}</span>
+						<span class="unit">MB</span>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="span3 statbox noMargin" ontablet="span6" ondesktop="span3">
+			<div class="boxchart"><canvas width="64" height="60" style="display: inline-block; width: 64px; height: 60px; vertical-align: top;"></canvas></div>
+			<div class="number">982<i class="icon-arrow-up"></i></div>
+			<div class="title">number of requests</div>
+		</div>
+		<div class="span3 statbox noMargin" ontablet="span6" ondesktop="span3">
+			<div class="boxchart"><canvas width="64" height="60" style="display: inline-block; width: 64px; height: 60px; vertical-align: top;"></canvas></div>
+			<div class="number">22<i class="icon-arrow-down"></i></div>
+			<div class="title">number of failures</div>
+		</div>
+	</div>
+</div>
+<div class="fluid-row">
+	<div class="col-lg-12 col-md-12 col-sd-12">
+
+		{% for c in containers %}
+		<h2><i class="fa fa-tasks"></i> {{ c.name }}</h2>
+		<div class="panel panel-default">
+  			<!-- Default panel contents -->
+  			<!-- Table -->
+  			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+			       		<th>Class Name</th>
+			       		<th>Engine Name</th>
+			       		<th>Author</th>
+			       		<th>Version</th>
+			       		<th>Language</th>
+			     	</tr>
+				</thead>
+				<tbody>
+					{% for s in c.services %}
+			     	<tr>
+						<td>{{ s.service_id }}</td>
+						<td><a href="#">{{ s.class_name }}</a></td>
+						<td><a href="{% url 'ui-service-detail' dpe_id c.container_id s.service_id %}">{{ s.engine_name }}</a></td>
+						<td><a href="http://localhost:8001/monitoring/dpes/services/author/?filter_by_author={{s.author|safe}}">{{ s.author }}</a></td>
+						<td>{{ s.version }}</td>
+						<td>{{ s.language }}</td>
+			     	</tr>
+			     	{% endfor %}
+				</tbody>
+  			</table>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}
+
+{% block footerscript %}
+<script>$(document).ready(get_charts("{% url 'rest-dpe-detail' dpe_id%}"+"/?format=json&runtime=all"))</script>
+{% endblock %}

@@ -26,5 +26,6 @@ urlpatterns = patterns('',
                        url(r'^/?$',
                            ServiceEngineNestedList.as_view()),
                        url(r'^(?P<service_id>\d+)/?$',
-                           ServiceEngineNestedDetail.as_view())
+                           ServiceEngineNestedDetail.as_view(),
+                           name='rest-service-detail')
                        )

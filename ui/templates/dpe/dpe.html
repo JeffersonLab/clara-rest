@@ -6,7 +6,8 @@
 {% block content %}
 
 <div class="row-fluid">
-	<div id="cpu_div" class="widget white span12 noMargin" onTablet="span12" onDesktop="span12"></div>
+	<div id="cpu_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+	<div id="mem_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
 </div>
 <div class="container">
 	<div class="row-fluid hideInIE8 circleStats">
@@ -99,5 +100,5 @@
 {% endblock %}
 
 {% block footerscript %}
-<script>$(document).ready(get_charts("{% url 'rest-dpe-detail' dpe_id%}"+"/?format=json&runtime=cpu_usage"))</script>
+<script>$(document).ready(get_charts("{% url 'rest-dpe-detail' dpe_id%}"+"/?format=json&runtime=all"))</script>
 {% endblock %}

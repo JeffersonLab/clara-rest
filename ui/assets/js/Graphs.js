@@ -45,5 +45,6 @@ function RealtimeChart(div, name, main_label, xlabel, ylabel, json_src){
 }
 
 function get_charts(url){
-	cpu_chart = new RealtimeChart('cpu_div', 'cpu_usage', 'Clara DPE Load', 'Snapshot Time', 'CPU Usage / 100', url);
+	cpu_chart = new RealtimeChart('cpu_div', 'cpu_usage', 'DPE CPU Load', 'Snapshot Time', 'CPU Usage / 100', url);
+	mem_chart = new RealtimeChart('mem_div', 'mem_usage', 'DPE Memory Load', 'Snapshot Time', 'Mem / 100', url);
 }

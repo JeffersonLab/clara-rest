@@ -21,18 +21,14 @@
 
 from xmsg.core.xMsg import xMsg
 from xmsg.core.xMsgTopic import xMsgTopic
-from xmsg.net.xMsgAddress import xMsgAddress
 
 
 class PeriodicDataSubscriber(xMsg):
 
     def __init__(self, name, topic):
-        super(PeriodicDataSubscriber, self).__init__(name,
-                                                     "localhost",
-                                                     "localhost",
-                                                     pool_size=1)
-        self.connection = self.get_new_connection(xMsgAddress("localhost"))
+        super(PeriodicDataSubscriber, self).__init__(name)
+        self.connection = self.connect()
         self.topic = xMsgTopic.wrap(topic)
 
     def subscribe(self, callback):
-        return xMsg.subscribe(self, self.connection, self.topic, callback)
+        return xMsg.subscribe(self, self.topic, self.connection, callback)

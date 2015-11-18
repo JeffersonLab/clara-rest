@@ -4,7 +4,6 @@
 {% block title %}{{dpe_name}}{% endblock %}
 
 {% block content %}
-
 <div class="row-fluid">
 	<div id="cpu_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
 	<div id="mem_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
@@ -37,7 +36,7 @@
 				<div class="circleStat"><input type="text" value="{{mem_ratio}}" class="whiteCircle" /></div>
 				<div class="footer">
 					<span class="count">
-						<span class="number">{{mem_ratio}}</span>
+						<span class="number">{{mem_usage}}</span>
 						<span class="unit"></span>
 					</span>
 					<span class="sep"> / </span>

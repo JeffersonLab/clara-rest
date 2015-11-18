@@ -74,3 +74,39 @@ def DpeDetail(request, DPE_id, format=None):
 
     except HTTPError:
         return HttpResponseNotFound()
+
+
+@api_view(('GET',))
+@renderer_classes((TemplateHTMLRenderer,))
+def ServiceDetail(request, DPE_id, cont_id, service_id, format=None):
+    try:
+        dpe_reg_url = "http://" + request.get_host() + D_URL + DPE_id
+        con_reg_url = dpe_reg_url + C_URL
+        ser_reg_url = con_reg_url + cont_id + S_URL + service_id
+        ser_run_url = ser_reg_url + JSONR_SUFFIX
+
+        d_reg_data = json.load(urlopen(dpe_reg_url))
+        c_reg_data = json.load(urlopen(con_reg_url))
+        s_reg_data = json.load(urlopen(ser_reg_url))
+        s_run_data = json.load(urlopen(ser_run_url))
+
+        dpe_name = d_reg_data['hostname'] + "_" + d_reg_data['language']
+#         cpu_ratio = float(d_run_data['cpu_usage'])
+        mem_size = int(d_reg_data['memory_size'])
+#         mem_usage = d_run_data['mem_usage']
+#         mem_ratio = floor(mem_size/mem_usage)
+
+        data = {'dpe_name': dpe_name,
+                'dpe_id': d_reg_data['node_id'],
+                'container_id': cont_id,
+                'service_id': service_id,
+                'service_run': s_run_data,
+                'service_name': s_reg_data['engine_name'],
+                'service_class_name': s_reg_data['class_name'],
+                'author': s_reg_data['engine_name'],
+                'service_reg': s_reg_data}
+
+        return render_to_response('service/service.html', data)
+
+    except HTTPError:
+        return HttpResponseNotFound()

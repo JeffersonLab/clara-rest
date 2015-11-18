@@ -21,12 +21,14 @@
 #
 
 from django.conf.urls import patterns, url
-from ui.views import DpeDetail, DpeList
+from ui.views import DpeDetail, DpeList, ServiceDetail
 
 urlpatterns = patterns(
                 '',
                 url(r'^dpes/?$', DpeList, name="ui-dpes-list"),
                 url(r'^dpes/(?P<DPE_id>[\d+])/?$', DpeDetail,
                     name="ui-dpe-detail"),
+                url(r'^dpes/(?P<DPE_id>[\d+])/container/(?P<cont_id>\d+)/service/(?P<service_id>\d+)/?$',
+                    ServiceDetail, name="ui-service-detail"),
                 )
 

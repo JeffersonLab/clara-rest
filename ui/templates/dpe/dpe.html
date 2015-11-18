@@ -84,7 +84,7 @@
 			     	<tr>
 						<td>{{ s.service_id }}</td>
 						<td><a href="#">{{ s.class_name }}</a></td>
-						<td><a href="#">{{ s.engine_name }}</a></td>
+						<td><a href="{% url 'ui-service-detail' dpe_id c.container_id s.service_id %}">{{ s.engine_name }}</a></td>
 						<td><a href="http://localhost:8001/monitoring/dpes/services/author/?filter_by_author={{s.author|safe}}">{{ s.author }}</a></td>
 						<td>{{ s.version }}</td>
 						<td>{{ s.language }}</td>

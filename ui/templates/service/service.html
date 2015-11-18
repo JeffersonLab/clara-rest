@@ -1,0 +1,28 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}{{service_name}}{% endblock %}
+
+{% block content %}
+<h2>Networking</h2>
+<div class="row-fluid">
+	
+	<div id="bytes_sent_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+	<div id="bytes_recv_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+</div>
+<h2>Shared Memory</h2>
+<div class="row-fluid">
+	
+	<div id="mem_read_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+	<div id="mem_wrt_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+</div>
+<h2>Service Requests</h2>
+<div class="row-fluid">
+	<div id="requests_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+	<div id="failures_div" class="widget white span6 noMargin" onTablet="span6" onDesktop="span6"></div>
+</div>
+{% endblock %}
+
+{% block footerscript %}
+<script>$(document).ready(get_service_charts("{% url 'rest-service-detail' dpe_id container_id service_id %}"+"/?format=json&runtime=all"))</script>
+{% endblock %}

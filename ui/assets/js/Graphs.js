@@ -48,3 +48,12 @@ function get_charts(url){
 	cpu_chart = new RealtimeChart('cpu_div', 'cpu_usage', 'DPE CPU Load', 'Snapshot Time', 'CPU Usage / 100', url);
 	mem_chart = new RealtimeChart('mem_div', 'mem_usage', 'DPE Memory Load', 'Snapshot Time', 'Mem / 100', url);
 }
+
+function get_service_charts(url){
+	bytes_recv_chart = new RealtimeChart('bytes_sent_div', 'bytes_recv', 'Received Bytes', 'Snapshot Time', 'Bytes', url);
+	bytes_sent_chart = new RealtimeChart('bytes_recv_div', 'bytes_sent', 'Sent Bytes', 'Snapshot Time', 'Bytes', url);
+	requests_chart = new RealtimeChart('requests_div', 'n_requests', 'Number of requests', 'Snapshot Time', 'Requests', url);
+	failures_chart = new RealtimeChart('failures_div', 'n_failures', 'Number of failed requests', 'Snapshot Time', 'Requests', url);
+	mem_read_chart = new RealtimeChart('mem_read_div', 'shm_reads', 'Shared Memory Reads', 'Snapshot Time', 'Bytes', url);
+	mem_wrt_chart = new RealtimeChart('mem_wrt_div', 'shm_writes', 'Shared Memory Writes', 'Snapshot Time', 'Bytes', url);
+}

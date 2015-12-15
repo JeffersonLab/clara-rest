@@ -22,7 +22,6 @@
 from django.db import models
 from datetime import datetime
 
-from claraweb.orchestrators.orchestrator import WebOrchestrator
 from claraweb.utils.Validators import validate_node_existence
 from Nodes.models import Node
 

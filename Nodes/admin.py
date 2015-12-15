@@ -21,7 +21,6 @@
 
 from django.contrib.admin import ModelAdmin, TabularInline, site
 
-from Applications.models import App, Chain
 from Nodes.models import Node
 from Nodes.Container.models import Container
 from Nodes.Container.Service.models import ServiceEngine
@@ -47,18 +46,7 @@ class ContainerAdmin(ModelAdmin):
     model = Container
     readonly_fields = ('modified',)
 
-
-class ChainInline(TabularInline):
-    model = Chain
-    readonly_fields = ('app', )
-
-
-class AppAdmin(ModelAdmin):
-    model = App
-    readonly_fields = ('created', 'modified')
-    inlines = (ChainInline, )
-
 site.register(Node, NodeAdmin)
 site.register(Container, ContainerAdmin)
 site.register(ServiceEngine, ServiceEngineAdmin)
-site.register(App, AppAdmin)
+

@@ -22,7 +22,6 @@ import unittest
 from mockito import *
 from rest_framework import status
 from rest_framework.test import APITestCase
-from claraweb.orchestrators.orchestrator import WebOrchestrator
 
 
 class DPENodeTests(APITestCase):
@@ -67,18 +66,3 @@ class DPENodeTests(APITestCase):
         response = self.client.get('/dpes/?filter_by_servicename=super')
         self.assertEqual(3, len(response.data))
 
-
-class OrchestratorTests(unittest.TestCase):
-
-    def setUp(self):
-        self.orchestrator = WebOrchestrator()
-        when(self.orchestrator.base).generic_send().thenReturn(True)
-
-    def test_exit_dpe_returns_negative_ping(self):
-        self.orchestrator.dpe_exit("some_dpe_name")
-
-    def test_deploy_container(self):
-        self.orchestrator.deploy_container("129.57.114.94_java:container_name")
-
-    def test_remove_container(self):
-        self.orchestrator.remove_container("129.57.114.94_java:container_name")

@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'Nodes',
     'Nodes.Container',
     'Nodes.Container.Service',
-    'Applications',
     'RuntimeDataRegistrar',
     'ui',
 )

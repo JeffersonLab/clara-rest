@@ -1,4 +1,4 @@
-git+https://git.earthdata.nasa.gov/scm/naiads/clara-python.git@dev
+git+ssh://git@git.earthdata.nasa.gov:7999/naiads/clara-python.git@clara-base-dev
 Django==1.7.7
 djangorestframework==3.1.1
 djangorestframework-yaml==1.0.2
@@ -10,3 +10,4 @@ PyYAML==3.11
 coverage==3.7.1
 jsonfield==1.0.3
 django-pipeline==1.5.4
+simplejson==3.8.1

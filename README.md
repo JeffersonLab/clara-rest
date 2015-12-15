@@ -11,7 +11,7 @@ $ cd clara-webapp
 Once in the main folder, run the following command in order to install the dependencies
 
 ```sh
-$ pip install -r requirements.txt
+$ pip install --process-dependency-links -r requirements.txt
 ```
 
 ### Running the App in development mode

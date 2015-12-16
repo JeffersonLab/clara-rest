@@ -40,8 +40,7 @@ from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 def run_monitor_subscriber():
     try:
-        topic = "dpeAlive:"
-        topic = "registration_topic:%s" % xMsgUtil.get_local_ip()
+        topic = "dpeAlive:%s" % xMsgUtil.get_local_ip()
         run_subscriber = PeriodicDataSubscriber(topic, topic)
         run_subscription = run_subscriber.subscribe(DpeMonitorCallBack())
         xMsgUtil.log("Subscribed to runtime messages with topic %s" % topic)

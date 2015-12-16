@@ -22,6 +22,7 @@
 
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
+
 from claraweb.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
 from claraweb.monitoring.RegMsgHelper import RegMsgHelper
 from RuntimeDataRegistrar.models import DPESnapshot
@@ -33,10 +34,8 @@ from Nodes.models import Node
 class DpeMonitorCallBack(xMsgCallBack):
 
     def callback(self, msg):
-        print "entre al cb"
         save_runtime_data(msg)
         save_registration_data(msg)
-        print "sali..."
 
 
 def save_runtime_data(msg):
@@ -86,6 +85,7 @@ def save_registration_data(msg):
                                                                        start_time=cur_service['start_time'].replace("/", "-"))
                 service.save()
         xMsgUtil.log("Registration saved for node : %s" % str(node))
+
     except Exception as e:
         print e
         xMsgUtil.log("Something went wrong registration data...")

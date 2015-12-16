@@ -23,13 +23,13 @@ from datetime import datetime
 import simplejson as json
 from django.test import TestCase
 from models import DPESnapshot
-from claraweb.monitoring.DpeMonitorCallBacks import RunDataCallBack
+from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from xmsg.core.xMsgMessage import xMsgMessage
 from xmsg.data import xMsgData_pb2
 
 TEST_CASE = {
   "DPERuntime": {
-    "host": "192.168.1.1",
+    "hostname": "192.168.1.1",
     "snapshot_time": str(datetime.now()),
     "cpu_usage": 760,
     "memory_usage": 63,
@@ -61,11 +61,12 @@ TEST_CASE = {
   }
 }
 
+
 class DpeSnapshotTests(TestCase):
-    
+
     def setUp(self):
         TestCase.setUp(self)
-        
+
     def test_create_a_simple_snapshot_from_test_case(self):
         snap = DPESnapshot.builder(TEST_CASE)
         snap.save()
@@ -79,6 +80,6 @@ class DpeSnapshotTests(TestCase):
         data = xMsgData_pb2.xMsgData()
         data.STRING = bytes(json.dumps(TEST_CASE))
         msg = xMsgMessage.create_with_xmsg_data("topic", data)
-        result = RunDataCallBack().callback(msg)
+        result = DpeMonitorCallBack().callback(msg)
         self.assertEqual(1, len(DPESnapshot.objects.all()))
         self.assertTrue("DPERuntime" in DPESnapshot.objects.all()[0].get_data())

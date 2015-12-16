@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -26,7 +26,7 @@ import datetime
 from xmsg.data import xMsgData_pb2
 from xmsg.core.xMsgMessage import xMsgMessage
 
-from claraweb.monitoring.DpeMonitorCallBacks import RegDataCallBack
+from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node
@@ -84,11 +84,9 @@ class TestPeriodicTasksCallbacks(unittest.TestCase):
         return xMsgMessage("topic", data.SerializeToString())
 
     def test_register_dpe_first_time_should_register_dpe_in_db(self):
-        RegDataCallBack().callback(self.make_serialized_msg(reg_msg))
+        DpeMonitorCallBack().callback(self.make_serialized_msg(reg_msg))
         self.assertTrue(self.check_in_db())
 
-    def test_register_dpe_second_time_should_not_save_but_should_register_modification(self):
-        pass
 
 if __name__ == "__main__":
     unittest.main()

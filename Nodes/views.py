@@ -160,7 +160,7 @@ class Dpe(APIView):
 
         if runtime_flag:
             try:
-                dpe_name = str(node_object)
+                dpe_name = node_object.hostname
                 snapshots = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
                 snapshot = snapshots.order_by('date').last().get_data()['DPERuntime']
 

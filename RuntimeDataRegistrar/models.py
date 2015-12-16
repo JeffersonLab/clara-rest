@@ -33,9 +33,9 @@ class DPESnapshot(models.Model):
 
     @classmethod
     def builder(cls, serialized_json):
-        name = serialized_json['DPERuntime']['host']
+        name = serialized_json['DPERuntime']['hostname']
         return cls(name=name, json_dump=serialized_json,
-                   date=serialized_json['DPERuntime']['snapshot_time'])
+                   date=serialized_json['DPERuntime']['snapshot_time'].replace("/", "-"))
 
     def get_data(self):
         return self.json_dump

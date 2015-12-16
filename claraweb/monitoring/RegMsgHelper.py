@@ -56,7 +56,7 @@ class RegMsgHelper(object):
         Returns:
             DPE_Registration (JSON object)
         """
-        json_object = json.loads(self.message) 
+        json_object = json.loads(self.message)
         return json_object['DPERegistration']
 
     def get_containers(self):

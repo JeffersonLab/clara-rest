@@ -22,63 +22,41 @@
 import os
 import sys
 import django
-from argparse import ArgumentParser
-from celery.utils.log import get_task_logger
+
 from xmsg.core.xMsgUtil import xMsgUtil
-proj_path = "/Users/royarzun/src/repo/naiads/clara-webapp/"
+
+proj_path = os.path.abspath(os.path.dirname(__file__))[0:-19]
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
+
 sys.path.append(proj_path)
-# This is so my local_settings.py gets loaded.
 os.chdir(proj_path)
 django.setup()
+
+
 from claraweb.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
-from claraweb.monitoring.DpeMonitorCallBacks import RegDataCallBack, RunDataCallBack
+from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 
-logger = get_task_logger(__name__)
-parser = ArgumentParser(description='Periodic Subscriber tasks')
-parser.add_argument('data', type=str, help='registration or runtime data')
-args = parser.parse_args()
-
-
-def run_registration_subscriber():
+def run_monitor_subscriber():
     try:
-        reg_subscriber = PeriodicDataSubscriber("RegDataSubscriber",
-                                                "registration_topic")
-        reg_subscription = reg_subscriber.subscribe(RegDataCallBack())
-        xMsgUtil.log("WebServer Subscribed to registration messages...")
-        xMsgUtil.keep_alive()
-
-    except KeyboardInterrupt:
-        reg_subscriber.unsubscribe(reg_subscription)
-        reg_subscriber.destroy()
-        xMsgUtil.log("WebServer: Registration subscription terminated")
-        return
-
-
-def run_runtime_subscriber():
-    try:
-        run_subscriber = PeriodicDataSubscriber("RunDataSubscriber",
-                                                "runtime_topic")
-        run_subscription = run_subscriber.subscribe(RunDataCallBack())
-        xMsgUtil.log("WebServer Subscribed to runtime messages...")
+        topic = "dpeAlive:"
+        topic = "registration_topic:%s" % xMsgUtil.get_local_ip()
+        run_subscriber = PeriodicDataSubscriber(topic, topic)
+        run_subscription = run_subscriber.subscribe(DpeMonitorCallBack())
+        xMsgUtil.log("Subscribed to runtime messages with topic %s" % topic)
         xMsgUtil.keep_alive()
 
     except KeyboardInterrupt:
         run_subscriber.unsubscribe(run_subscription)
         run_subscriber.destroy()
-        xMsgUtil.log("WebServer: Runtime subscription terminated")
+        xMsgUtil.log("Runtime subscription terminated")
         return
 
 
 def main():
-    if args.data == "registration":
-        run_registration_subscriber()
-    elif args.data == "runtime":
-        run_runtime_subscriber()
-    else:
-        print "usage: valid type options are \"registration\" or \"runtime\""
-        return
+    run_monitor_subscriber()
+
 
 if __name__ == "__main__":
     main()

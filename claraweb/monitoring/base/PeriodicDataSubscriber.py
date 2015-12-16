@@ -27,8 +27,7 @@ class PeriodicDataSubscriber(xMsg):
 
     def __init__(self, name, topic):
         super(PeriodicDataSubscriber, self).__init__(name)
-        self.connection = self.connect()
-        self.topic = xMsgTopic.wrap(topic)
+        self.topic = xMsgTopic.build(self.myname)
 
     def subscribe(self, callback):
-        return xMsg.subscribe(self, self.topic, self.connection, callback)
+        return xMsg.subscribe(self, self.topic, self.connect(), callback)

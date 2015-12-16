@@ -59,7 +59,7 @@ def DpeDetail(request, DPE_id, format=None):
         dpe_name = d_reg_data['hostname'] + "_" + d_reg_data['language']
         cpu_ratio = float(d_run_data['cpu_usage'])*100
         mem_size = 32000# int(d_reg_data['memory_size'])
-        mem_usage = d_run_data['mem_usage']
+        mem_usage = d_run_data['memory_usage']
         mem_ratio = (mem_size/mem_usage)*100
 
         data = {'dpe_name': dpe_name,

@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -158,6 +158,10 @@ class ServiceEngineNestedList(APIView):
             - code: 404
               message: Resource not found
         """
+
+        DPE_id = int(DPE_id)
+        container_id = int(container_id)
+
         desc_filter = request.GET.get('filter_by_description')
         name_filter = request.GET.get('filter_by_servicename')
         lang_filter = request.GET.get('filter_by_language')
@@ -217,6 +221,10 @@ class ServiceEngineNestedList(APIView):
             - code: 404
               message: Resource not found
         """
+
+        DPE_id = int(DPE_id)
+        container_id = int(container_id)
+
         serializer = ServiceEngineNestedSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -266,6 +274,11 @@ class ServiceEngineNestedDetail(APIView):
             - code: 404
               message: Resource not found
         """
+
+        DPE_id = int(DPE_id)
+        container_id = int(container_id)
+        service_id = int(service_id)
+
         runtime_flag = request.GET.get('runtime')
         node_parent = find_node_object(DPE_id)
         service_object = node_parent.containers.get(container_id=container_id).services.get(service_id=service_id)

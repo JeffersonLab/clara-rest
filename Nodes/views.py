@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -18,6 +18,7 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
+
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -154,6 +155,8 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
+        DPE_id = int(DPE_id)
+
         runtime_flag = request.GET.get('runtime')
 
         node_object = find_node_object(DPE_id)
@@ -201,6 +204,8 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
+        DPE_id = int(DPE_id)
+
         node_object = find_node_object(DPE_id)
         node_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

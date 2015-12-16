@@ -9,6 +9,6 @@ from views import ContainerList, ContainerDetail
 
 urlpatterns = patterns('',
                        url(r'^$', ContainerList.as_view()),
-                       url(r'^(?P<container_id>\d+)/?$',
+                       url(r'^(?P<container_id>[a-z0-9]+)/?$',
                            ContainerDetail.as_view())
                        )

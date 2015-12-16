@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -18,6 +18,7 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
+
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -93,6 +94,7 @@ class ContainerList(APIView):
             - code: 401
               message: Not authenticated
         """
+
         serializer = ContainerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -123,6 +125,8 @@ class ContainerDetail(APIView):
             - code: 404
               message: Resource not found
         """
+        container_id = int(container_id)
+
         container_object = find_container_object(container_id)
         serializer = ContainerSerializer(container_object)
         return Response(serializer.data)
@@ -145,6 +149,8 @@ class ContainerDetail(APIView):
             - code: 404
               message: Resource not found
         """
+        container_id = int(container_id)
+
         container_object = find_container_object(container_id)
         container_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -175,6 +181,8 @@ class ContainerNestedList(APIView):
             - code: 404
               message: Resource not found
         """
+        DPE_id = int(DPE_id)
+
         container_filter = request.GET.get('filter_by_containername')
         service_filter = request.GET.get('filter_by_servicename')
         containers_data = Node.objects.get(node_id=DPE_id).containers.all()
@@ -203,6 +211,8 @@ class ContainerNestedList(APIView):
             - code: 404
               message: Resource not found
         """
+        DPE_id = int(DPE_id)
+
         serializer = ContainerNestedSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -245,6 +255,8 @@ class ContainerNestedDetail(APIView):
             - code: 404
               message: Resource not found
         """
+        container_id = int(container_id)
+
         container_object = find_container_object(container_id)
         serializer = ContainerSerializer(container_object)
         return Response(serializer.data)
@@ -273,6 +285,8 @@ class ContainerNestedDetail(APIView):
             - code: 404
               message: Resource not found
         """
+        container_id = int(container_id)
+
         container_object = find_container_object(container_id)
         container_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

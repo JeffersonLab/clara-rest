@@ -23,7 +23,7 @@
 import unittest
 import json
 from xmsg.data import xMsgData_pb2
-from claraweb.monitoring.RegMsgHelper import RegMsgHelper
+from ClaraWebREST.monitoring.RegMsgHelper import RegMsgHelper
 
 # DPE with no containers
 TEST_CASE_1 = {

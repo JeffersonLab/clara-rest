@@ -21,6 +21,8 @@
 #
 
 from __future__ import absolute_import
+import sys
+import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -30,6 +32,9 @@ SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
 DEBUG = True
 TEMPLATE_DEBUG = True
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Django Testing Logger
+logging.disable(logging.CRITICAL)
 
 # Application definition
 INSTALLED_APPS = (

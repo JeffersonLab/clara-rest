@@ -22,7 +22,7 @@
 from django.db import models
 from datetime import datetime
 
-from claraweb.utils.Validators import validate_node_existence
+from ClaraWebREST.utils.Validators import validate_node_existence
 from Nodes.models import Node
 
 

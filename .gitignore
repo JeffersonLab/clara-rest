@@ -1,15 +1,11 @@
 .DS_Store
-db.sqlite3
-*.db
-*.pyc
 .project
 .pydevproject
 
-Nodes/Container/migrations
-Nodes/Container/Service/migrations
-RuntimeDataRegistrar/migrations
-Applications/migrations
-ui/migrations
+*.db
+*.pyc
+*/migrations
 
+db.sqlite3
 ui/assets/bower_components
 

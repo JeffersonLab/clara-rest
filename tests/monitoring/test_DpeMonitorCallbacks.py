@@ -26,7 +26,7 @@ import datetime
 from xmsg.data import xMsgData_pb2
 from xmsg.core.xMsgMessage import xMsgMessage
 
-from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container
 from Nodes.models import Node

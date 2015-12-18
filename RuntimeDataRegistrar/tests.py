@@ -23,7 +23,7 @@ from datetime import datetime
 import simplejson as json
 from django.test import TestCase
 from models import DPESnapshot
-from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from xmsg.core.xMsgMessage import xMsgMessage
 from xmsg.data import xMsgData_pb2
 

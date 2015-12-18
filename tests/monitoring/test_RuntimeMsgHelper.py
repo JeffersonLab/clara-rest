@@ -23,7 +23,7 @@
 import unittest
 import json
 from xmsg.data import xMsgData_pb2
-from claraweb.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
+from ClaraWebREST.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
 
 
 # DPE with no containers

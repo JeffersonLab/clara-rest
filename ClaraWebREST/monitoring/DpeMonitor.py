@@ -25,7 +25,7 @@ import django
 
 from xmsg.core.xMsgUtil import xMsgUtil
 
-proj_path = os.path.abspath(os.path.dirname(__file__))[0:-19]
+proj_path = os.path.abspath(os.path.dirname(__file__))[0:-24]
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
 
@@ -34,8 +34,8 @@ os.chdir(proj_path)
 django.setup()
 
 
-from claraweb.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
-from claraweb.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from ClaraWebREST.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
+from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 
 def run_monitor_subscriber():

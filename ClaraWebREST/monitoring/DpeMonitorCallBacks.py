@@ -23,8 +23,8 @@
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
 
-from claraweb.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
-from claraweb.monitoring.RegMsgHelper import RegMsgHelper
+from ClaraWebREST.monitoring.RuntimeMsgHelper import RuntimeMsgHelper
+from ClaraWebREST.monitoring.RegMsgHelper import RegMsgHelper
 from RuntimeDataRegistrar.models import DPESnapshot
 from Nodes.Container.Service.models import ServiceEngine
 from Nodes.Container.models import Container

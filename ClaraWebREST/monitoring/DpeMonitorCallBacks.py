@@ -41,9 +41,9 @@ class DpeMonitorCallBack(xMsgCallBack):
 def save_runtime_data(msg):
     try:
         run_msg = RuntimeMsgHelper(msg.get_data())
-        snap = DPESnapshot.builder(run_msg.get_json_object())
-        snap.save()
-        xMsgUtil.log("dpe@%s: Database entry created..." % snap.name)
+        dpe = DPESnapshot.builder(run_msg.get_json_object())
+        dpe.save()
+        xMsgUtil.log("dpe@%s: Database entry created..." % dpe.name)
 
     except Exception as e:
         print e
@@ -53,37 +53,36 @@ def save_runtime_data(msg):
 def save_registration_data(msg):
     try:
         reg_msg = RegMsgHelper(msg.get_data())
-        dpe_data = reg_msg.get_dpe_data()
-        containers = dpe_data.pop('containers')
-        dpe_data['start_time'] = dpe_data['start_time'].replace("/", "-")
-        node, created = Node.objects.get_or_create(defaults={'hostname': dpe_data['hostname']},
-                                                   **dpe_data)
+        dpe = reg_msg.get_dpe_data()
+
+        dpe['start_time'] = dpe['start_time'].replace("/", "-")
+        containers = dpe.pop('containers')
+        node, _ = Node.objects.get_or_create(defaults={'hostname': dpe['hostname']},
+                                             **dpe)
 
         node.save()
 
-        if created:
-            xMsgUtil.log("dpe@%s: Database entry created..." % dpe_data['hostname'])
-
-        for reg_container in containers:
-            cur_container = reg_container['ContainerRegistration']
-            container, created = Container.objects.get_or_create(dpe=node,
-                                                                 author=cur_container['author'],
-                                                                 name=cur_container['name'],
-                                                                 language=cur_container['language'],
-                                                                 start_time=cur_container['start_time'].replace("/", "-"))
+        for cr in containers:
+            cr['start_time'] = cr['start_time'].replace("/", "-")
+            container, _ = Container.objects.get_or_create(dpe=node,
+                                                           author=cr['author'],
+                                                           name=cr['name'],
+                                                           language=cr['language'],
+                                                           start_time=cr['start_time'])
             container.save()
 
-            for reg_service in cur_container.pop('services'):
-                cur_service = reg_service['ServiceRegistration']
-                service, created = ServiceEngine.objects.get_or_create(container=container,
-                                                                       class_name=cur_service['class_name'],
-                                                                       engine_name=cur_service['engine_name'],
-                                                                       author=cur_service['author'],
-                                                                       version=cur_service['version'],
-                                                                       language=cur_service['language'],
-                                                                       description=cur_service['description'],
-                                                                       start_time=cur_service['start_time'].replace("/", "-"))
+            for sr in cr.pop('services'):
+                sr['start_time'] = sr['start_time'].replace("/", "-")
+                service, _ = ServiceEngine.objects.get_or_create(container=container,
+                                                                 class_name=sr['class_name'],
+                                                                 engine_name=sr['engine_name'],
+                                                                 author=sr['author'],
+                                                                 version=sr['version'],
+                                                                 language=sr['language'],
+                                                                 description=sr['description'],
+                                                                 start_time=sr['start_time'])
                 service.save()
+
         xMsgUtil.log("Registration saved for node : %s" % str(node))
 
     except Exception as e:

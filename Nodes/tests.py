@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -18,14 +18,14 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-import unittest
+
 from mockito import *
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 
 class DPENodeTests(APITestCase):
-    fixtures = ['tests/fixtures/Services.yaml']
+    fixtures = ['ClaraWebREST/tests/fixtures/Services.yaml']
     url = '/dpes/'
     url_del = url+'2'
 
@@ -65,4 +65,3 @@ class DPENodeTests(APITestCase):
         self.assertEqual(2, len(response.data))
         response = self.client.get('/dpes/?filter_by_servicename=super')
         self.assertEqual(3, len(response.data))
-

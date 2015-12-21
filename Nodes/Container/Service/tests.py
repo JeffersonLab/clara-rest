@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -25,7 +25,7 @@ from rest_framework.test import APITestCase
 
 
 class ServiceEngineTests(APITestCase):
-    fixtures = ['tests/fixtures/Services.yaml',]
+    fixtures = ['ClaraWebREST/tests/fixtures/Services.yaml',]
     url_services = '/services/'
     url_create = '/dpes/1/containers/1/services/'
     url_get = '/dpes/1/containers/1/services/1'
@@ -38,12 +38,12 @@ class ServiceEngineTests(APITestCase):
                     "description": "algo"
                     }
     bad_data = {}
-    
+
     def test_deploy_service(self):
         """
         We must safely deploy a service into a container
         from the API
-        
+
         Parameters
         ==========
         URL:/dpes/1/containers/1/service
@@ -55,11 +55,11 @@ class ServiceEngineTests(APITestCase):
                                     self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
+
     def test_deploy_service_bad(self):
         """
         We must ensure bad data gets proper exception and response
-        
+
         Parameters
         ==========
         URL:/dpes/100/containers/1/service
@@ -75,19 +75,18 @@ class ServiceEngineTests(APITestCase):
                                     self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
-    
+
     def test_get_service_engine(self):
         """
         From the created service, we need to retrieve its registration
-        information 
+        information
         """
         response = self.client.get(self.url_get)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertContains(response=response,
-                            text="\"engine_name\":\"superReconstructorService\"", 
+                            text="\"engine_name\":\"superReconstructorService\"",
                             count=1, status_code=200, msg_prefix="", html=False)
-        
+
     def test_filter_service_request_obtains_filtered_data(self):
         response = self.client.get(self.url_services + '?filter_by_servicename=calibration')
         self.assertEqual(2, len(response.data))

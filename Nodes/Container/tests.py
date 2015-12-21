@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -24,7 +24,7 @@ from rest_framework.test import APITestCase
 
 
 class ContainerTests(APITestCase):
-    fixtures = ['tests/fixtures/Services.yaml']
+    fixtures = ['ClaraWebREST/tests/fixtures/Services.yaml']
     url_nested = '/dpes/2/containers/'
     url_nested_bad = '/dpes/200/containers/'
     url_container = '/containers/'

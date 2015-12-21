@@ -42,14 +42,12 @@ reg_msg = {
     "start_time": str(date),
     "containers": [
       {
-        "ContainerRegistration": {
           "name": "1.1.1.1:SomeContainerName",
           "language": "_java",
           "author": "Vardan",
           "start_time": str(date),
           "services": [
             {
-              "ServiceRegistration": {
                 "class_name": "SomeClassName",
                 "engine_name": "SomeEngineName",
                 "author": "Vardan",
@@ -57,10 +55,8 @@ reg_msg = {
                 "description": "description of what i do",
                 "language": "Java",
                 "start_time": str(date)
-              }
             }
           ]
-        }
       }
     ]
   }

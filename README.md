@@ -18,12 +18,18 @@ $ pip install --process-dependency-links -r requirements.txt
 Inside the application folder, you will first need to build the development database. You can do this by running in your terminal:
 
 ```sh
-$ python manage.py syncdb
+$ ./manage.py syncdb
 ```
 Once this is done, you can start the development server by doing:
 
 ```sh
-$ python manage.py runserver
+$ ./manage.py runserver
+```
+
+In order to subscribe to the Clara DPE's runtime and registration data we need to start the DPE monitor, this process can run even with the web server not running.   
+
+```sh
+$ ./manage.py monitor
 ```
 
 In order to access the django site, try the URLs, like in the following example. As you can see the URLs follow the hierarchy of the Clara Framework 

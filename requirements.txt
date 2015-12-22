@@ -11,3 +11,5 @@ coverage==3.7.1
 jsonfield==1.0.3
 django-pipeline==1.5.4
 simplejson==3.8.1
+django-extensions==1.6.1
+

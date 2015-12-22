@@ -56,11 +56,11 @@ INSTALLED_APPS = (
     'django_extensions',
 
     # Clara apps
-    'Nodes',
-    'Nodes.Container',
-    'Nodes.Container.Service',
-    'RuntimeDataRegistrar',
-    'ui',
+    'ClaraNodes',
+    'ClaraNodes.Container',
+    'ClaraNodes.Container.Service',
+    'ClaraDataRegistrar',
+    'ClaraUI',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,7 +102,7 @@ DATABASES = {
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATIC_URL = '/static/'
 # CHANGE FOR PRODUCTION #
-STATIC_ROOT = 'ui/assets'
+STATIC_ROOT = 'ClaraUI/assets'
 #########################
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -110,11 +110,11 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 STATIC_FILES_DIRS = (
-    os.path.join(BASE_DIR, 'ui/assets/'),
+    os.path.join(BASE_DIR, 'ClaraUI/assets/'),
 )
 
 # PIPELINE ##################################################################
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'ui/assets')
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'ClaraUI/assets')
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = '/usr/bin/env cssmin'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuiCompressor'
@@ -135,8 +135,8 @@ PIPELINE_JS = {
         'source_filenames': (
             'js/jquery-1.9.1.min.js',
             'js/jquery-migrate-1.0.0.min.js',
-            'js/jquery-ui-1.10.0.custom.min.js',
-            'js/jquery.ui.touch-punch.js',
+            'js/jquery-ClaraUI-1.10.0.custom.min.js',
+            'js/jquery.ClaraUI.touch-punch.js',
             'js/modernizr.js',
             'js/bootstrap.min.js',
             'js/jquery.cookie.js',

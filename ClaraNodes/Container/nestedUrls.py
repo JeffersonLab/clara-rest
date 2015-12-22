@@ -29,5 +29,5 @@ urlpatterns = patterns('',
                        url(r'^(?P<DPE_id>[a-z0-9]+)/containers/(?P<container_id>[a-z0-9]+)/?$',
                            ContainerNestedDetail.as_view()),
                        url(r'^(?P<DPE_id>[a-z0-9]+)/containers/(?P<container_id>[a-z0-9]+)/services/',
-                           include('Nodes.Container.Service.nestedUrls'))
+                           include('ClaraNodes.Container.Service.nestedUrls'))
                        )

@@ -19,12 +19,34 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.conf.urls import patterns, url
+from django.db import models
+from datetime import datetime
 
-from Nodes.views import Dpe, Dpes
+from ClaraWebREST.utils.Validators import validate_node_existence
+from ClaraNodes.models import Node
 
-urlpatterns = patterns('',
-                       url(r'^$', Dpes.as_view(), name="rest-dpes-list"),
-                       url(r'^(?P<DPE_id>[a-z0-9]+)/?$', Dpe.as_view(),
-                           name="rest-dpe-detail"),
-                       )
+
+class Container(models.Model):
+    container_id = models.AutoField(primary_key=True, null=False)
+    dpe = models.ForeignKey(Node, related_name='containers',
+                            validators=[validate_node_existence])
+    author = models.CharField(blank=False, max_length=40)
+    name = models.CharField(blank=False, max_length=40)
+    language = models.CharField(blank=False, max_length=20)
+
+    start_time = models.DateTimeField(null=True)
+    modified = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return self.name
+
+    def delete(self):
+        try:
+            orchestrator = WebOrchestrator()
+            orchestrator.remove_container(str(self))
+
+        except Exception as e:
+            raise Exception(e)
+            return
+
+        super(Container, self).delete()

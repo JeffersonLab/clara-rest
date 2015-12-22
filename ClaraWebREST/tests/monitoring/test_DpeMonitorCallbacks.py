@@ -27,9 +27,9 @@ from xmsg.data import xMsgData_pb2
 from xmsg.core.xMsgMessage import xMsgMessage
 
 from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
-from Nodes.Container.Service.models import ServiceEngine
-from Nodes.Container.models import Container
-from Nodes.models import Node
+from ClaraNodes.Container.Service.models import ServiceEngine
+from ClaraNodes.Container.models import Container
+from ClaraNodes.models import Node
 
 date = datetime.datetime(2015, 9, 24, 14, 9, 12, 647427)
 
@@ -42,12 +42,14 @@ reg_msg = {
     "start_time": str(date),
     "containers": [
       {
+        'ContainerRegistration': {
           "name": "1.1.1.1:SomeContainerName",
           "language": "_java",
           "author": "Vardan",
           "start_time": str(date),
           "services": [
             {
+              'ServiceRegistration': {
                 "class_name": "SomeClassName",
                 "engine_name": "SomeEngineName",
                 "author": "Vardan",
@@ -55,15 +57,48 @@ reg_msg = {
                 "description": "description of what i do",
                 "language": "Java",
                 "start_time": str(date)
+              }
             }
           ]
+        }
+      }
+    ]
+  },
+  "DPERuntime": {
+    "hostname": "192.168.1.1",
+    "snapshot_time": str(date),
+    "cpu_usage": 760,
+    "memory_usage": 63,
+    "load": 0.9,
+    "containers": [
+      {
+        "ContainerRuntime": {
+          "name": "192.168.1.1:cont_name",
+          "snapshot_time": 11245590398,
+          "n_requests": 1000,
+          "services": [
+            {
+              "ServiceRuntime": {
+                "name": "192.168.1.1:cont_name:S1",
+                "snapshot_time": 1954869020,
+                "n_requests": 1000,
+                "n_failures": 10,
+                "shm_reads": 1000,
+                "shm_writes": 1000,
+                "bytes_recv": 0,
+                "bytes_sent": 0,
+                "exec_time": 134235243543
+              },
+            },
+          ]
+        }
       }
     ]
   }
 }
 
 
-class TestPeriodicTasksCallbacks(unittest.TestCase):
+class TestMonitorCallbacks(unittest.TestCase):
 
     def check_in_db(self):
         nodes = Node.objects.count()

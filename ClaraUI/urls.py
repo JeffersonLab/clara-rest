@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 #
-# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -12,26 +13,22 @@
 # THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# JLAB SPECIFICALLY DISCLAIMS ANY WARRsANTIES, INCLUDING, BUT NOT LIMITED TO,
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 # PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from rest_framework import serializers
+from django.conf.urls import patterns, url
+from ClaraUI.views import DpeDetail, DpeList, ServiceDetail
 
-from Nodes.models import Node
+urlpatterns = patterns(
+                '',
+                url(r'^dpes/?$', DpeList, name="ClaraUI-dpes-list"),
+                url(r'^dpes/(?P<DPE_id>[\d+])/?$', DpeDetail,
+                    name="ClaraUI-dpe-detail"),
+                url(r'^dpes/(?P<DPE_id>[\d+])/container/(?P<cont_id>\d+)/service/(?P<service_id>\d+)/?$',
+                    ServiceDetail, name="ClaraUI-service-detail"),
+                )
 
-
-class NodeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Node
-        fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
-                  'start_time', 'modified')
-
-    def create(self, validated_data):
-        node = Node(**validated_data)
-        node.save()
-        return node

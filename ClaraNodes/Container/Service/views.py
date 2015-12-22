@@ -24,10 +24,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from RuntimeDataRegistrar.models import DPESnapshot
+from ClaraDataRegistrar.models import DPESnapshot
 from serializers import ServiceEngineSerializer, ServiceEngineNestedSerializer
-from Nodes.models import Node
-from Nodes.Container.models import Container
+from ClaraNodes.models import Node
+from ClaraNodes.Container.models import Container
 from models import ServiceEngine
 """
 Services Views:
@@ -72,7 +72,7 @@ class ServiceEngineList(APIView):
               description: filter services by language
               required: False
         response_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 401
               message: Not authenticated
@@ -114,9 +114,9 @@ class ServiceEngineList(APIView):
               description: Name of class
               required: True
         request_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -149,7 +149,7 @@ class ServiceEngineNestedList(APIView):
               paramType: path
               type: string
         response_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -210,9 +210,9 @@ class ServiceEngineNestedList(APIView):
               type: integer
               required: True
         request_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         response_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -265,7 +265,7 @@ class ServiceEngineNestedDetail(APIView):
               paramType: path
               type: string
         response_serializer:
-            Nodes.Container.Service.serializers.ServiceEngineSerializer
+            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request

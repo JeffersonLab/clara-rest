@@ -12,30 +12,26 @@
 # THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRsANTIES, INCLUDING, BUT NOT LIMITED TO,
 # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 # PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from jsonfield import JSONField
-from django.db import models
+from rest_framework import serializers
+
+from ClaraNodes.models import Node
 
 
-class DPESnapshot(models.Model):
-    name = models.CharField(blank=False, max_length=40)
-    date = models.DateTimeField(blank=False)
-    json_dump = JSONField()
+class NodeSerializer(serializers.ModelSerializer):
 
-    def __str__(self):
-        return str("%s-%s" % (self.name, self.date))
+    class Meta:
+        model = Node
+        fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
+                  'start_time', 'modified')
 
-    @classmethod
-    def builder(cls, serialized_json):
-        name = serialized_json['DPERuntime']['hostname']
-        return cls(name=name, json_dump=serialized_json,
-                   date=serialized_json['DPERuntime']['snapshot_time'].replace("/", "-"))
-
-    def get_data(self):
-        return self.json_dump
+    def create(self, validated_data):
+        node = Node(**validated_data)
+        node.save()
+        return node

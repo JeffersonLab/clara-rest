@@ -19,34 +19,25 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
+from jsonfield import JSONField
 from django.db import models
-from datetime import datetime
-
-from ClaraWebREST.utils.Validators import validate_node_existence
-from Nodes.models import Node
 
 
-class Container(models.Model):
-    container_id = models.AutoField(primary_key=True, null=False)
-    dpe = models.ForeignKey(Node, related_name='containers',
-                            validators=[validate_node_existence])
-    author = models.CharField(blank=False, max_length=40)
+class DPESnapshot(models.Model):
     name = models.CharField(blank=False, max_length=40)
-    language = models.CharField(blank=False, max_length=20)
-
-    start_time = models.DateTimeField(null=True)
-    modified = models.DateTimeField(null=True)
+    date = models.DateTimeField(blank=False)
+    json_dump = JSONField()
 
     def __str__(self):
-        return self.name
+        return str("%s-%s" % (self.name, self.date))
 
-    def delete(self):
-        try:
-            orchestrator = WebOrchestrator()
-            orchestrator.remove_container(str(self))
+    @classmethod
+    def builder(cls, serialized_json):
+        """
+        """
+        return cls(name=serialized_json['DPERuntime']['hostname'],
+                   json_dump=serialized_json,
+                   date=serialized_json['DPERuntime']['snapshot_time'].replace("/", "-"))
 
-        except Exception as e:
-            raise Exception(e)
-            return
-
-        super(Container, self).delete()
+    def get_data(self):
+        return self.json_dump

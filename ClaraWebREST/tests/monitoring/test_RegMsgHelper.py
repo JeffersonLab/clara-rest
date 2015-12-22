@@ -22,8 +22,9 @@
 
 import unittest
 import json
-from xmsg.data import xMsgData_pb2
-from ClaraWebREST.monitoring.RegMsgHelper import RegMsgHelper
+from xmsg.data.xMsgData_pb2 import xMsgData
+from ClaraWebREST.monitoring.MsgHelpers import RegistrationMsgHelper
+from xmsg.core.xMsgMessage import xMsgMessage
 
 # DPE with no containers
 TEST_CASE_1 = {
@@ -188,39 +189,40 @@ TEST_CASE_5 = {
   }
 }
 
-class TestRegMsgHelper(unittest.TestCase):
+
+class TestRegistrationMsgHelper(unittest.TestCase):
 
     def make_serialized_msg(self, case):
-        message = xMsgData_pb2.xMsgData()
-        message.STRING = json.dumps(case)
-        return message.SerializeToString()
+        data = xMsgData()
+        data.STRING = json.dumps(case)
+        return xMsgMessage.create_with_xmsg_data("topic", data)
 
     def test_convert_message_to_json(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_1))
-        self.assertTrue("DPERegistration" in parser.get_data())
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_1))
+        self.assertTrue("DPERegistration" in str(parser))
 
     def test_get_containers(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_2))
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_2))
         self.assertFalse("DPERegistration" in parser.get_containers())
         self.assertIsNotNone(parser.get_containers())
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_4))
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_4))
         self.assertEqual(len(parser.get_containers()), 2)
 
     def test_message_with_empty_containers_returns_empty_array(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_1))
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_1))
         self.assertEqual([], parser.get_containers())
 
     def test_get_the_two_services_in_container(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_3))
-        self.assertEqual(len(parser.get_services()), 2) 
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_3))
+        self.assertEqual(len(parser.get_services()), 2)
 
     def test_get_no_services_in_container(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_2))
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_2))
         self.assertEqual(len(parser.get_services()), 0)
         self.assertEqual([], parser.get_services())
 
     def test_get_the_one_service_in_dpe_with_two_containers_one_empty(self):
-        parser = RegMsgHelper(self.make_serialized_msg(TEST_CASE_5))
+        parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_5))
         self.assertEqual(len(parser.get_services()), 1)
 
 

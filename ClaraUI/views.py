@@ -28,7 +28,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from django.http import HttpResponseNotFound
 from django.shortcuts import render_to_response
 
-from Nodes.models import Node
+from ClaraNodes.models import Node
 
 D_URL = '/dpes/'
 C_URL = '/containers/'

@@ -19,46 +19,81 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
-from datetime import datetime
-import simplejson as json
-from django.test import TestCase
-from models import DPESnapshot
-from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
-from xmsg.core.xMsgMessage import xMsgMessage
-from xmsg.data import xMsgData_pb2
 
+import simplejson as json
+from datetime import datetime
+from django.test import TestCase
+
+from xmsg.core.xMsgMessage import xMsgMessage
+from xmsg.data.xMsgData_pb2 import xMsgData
+
+from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from ClaraDataRegistrar.models import DPESnapshot
+
+
+date = datetime.now()
 TEST_CASE = {
   "DPERuntime": {
     "hostname": "192.168.1.1",
-    "snapshot_time": str(datetime.now()),
+    "snapshot_time": str(date),
     "cpu_usage": 760,
     "memory_usage": 63,
     "load": 0.9,
     "containers": [
       {
-         "ContainerRuntime": {
-            "name": "192.168.1.1:cont_name",
-            "snapshot_time": 11245590398,
-            "n_requests": 1000,
-            "services": [
-              {
-                "ServiceRuntime": {
-                  "name": "192.168.1.1:cont_name:S1",
-                  "snapshot_time": 1954869020,
-                  "n_requests": 1000,
-                  "n_failures": 10,
-                  "shm_reads": 1000,
-                  "shm_writes": 1000,
-                  "bytes_recv": 0,
-                  "bytes_sent": 0,
-                  "exec_time": 134235243543
-                }
-              }
-            ]
-          }
+        "ContainerRuntime": {
+          "name": "192.168.1.1:cont_name",
+          "snapshot_time": 11245590398,
+          "n_requests": 1000,
+          "services": [
+            {
+              "ServiceRuntime": {
+                "name": "192.168.1.1:cont_name:S1",
+                "snapshot_time": 1954869020,
+                "n_requests": 1000,
+                "n_failures": 10,
+                "shm_reads": 1000,
+                "shm_writes": 1000,
+                "bytes_recv": 0,
+                "bytes_sent": 0,
+                "exec_time": 134235243543
+              },
+            },
+          ]
+        }
       }
     ]
-  }
+  },
+  "DPERegistration": {
+    "hostname": "1.1.1.1",
+    "language": "java",
+    "n_cores": 8,
+    "memory_size": "64M",
+    "start_time": str(date),
+    "containers": [
+      {
+        'ContainerRegistration': {
+          "name": "1.1.1.1:SomeContainerName",
+          "language": "_java",
+          "author": "Vardan",
+          "start_time": str(date),
+          "services": [
+            {
+              'ServiceRegistration': {
+                "class_name": "SomeClassName",
+                "engine_name": "SomeEngineName",
+                "author": "Vardan",
+                "version": "1.0",
+                "description": "description of what i do",
+                "language": "Java",
+                "start_time": str(date)
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
 }
 
 
@@ -66,6 +101,11 @@ class DpeSnapshotTests(TestCase):
 
     def setUp(self):
         TestCase.setUp(self)
+
+    def make_serialized_msg(self):
+        data = xMsgData()
+        data.STRING = bytes(json.dumps(TEST_CASE))
+        return xMsgMessage.create_with_xmsg_data("topic", data)
 
     def test_create_a_simple_snapshot_from_test_case(self):
         snap = DPESnapshot.builder(TEST_CASE)
@@ -77,9 +117,6 @@ class DpeSnapshotTests(TestCase):
         self.assertEqual(1, len(DPESnapshot.objects.all()))
 
     def test_creation_from_rundatacallback(self):
-        data = xMsgData_pb2.xMsgData()
-        data.STRING = bytes(json.dumps(TEST_CASE))
-        msg = xMsgMessage.create_with_xmsg_data("topic", data)
-        result = DpeMonitorCallBack().callback(msg)
+        DpeMonitorCallBack().callback(self.make_serialized_msg())
         self.assertEqual(1, len(DPESnapshot.objects.all()))
         self.assertTrue("DPERuntime" in DPESnapshot.objects.all()[0].get_data())

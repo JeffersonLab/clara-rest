@@ -1,6 +1,5 @@
-#!/usr/bin/env python
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -20,15 +19,34 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.conf.urls import patterns, url
-from ui.views import DpeDetail, DpeList, ServiceDetail
+from django.contrib.admin import ModelAdmin, TabularInline, site
 
-urlpatterns = patterns(
-                '',
-                url(r'^dpes/?$', DpeList, name="ui-dpes-list"),
-                url(r'^dpes/(?P<DPE_id>[\d+])/?$', DpeDetail,
-                    name="ui-dpe-detail"),
-                url(r'^dpes/(?P<DPE_id>[\d+])/container/(?P<cont_id>\d+)/service/(?P<service_id>\d+)/?$',
-                    ServiceDetail, name="ui-service-detail"),
-                )
+from ClaraNodes.models import Node
+from ClaraNodes.Container.models import Container
+from ClaraNodes.Container.Service.models import ServiceEngine
+
+
+class ContainerInline(TabularInline):
+    model = Container
+    fields = ('name',)
+
+
+class NodeAdmin(ModelAdmin):
+    model = Node
+    readonly_fields = ('modified',)
+    inlines = (ContainerInline, )
+
+
+class ServiceEngineAdmin(ModelAdmin):
+    model = ServiceEngine
+    readonly_fields = ('modified',)
+
+
+class ContainerAdmin(ModelAdmin):
+    model = Container
+    readonly_fields = ('modified',)
+
+site.register(Node, NodeAdmin)
+site.register(Container, ContainerAdmin)
+site.register(ServiceEngine, ServiceEngineAdmin)
 

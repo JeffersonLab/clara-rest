@@ -22,7 +22,7 @@
 
 from django.db import models
 
-from Nodes.Container.models import Container
+from ClaraNodes.Container.models import Container
 """
 A CLARA service engine runs in one container at one DPE.<br>
 Must be threadsafe. Must implement CLARA service engine interface.

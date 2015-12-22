@@ -19,34 +19,10 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.contrib.admin import ModelAdmin, TabularInline, site
+from django.contrib.admin import ModelAdmin, site
+from ClaraDataRegistrar.models import DPESnapshot 
 
-from Nodes.models import Node
-from Nodes.Container.models import Container
-from Nodes.Container.Service.models import ServiceEngine
+class DPESnapshotAdmin(ModelAdmin):
+    model=DPESnapshot
 
-
-class ContainerInline(TabularInline):
-    model = Container
-    fields = ('name',)
-
-
-class NodeAdmin(ModelAdmin):
-    model = Node
-    readonly_fields = ('modified',)
-    inlines = (ContainerInline, )
-
-
-class ServiceEngineAdmin(ModelAdmin):
-    model = ServiceEngine
-    readonly_fields = ('modified',)
-
-
-class ContainerAdmin(ModelAdmin):
-    model = Container
-    readonly_fields = ('modified',)
-
-site.register(Node, NodeAdmin)
-site.register(Container, ContainerAdmin)
-site.register(ServiceEngine, ServiceEngineAdmin)
-
+site.register(DPESnapshot, DPESnapshotAdmin)

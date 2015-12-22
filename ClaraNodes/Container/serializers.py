@@ -23,7 +23,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from Service.serializers import ServiceEngineSerializer
-from Nodes.models import Node
+from ClaraNodes.models import Node
 from models import Container
 
 

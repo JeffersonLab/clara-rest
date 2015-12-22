@@ -19,10 +19,12 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.contrib.admin import ModelAdmin, site
-from RuntimeDataRegistrar.models import DPESnapshot 
+from django.conf.urls import patterns, url
 
-class DPESnapshotAdmin(ModelAdmin):
-    model=DPESnapshot
+from ClaraNodes.views import Dpe, Dpes
 
-site.register(DPESnapshot, DPESnapshotAdmin)
+urlpatterns = patterns('',
+                       url(r'^$', Dpes.as_view(), name="rest-dpes-list"),
+                       url(r'^(?P<DPE_id>[a-z0-9]+)/?$', Dpe.as_view(),
+                           name="rest-dpe-detail"),
+                       )

@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -18,6 +18,7 @@
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
+
 from django.conf.urls import patterns, url
 
 from views import ServiceEngineNestedList, ServiceEngineNestedDetail

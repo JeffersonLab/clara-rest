@@ -22,7 +22,6 @@
 import os
 import sys
 import django
-
 from xmsg.core.xMsgUtil import xMsgUtil
 
 proj_path = os.path.abspath(os.path.dirname(__file__))[0:-24]
@@ -40,7 +39,7 @@ from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 def run_monitor_subscriber():
     try:
-        topic = "dpeAlive"
+        topic = "dpeReport"
         run_subscriber = PeriodicDataSubscriber(topic, topic)
         run_subscription = run_subscriber.subscribe(DpeMonitorCallBack())
         xMsgUtil.log("Subscribed to runtime messages with topic %s" % topic)

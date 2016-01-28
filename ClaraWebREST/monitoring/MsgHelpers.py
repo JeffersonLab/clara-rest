@@ -32,9 +32,7 @@ class RuntimeMsgHelper(object):
             information for specific DPE
     """
     def __init__(self, msg):
-        ds_message = xMsgData()
-        ds_message.ParseFromString(msg.get_data())
-        self._message = ds_message.STRING
+        self._message = msg.get_data()
 
     def __str__(self):
         """Returns the runtime message (JSON) in string format
@@ -90,9 +88,7 @@ class RegistrationMsgHelper(object):
             information for specific DPE
     """
     def __init__(self, msg):
-        ds_message = xMsgData()
-        ds_message.ParseFromString(msg.get_data())
-        self._message = ds_message.STRING
+        self._message = msg.get_data()
 
     def __str__(self):
         """Returns the registration message (JSON) in string format

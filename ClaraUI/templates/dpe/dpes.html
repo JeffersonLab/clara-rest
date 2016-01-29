@@ -12,7 +12,7 @@
 		<div class="number"><i class="glyphicons-icon database_plus white"></i> {{ dpe.n_cores}}</div>
 		<div class="title">{{ dpe.hostname }}_{{ dpe.language }}</div>
 		<div class="footer">
-			<a href="{% url 'ui-dpe-detail' dpe.node_id %}"> read full report</a>
+			<a href="{% url 'ClaraUI-dpe-detail' dpe.node_id %}"> read full report</a>
 		</div>
 	</div>
 	{% endfor %}

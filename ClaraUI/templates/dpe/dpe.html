@@ -16,8 +16,8 @@
 				<span class="percent">percent</span>
 				<div class="circleStat"><input type="text" value="{{cpu_ratio}}" class="whiteCircle" /></div>
 				<div class="footer">
-					<span class="count">
-						<span class="number">1</span>
+					<span class="value">
+						<span class="number">1.0</span>
 						<span class="unit">Ghz</span>
 					</span>
 					<span class="sep"> / </span>
@@ -99,5 +99,5 @@
 {% endblock %}
 
 {% block footerscript %}
-<script>$(document).ready(get_charts("{% url 'rest-dpe-detail' dpe_id%}"+"/?format=json&runtime=all"))</script>
+<script>$(document).ready(get_charts("{% url 'rest-dpe-detail' dpe_id%}/?format=json&runtime=all"))</script>
 {% endblock %}

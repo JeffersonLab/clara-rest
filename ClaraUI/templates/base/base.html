@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		
 		<!-- end: CSS -->
-
+        {% javascript 'base' %}
 		<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js' %}"></script>
@@ -65,7 +65,7 @@
 							<i class="icon-angle-right"></i>
 						</li>
 						<li>
-							<a href="{% url 'ui-dpes-list' %}">DPEs Dashboard</a>
+							<a href="{% url 'ClaraUI-dpes-list' %}">DPEs Dashboard</a>
 							<i class="icon-angle-right"></i>
 						</li>
 						{% block breadcrumbs %} {% endblock %}
@@ -76,13 +76,6 @@
 		</div><!--/.fluid-container-->
 		<div class="clearfix"></div>
 
-		<footer>
-			<p><span style="text-align:left;float:left">&copy; 2013 <a href="http://jiji262.github.io/Bootstrap_Metro_Dashboard/" alt="Bootstrap_Metro_Dashboard">Bootstrap Metro Dashboard</a></span></p>
-		</footer>
-
-		<!-- start: JavaScript-->
-		{% javascript 'base' %}
 		{% block footerscript %}{% endblock %}
-		<!-- end: JavaScript-->
 	</body>
 </html>

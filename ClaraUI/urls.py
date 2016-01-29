@@ -28,7 +28,7 @@ urlpatterns = patterns(
                 url(r'^dpes/?$', DpeList, name="ClaraUI-dpes-list"),
                 url(r'^dpes/(?P<DPE_id>[\d+])/?$', DpeDetail,
                     name="ClaraUI-dpe-detail"),
-                url(r'^dpes/(?P<DPE_id>[\d+])/container/(?P<cont_id>\d+)/service/(?P<service_id>\d+)/?$',
+                url(r'^dpes/(?P<DPE_id>[\d+])/container/(?P<cont_id>\d+)' +
+                    '/service/(?P<service_id>\d+)/?$',
                     ServiceDetail, name="ClaraUI-service-detail"),
                 )
-

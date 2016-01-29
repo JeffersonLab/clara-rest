@@ -57,10 +57,10 @@ def DpeDetail(request, DPE_id, format=None):
         c_reg_data = json.load(urlopen(con_reg_url))
 
         dpe_name = d_reg_data['hostname'] + "_" + d_reg_data['language']
-        cpu_ratio = float(d_run_data['cpu_usage'])*100
-        mem_size = 32000# int(d_reg_data['memory_size'])
+        cpu_ratio = float(d_run_data['cpu_usage']) * 100
+        mem_size = int(d_reg_data['memory_size'])
         mem_usage = d_run_data['memory_usage']
-        mem_ratio = (mem_size/mem_usage)*100
+        mem_ratio = float(mem_usage)/float(mem_size)*100
 
         data = {'dpe_name': dpe_name,
                 'dpe_id': d_reg_data['node_id'],

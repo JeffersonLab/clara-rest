@@ -36,7 +36,7 @@ def container_validator(container_id):
         print "DPE exists and its available"
     except Node.DoesNotExist:
         raise ValidationError(u'DPE must be registered and available!')
-    
+
 
 class ContainerSerializer(serializers.ModelSerializer):
     services = ServiceEngineSerializer(many=True, read_only=True)

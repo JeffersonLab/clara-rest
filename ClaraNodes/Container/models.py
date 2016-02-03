@@ -20,7 +20,6 @@
 #
 
 from django.db import models
-from datetime import datetime
 
 from ClaraWebREST.utils.Validators import validate_node_existence
 from ClaraNodes.models import Node
@@ -39,14 +38,3 @@ class Container(models.Model):
 
     def __str__(self):
         return self.name
-
-    def delete(self):
-        try:
-            orchestrator = WebOrchestrator()
-            orchestrator.remove_container(str(self))
-
-        except Exception as e:
-            raise Exception(e)
-            return
-
-        super(Container, self).delete()

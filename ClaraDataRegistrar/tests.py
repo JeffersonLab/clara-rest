@@ -99,13 +99,8 @@ TEST_CASE = {
 
 class DpeSnapshotTests(TestCase):
 
-    def setUp(self):
-        TestCase.setUp(self)
-
     def make_serialized_msg(self):
-        data = xMsgData()
-        data.STRING = bytes(json.dumps(TEST_CASE))
-        return xMsgMessage.create_with_xmsg_data("topic", data)
+        return xMsgMessage.create_with_string("topic", json.dumps(TEST_CASE))
 
     def test_create_a_simple_snapshot_from_test_case(self):
         snap = DPESnapshot.builder(TEST_CASE)

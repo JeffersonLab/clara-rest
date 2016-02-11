@@ -185,9 +185,7 @@ TEST_CASE_5 = {
 class TestRuntimeMsgHelper(unittest.TestCase):
 
     def make_serialized_msg(self, case):
-        data = xMsgData()
-        data.STRING = json.dumps(case)
-        return xMsgMessage.create_with_xmsg_data("topic", data)
+        return xMsgMessage.create_with_string("topic", json.dumps(case))
 
     def test_convert_message_to_json(self):
         parser = RuntimeMsgHelper(self.make_serialized_msg(TEST_CASE_1))

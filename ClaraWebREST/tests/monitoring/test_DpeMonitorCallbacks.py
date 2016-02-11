@@ -110,9 +110,7 @@ class TestMonitorCallbacks(unittest.TestCase):
             return False
 
     def make_serialized_msg(self, test_case):
-        data = xMsgData_pb2.xMsgData()
-        data.STRING = json.dumps(test_case)
-        return xMsgMessage("topic", data.SerializeToString())
+        return xMsgMessage.create_with_string("topic", json.dumps(test_case))
 
     def test_register_dpe_first_time_should_register_dpe_in_db(self):
         DpeMonitorCallBack().callback(self.make_serialized_msg(reg_msg))

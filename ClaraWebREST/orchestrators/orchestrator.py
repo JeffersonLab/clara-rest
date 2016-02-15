@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -22,67 +22,23 @@
 from xmsg.core.xMsgMessage import xMsgMessage
 
 from clara.base.ClaraUtils import ClaraUtils
-from clara.base.CConstants import CConstants
-from clara.base.CBase import CBase
+from clara.base.ClaraBase import ClaraBase
+from clara.util.CConstants import CConstants
 
 
-class WebOrchestrator:
+class RESTOrchestrator(ClaraBase):
     """Web orchestrator wrapper: this class will be in charge of connecting
     the database with Clara's registrar information
     """
     def __init__(self):
-        self.base = CBase("localhost")
+        super(RESTOrchestrator, self).__init__(name="clara_rest_server",
+                                               frontend="localhost",
+                                               proxy_address="localhost")
+        self.node_connection = self.connect()
 
-    def __build_data(self, *args):
-        """Data builder method
+    def __build_message(self, topic, data):
+        return xMsgMessage.create_with_string(topic, data)
 
-        Returns a string with the form:
-        data?data1?data...
-        Args:
-            args: Non keyworded argument list
-
-        Returns:
-            data (String): data string
-        """
-        return str(CConstants.DATA_SEP).join(args)
-
-    def __build_topic(self, *args):
-        """Topic builder method
-
-        Returns a string with the form:
-        data:data1:data...
-        Args:
-            args: Non keyworded argument list
-
-        Returns:
-            topic (String): topic string
-        """
-        return str(CConstants.TOPIC_SEP).join(args)
-
-    def __build_message(self, topic, data=None):
-        """Message builder
-        Args:
-            topic (String): topic for the message
-            data (String): data string for the message
-        Returns
-            xMsgMessage: message built
-        """
-        return xMsgMessage(topic, data)
-
-    def __send_message(self, message):
-        """Sends message to specific Clara Actor
-
-        Args:
-            message (xMsgMessage): message for the orchestrator, to be sent
-                to the specific actor. Message has the following structure:
-                * topic: ACTOR_LABEL_IDENTIFIER (DPE, CONTAINER, SERVICE)
-                * data: action to be performed by xMsg actor
-        """
-        message.get_metadata().dataType = "text/string"
-        try:
-            self.base.generic_send(message)
-        except Exception as e:
-            raise Exception("Could not send request: %s" % e)
 
     def dpe_exit(self, dpe_name):
         """Forces dpe to exit
@@ -92,24 +48,11 @@ class WebOrchestrator:
         Args:
             dpe_name (String): dpe name
         """
-        topic = self.__build_topic(CConstants.DPE, dpe_name)
-        msg = self.__build_message(topic, CConstants.DPE_EXIT)
-        self.__send_message(msg)
+        topic = ClaraUtils.build_topic(CConstants.DPE, dpe_name)
+        data = ClaraUtils.build_data(CConstants.DPE_EXIT)
+        self.send(self.__build_message(topic, data))
 
-    def dpe_ping(self, dpe_name):
-        """Simple ping function to check if dpe is active or not
-
-        Args:
-            dpe_name (String): the canonical name of the DPE
-
-        Returns:
-            boolean: True if active otherwise False
-        """
-        # For now it will return False and will not do anything
-        # Just a placeholder
-        return False
-
-    def deploy_container(self, container_name):
+    def deploy_container(self, dpe_name, container_name):
         """Sends a request to deploy a container and waits until it is deployed.
         The request is sent to a running DPE of the given language.
         If no DPE is running in the node, the message is lost.
@@ -117,19 +60,14 @@ class WebOrchestrator:
         ignored.
 
         Args:
+            dpe_name (String): the canonical name of dpe
             container_name (String): the canonical name of the container
         """
-        host = ClaraUtils.get_hostname(container_name)
-        dpe = ClaraUtils.get_dpe_name(container_name)
-        name = ClaraUtils.get_container_name(container_name)
+        topic = ClaraUtils.build_topic(CConstants.DPE, dpe_name)
+        data = ClaraUtils.build_data(CConstants.START_CONTAINER, container_name)
+        self.send(self.__build_message(topic, data))
 
-        topic = self.__build_topic(CConstants.DPE, dpe)
-        data = self.__build_data(CConstants.START_CONTAINER, name)
-
-        msg = self.__build_message(topic, data)
-        self.__send_message(msg)
-
-    def remove_container(self, container_name):
+    def remove_container(self, dpe_name, container_name):
         """Sends a request to remove a container.
         The request is sent to a running DPE of the given language.
         If no DPE is running in the node, the message is lost.
@@ -137,38 +75,21 @@ class WebOrchestrator:
         ignored.
 
         Args:
-            container_name (String): the canonical name of the container
+            dpe_name (String): the canonical name of dpe
+            container_name (String): the name of the container
         """
-        host = ClaraUtils.get_hostname(container_name)
-        dpe = ClaraUtils.get_dpe_name(container_name)
-        name = ClaraUtils.get_container_name(container_name)
+        topic = ClaraUtils.build_topic(CConstants.DPE, dpe_name)
+        data = ClaraUtils.build_data(CConstants.REMOVE_CONTAINER, container_name)
+        self.send(self.__build_message(topic, data))
 
-        topic = self.__build_topic(CConstants.DPE, dpe)
-        data = self.__build_data(CConstants.REMOVE_CONTAINER, name)
+    def deploy_service(self, container_name, engine_name, engine_class, pool_size):
+        topic = ClaraUtils.build_topic(CConstants.CONTAINER, container_name)
+        data = ClaraUtils.build_data(CConstants.DEPLOY_SERVICE,
+                                     engine_name, engine_class,
+                                     pool_size)
+        self.send(self.__build_message(topic, data))
 
-        msg = self.__build_message(topic, data)
-        self.__send_message(msg)
-
-    def deploy_service(self, service_name, service_class, pool_size=1):
-        """Sends a request to deploy a service.
-
-        If the container does not exist, the message is lost.
-        If there is a service with the given name in the container, the request
-        is ignored.
-
-        Args:
-            service_name (String): the canonical name of the service
-            service_class (String): the classpath of the service engine
-            pool_size (int): the maximum number of parallel engines to be
-                created
-        """
-        host = ClaraUtils.get_hostname(service_name)
-        container = ClaraUtils.get_container_canonical_name(service_name)
-        engine_name = ClaraUtils.get_engine_name(service_name)
-
-        topic = self.__build_topic(CConstants.CONTAINER, container)
-        data = self.__build_data(CConstants.DEPLOY_SERVICE, engine_name,
-                                 service_class, pool_size)
-
-        msg = self.__build_message(topic, data)
-        self.__send_message(msg)
+    def deploy_service(self, container_name, service_name):
+        topic = ClaraUtils.build_topic(CConstants.CONTAINER, container_name)
+        data = ClaraUtils.build_data(CConstants.REMOVE_SERVICE, service_name)
+        self.send(self.__build_message(topic, data))

@@ -83,13 +83,35 @@ class RESTOrchestrator(ClaraBase):
         self.send(self.__build_message(topic, data))
 
     def deploy_service(self, container_name, engine_name, engine_class, pool_size):
+        """Sends a request to deploy a service.
+        The request is sent to a running container of the given language.
+        If no container is running in the node, the message is lost.
+        If there is no container of the given name in the DPE, the request is
+        ignored.
+
+        Args:
+            container_name (String): the canonical name of the container
+            engine_name (String): the name of the engine to deploy
+            engine_class (String): the class that contains engine to deploy
+            pool_size (int): Pool size for engine
+        """
         topic = ClaraUtils.build_topic(CConstants.CONTAINER, container_name)
         data = ClaraUtils.build_data(CConstants.DEPLOY_SERVICE,
                                      engine_name, engine_class,
                                      pool_size)
         self.send(self.__build_message(topic, data))
 
-    def deploy_service(self, container_name, service_name):
+    def remove_service(self, container_name, service_name):
+        """Sends a request to remove a service.
+        The request is sent to a running DPE of the given language.
+        If no DPE is running in the node, the message is lost.
+        If there is no container of the given name in the DPE, the request is
+        ignored.
+
+        Args:
+            container_name (String): the canonical name of the container
+            service_name (String): service name to remove
+        """
         topic = ClaraUtils.build_topic(CConstants.CONTAINER, container_name)
         data = ClaraUtils.build_data(CConstants.REMOVE_SERVICE, service_name)
         self.send(self.__build_message(topic, data))

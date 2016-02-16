@@ -22,9 +22,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from Service.serializers import ServiceEngineSerializer
+from ClaraNodes.Container.Service.serializers import ServiceEngineSerializer
+from ClaraNodes.Container.models import Container
 from ClaraNodes.models import Node
-from models import Container
 
 
 def container_validator(container_id):
@@ -33,7 +33,6 @@ def container_validator(container_id):
     """
     try:
         Node.objects.get(container_id=container_id)
-        print "DPE exists and its available"
     except Node.DoesNotExist:
         raise ValidationError(u'DPE must be registered and available!')
 
@@ -41,10 +40,18 @@ def container_validator(container_id):
 class ContainerSerializer(serializers.ModelSerializer):
     services = ServiceEngineSerializer(many=True, read_only=True)
 
+    dpe_id = serializers.SerializerMethodField()
+    dpe_canonical_name = serializers.SerializerMethodField()
+    canonical_name = serializers.SerializerMethodField()
+    deployed_services = serializers.SerializerMethodField()
+
     class Meta:
         model = Container
-        fields = ('container_id', 'dpe', 'name', 'services')
-        read_only_fields = ('services', 'container_id')
+        fields = ('dpe_id','container_id', 'dpe_canonical_name','canonical_name',
+                  'name', 'deployed_services','services')
+        write_only_fields = ('dpe', 'name')
+        read_only_fields = ('services', 'container_id', 'dpe_canonical_name',
+                            'canonical_name')
 
     def create(self, validated_data):
         container = Container(dpe=validated_data['dpe'],
@@ -52,16 +59,14 @@ class ContainerSerializer(serializers.ModelSerializer):
         container.save()
         return container
 
+    def get_dpe_id(self, obj):
+        return int(obj.dpe.node_id)
 
-class ContainerNestedSerializer(serializers.ModelSerializer):
+    def get_dpe_canonical_name(self, obj):
+        return str(obj.get_dpe_name())
 
-    class Meta:
-        model = Container
-        fields = ('container_id', 'dpe', 'name')
-        read_only_fields = ('container_id', 'dpe')
+    def get_canonical_name(self, obj):
+        return str(obj.get_canonical_name())
 
-    def create(self, validated_data):
-        container = Container(dpe=validated_data['dpe'],
-                              name=validated_data['name'])
-        container.save()
-        return container
+    def get_deployed_services(self, obj):
+        return obj.services.count()

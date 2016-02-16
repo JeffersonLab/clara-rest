@@ -25,11 +25,20 @@ from ClaraNodes.models import Node
 
 
 class NodeSerializer(serializers.ModelSerializer):
+    canonical_name = serializers.SerializerMethodField()
+    deployed_containers = serializers.SerializerMethodField()
 
     class Meta:
         model = Node
-        fields = ('node_id', 'hostname', 'language', 'n_cores', 'memory_size',
-                  'start_time', 'modified')
+        fields = ('node_id', 'canonical_name','hostname', 'language',
+                  'n_cores', 'memory_size', 'deployed_containers',
+                  'start_time', 'modified', )
+
+    def get_canonical_name(self, obj):
+        return str(obj)
+
+    def get_deployed_containers(self, obj):
+        return obj.containers.count()
 
     def create(self, validated_data):
         node = Node(**validated_data)

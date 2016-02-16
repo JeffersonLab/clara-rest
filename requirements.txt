@@ -1,4 +1,5 @@
 git+ssh://git@git.earthdata.nasa.gov:7999/naiads/xmsg-python.git@master
+git+ssh://git@git.earthdata.nasa.gov:7999/naiads/clara-python.git@clara-base-dev
 Django==1.7.7
 djangorestframework==3.1.1
 djangorestframework-yaml==1.0.2

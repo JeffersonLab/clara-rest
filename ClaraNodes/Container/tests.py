@@ -25,13 +25,6 @@ from rest_framework.test import APITestCase
 
 class ContainerTests(APITestCase):
     fixtures = ['ClaraWebREST/tests/fixtures/Services.yaml']
-    url_nested = '/dpes/2/containers/'
-    url_nested_bad = '/dpes/200/containers/'
-    url_container = '/containers/'
-    url_del = url_nested+'2'
-    url_del_bad = url_nested+'1000'
-    url_del_container = url_container+'1'
-    url_container_bad = url_container+'2000'
     initial_data = {'name': 'abc'}
 
     def test_create_node_container(self):
@@ -46,7 +39,7 @@ class ContainerTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         '''
-        response = self.client.post(self.url_nested,
+        response = self.client.post('/dpes/2/containers/',
                                     self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -65,7 +58,7 @@ class ContainerTests(APITestCase):
         method: POST
         Should Return HTTP_400_BAD_REQUEST
         '''
-        response = self.client.post(self.url_nested_bad, self.initial_data,
+        response = self.client.post('/dpes/200/containers/', self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -81,7 +74,7 @@ class ContainerTests(APITestCase):
         method: DELETE
         Should Return HTTP_204_NO_CONTENT
         '''
-        response = self.client.delete(self.url_del, format='json')
+        response = self.client.delete('/dpes/2/containers/2', format='json')
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
     def test_delete_node_container_bad(self):
@@ -96,13 +89,13 @@ class ContainerTests(APITestCase):
         method: DELETE
         Should Return HTTP_404_NOT_FOUND
         '''
-        response = self.client.delete(self.url_del_bad, format='json')
+        response = self.client.delete('/dpes/2/containers/2000', format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_filter_container_request_obtains_filtered_data(self):
-        response = self.client.get(self.url_container + '?filter_by_containername=abc')
+        response = self.client.get('/containers/' + '?filter_by_containername=abc')
         self.assertEqual(2, len(response.data))
-        response = self.client.get(self.url_container + '?filter_by_servicename=calibration')
+        response = self.client.get('/containers/' + '?filter_by_servicename=calibration')
         self.assertEqual(2, len(response.data))
 
     def test_filter_container_request_obtains_filtered_data_for_specific_dpe(self):

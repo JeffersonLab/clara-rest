@@ -23,8 +23,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from serializers import ContainerSerializer, ContainerNestedSerializer
-from ClaraWebREST.orchestrators.orchestrator import RESTOrchestrator
+from ClaraNodes.Container.serializers import ContainerSerializer
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
 from ClaraNodes.models import Node
@@ -51,7 +50,7 @@ def find_container_object(container_id, dpe_id=None):
 
 class ContainersView(APIView):
 
-    def get(self, request, DPE_id=None):
+    def get(self, request):
         """
         Find all containers
         ---
@@ -199,7 +198,7 @@ class DpeContainersView(APIView):
         """
         DPE_id = int(DPE_id)
 
-        serializer = ContainerNestedSerializer(data=request.data)
+        serializer = ContainerSerializer(data=request.data)
         if serializer.is_valid():
             try:
                 node_object = Node.objects.get(node_id=DPE_id)

@@ -19,7 +19,6 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from mockito import *
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -35,7 +34,7 @@ class DPENodeTests(APITestCase):
       "hostname": "1.1.1.21",
       "modified": "2015-09-29T16:29:27.711",
       "n_cores": 24,
-      "memory_size": "64M"
+      "memory_size": 64
     }
 
     def test_create_node(self):
@@ -59,7 +58,7 @@ class DPENodeTests(APITestCase):
         self.assertEqual(3, len(response.data))
         response = self.client.get('/dpes/?filter_by_cores=8')
         self.assertEqual(3, len(response.data))
-        response = self.client.get('/dpes/?filter_by_memory=64M')
+        response = self.client.get('/dpes/?filter_by_memory=64')
         self.assertEqual(2, len(response.data))
         response = self.client.get('/dpes/?filter_by_containername=abc')
         self.assertEqual(2, len(response.data))

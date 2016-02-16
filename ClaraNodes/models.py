@@ -28,7 +28,7 @@ class Node(models.Model):
     hostname = models.CharField(max_length=40, blank=False)
     language = models.CharField(blank=False, max_length=20)
     n_cores = models.IntegerField(blank=False)
-    memory_size = models.CharField(blank=False, max_length=20)
+    memory_size = models.BigIntegerField(blank=False)
 
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)

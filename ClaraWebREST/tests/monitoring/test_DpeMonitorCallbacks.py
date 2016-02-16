@@ -38,13 +38,12 @@ reg_msg = {
     "hostname": "1.1.1.1",
     "language": "java",
     "n_cores": 8,
-    "memory_size": "64M",
+    "memory_size": 64,
     "start_time": str(date),
     "containers": [
       {
         'ContainerRegistration': {
           "name": "1.1.1.1:SomeContainerName",
-          "language": "_java",
           "author": "Vardan",
           "start_time": str(date),
           "services": [

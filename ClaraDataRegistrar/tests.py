@@ -23,9 +23,7 @@
 import simplejson as json
 from datetime import datetime
 from django.test import TestCase
-
 from xmsg.core.xMsgMessage import xMsgMessage
-from xmsg.data.xMsgData_pb2 import xMsgData
 
 from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from ClaraDataRegistrar.models import DPESnapshot
@@ -68,7 +66,7 @@ TEST_CASE = {
     "hostname": "1.1.1.1",
     "language": "java",
     "n_cores": 8,
-    "memory_size": "64M",
+    "memory_size": 64000000,
     "start_time": str(date),
     "containers": [
       {

@@ -74,7 +74,6 @@ TEST_CASE = {
       {
         'ContainerRegistration': {
           "name": "1.1.1.1:SomeContainerName",
-          "language": "_java",
           "author": "Vardan",
           "start_time": str(date),
           "services": [
@@ -85,7 +84,6 @@ TEST_CASE = {
                 "author": "Vardan",
                 "version": "1.0",
                 "description": "description of what i do",
-                "language": "Java",
                 "start_time": str(date)
               }
             }

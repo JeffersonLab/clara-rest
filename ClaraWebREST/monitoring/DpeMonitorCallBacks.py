@@ -59,7 +59,6 @@ def save_registration_data(msg):
         container, _ = Container.objects.get_or_create(dpe=node,
                                                        author=cr['author'],
                                                        name=cr['name'],
-                                                       language=cr['language'],
                                                        start_time=cr['start_time'])
         container.save()
         services = cr.pop('services')
@@ -72,7 +71,6 @@ def save_registration_data(msg):
                                                              engine_name=sr['engine_name'],
                                                              author=sr['author'],
                                                              version=sr['version'],
-                                                             language=sr['language'],
                                                              description=sr['description'],
                                                              start_time=sr['start_time'])
             service.save()

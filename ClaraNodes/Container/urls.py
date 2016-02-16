@@ -21,10 +21,10 @@
 
 from django.conf.urls import patterns, url
 
-from views import ContainerList, ContainerDetail
+from views import ContainersView, ContainerView
 
 urlpatterns = patterns('',
-                       url(r'^$', ContainerList.as_view()),
+                       url(r'^$', ContainersView.as_view()),
                        url(r'^(?P<container_id>[a-z0-9]+)/?$',
-                           ContainerDetail.as_view())
+                           ContainerView.as_view())
                        )

@@ -21,13 +21,13 @@
 
 from django.conf.urls import patterns, url, include
 
-from views import ContainerNestedList, ContainerNestedDetail
+from views import DpeContainerView, DpeContainersView
 
 urlpatterns = patterns('',
                        url(r'^(?P<DPE_id>[a-z0-9]+)/containers/?$',
-                           ContainerNestedList.as_view()),
+                           DpeContainersView.as_view()),
                        url(r'^(?P<DPE_id>[a-z0-9]+)/containers/(?P<container_id>[a-z0-9]+)/?$',
-                           ContainerNestedDetail.as_view()),
+                           DpeContainerView.as_view()),
                        url(r'^(?P<DPE_id>[a-z0-9]+)/containers/(?P<container_id>[a-z0-9]+)/services/',
                            include('ClaraNodes.Container.Service.nestedUrls'))
                        )

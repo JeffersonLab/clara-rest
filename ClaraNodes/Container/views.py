@@ -19,12 +19,12 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
 from serializers import ContainerSerializer, ContainerNestedSerializer
+from ClaraWebREST.orchestrators.orchestrator import RESTOrchestrator
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
 from ClaraNodes.models import Node
@@ -34,15 +34,22 @@ Views for json responses for the Clara Containers at Specific Hostname (DPE)
 """
 
 
-def find_container_object(container_id):
+def find_container_object(container_id, dpe_id=None):
     try:
-        return Container.objects.get(container_id=container_id)
+        if dpe_id:
+            node = Node.objects.get(node_id=dpe_id)
+            return node.containers.get(container_id=container_id)
+        else:
+            return Container.objects.get(container_id=container_id)
 
     except Container.DoesNotExist:
-        raise Http404("Container not found!")
+        return None
+
+    except Node.DoesNotExist:
+        return None
 
 
-class ContainerList(APIView):
+class ContainersView(APIView):
 
     def get(self, request, DPE_id=None):
         """
@@ -75,35 +82,8 @@ class ContainerList(APIView):
         serializer = ContainerSerializer(containers_data, many=True)
         return Response(serializer.data)
 
-    def post(self, request, DPE_id=None):
-        """
-        Create a new Clara Container
-        ---
-        parameters:
-            - name: dpe_id
-              description: ID of DPE
-              paramType: string
-              type: string
-            - name: name
-              description: ID of container
-              paramType: string
-              type: string
-        response_serializer:
-            ClaraNodes.Container.serializers.ContainerSerializer
-        responseMessages:
-            - code: 401
-              message: Not authenticated
-        """
 
-        serializer = ContainerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ContainerDetail(APIView):
+class ContainerView(APIView):
 
     def get(self, request, container_id):
         """
@@ -128,8 +108,11 @@ class ContainerDetail(APIView):
         container_id = int(container_id)
 
         container_object = find_container_object(container_id)
-        serializer = ContainerSerializer(container_object)
-        return Response(serializer.data)
+        if container_object:
+            serializer = ContainerSerializer(container_object)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, container_id):
         """
@@ -152,11 +135,14 @@ class ContainerDetail(APIView):
         container_id = int(container_id)
 
         container_object = find_container_object(container_id)
-        container_object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if container_object:
+            container_object.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-class ContainerNestedList(APIView):
+class DpeContainersView(APIView):
 
     def get(self, request, DPE_id):
         """
@@ -228,7 +214,7 @@ class ContainerNestedList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ContainerNestedDetail(APIView):
+class DpeContainerView(APIView):
 
     def get(self, request, container_id, DPE_id=None):
         """
@@ -256,10 +242,14 @@ class ContainerNestedDetail(APIView):
               message: Resource not found
         """
         container_id = int(container_id)
+        DPE_id = int(DPE_id)
 
-        container_object = find_container_object(container_id)
-        serializer = ContainerSerializer(container_object)
-        return Response(serializer.data)
+        container_object = find_container_object(container_id, DPE_id)
+        if container_object:
+            serializer = ContainerSerializer(container_object)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, DPE_id, container_id):
         """
@@ -286,7 +276,11 @@ class ContainerNestedDetail(APIView):
               message: Resource not found
         """
         container_id = int(container_id)
+        DPE_id = int(DPE_id)
 
-        container_object = find_container_object(container_id)
-        container_object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        container_object = find_container_object(container_id, DPE_id)
+        if container_object:
+            container_object.delete()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)

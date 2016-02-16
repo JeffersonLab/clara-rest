@@ -21,6 +21,7 @@
 
 from django.db import models
 
+from ClaraWebREST.orchestrators.orchestrator import RESTOrchestrator
 from ClaraWebREST.utils.Validators import validate_node_existence
 from ClaraNodes.models import Node
 
@@ -31,10 +32,23 @@ class Container(models.Model):
                             validators=[validate_node_existence])
     author = models.CharField(blank=False, max_length=40)
     name = models.CharField(blank=False, max_length=40)
-    language = models.CharField(blank=False, max_length=20)
 
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return self.name
+        return self.get_canonical_name()
+
+    def get_dpe_name(self):
+        return str(self.dpe)
+
+    def get_language(self):
+        return str(self.dpe.language)
+
+    def get_canonical_name(self):
+        return str(self.get_dpe_name() + ":" + self.name)
+
+    def save(self, *args, **kwargs):
+        orchestrator = RESTOrchestrator()
+        orchestrator.deploy_container(self.get_dpe_name(), self.name)
+        super(Container, self).save(*args, **kwargs)

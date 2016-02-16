@@ -28,7 +28,7 @@ class ContainerTests(APITestCase):
     url_nested = '/dpes/2/containers/'
     url_nested_bad = '/dpes/200/containers/'
     url_container = '/containers/'
-    url_del = url_nested+'1'
+    url_del = url_nested+'2'
     url_del_bad = url_nested+'1000'
     url_del_container = url_container+'1'
     url_container_bad = url_container+'2000'
@@ -46,13 +46,12 @@ class ContainerTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         '''
-        pass
-#         response = self.client.post(self.url_nested,
-#                                     self.initial_data,
-#                                     format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertContains(response=response, text="abc", count=1,
-#                             status_code=201, msg_prefix="", html=False)
+        response = self.client.post(self.url_nested,
+                                    self.initial_data,
+                                    format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertContains(response=response, text="abc", count=1,
+                            status_code=201, msg_prefix="", html=False)
 
     def test_create_node_container_bad(self):
         '''
@@ -77,14 +76,13 @@ class ContainerTests(APITestCase):
 
         Parameters
         ==========
-        URL:/dpes/2/containers/1
+        URL:/dpes/2/containers/2
         data: {name:abc}
         method: DELETE
         Should Return HTTP_204_NO_CONTENT
         '''
-        pass
-#         response = self.client.delete(self.url_del, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.delete(self.url_del, format='json')
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
     def test_delete_node_container_bad(self):
         '''
@@ -99,54 +97,6 @@ class ContainerTests(APITestCase):
         Should Return HTTP_404_NOT_FOUND
         '''
         response = self.client.delete(self.url_del_bad, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_create_container(self):
-        '''
-        We must ensure that the container instance gets created
-        correctly into the database
-
-        Parameters
-        ==========
-        URL:/containers/
-        data: {name: abcdefghijk, dpe: 2}
-        method: POST
-        Should Return HTTP_201_CREATED
-        '''
-        container_data = {'name': 'abcdefghijk', 'dpe': '2'}
-        response = self.client.post(self.url_container, container_data,
-                                    format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-    def test_create_container_bad(self):
-        '''
-        We must ensure that the container instance gets created
-        correctly into the database
-
-        Parameters
-        ==========
-        URL:/containers/
-        data: {name: abcdefghijk, dpe: 2000}
-        method: POST
-        Should Return HTTP_400_BAD_REQUEST
-        '''
-        container_bad_data = {'name': 'abcdefghijk', 'dpe': '2000'}
-        response = self.client.post(self.url_container, container_bad_data,
-                                    format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_delete_container_bad(self):
-        '''
-        We must ensure that the container instance gets the right exception
-        when deleted with a bad id
-
-        Parameters
-        ==========
-        URL:/containers/2000
-        method: DELETE
-        Should Return HTTP_404_NOT_FOUND
-        '''
-        response = self.client.delete(self.url_container_bad, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_filter_container_request_obtains_filtered_data(self):

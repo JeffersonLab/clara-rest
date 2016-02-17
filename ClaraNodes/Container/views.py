@@ -50,7 +50,7 @@ def find_container_object(container_id, dpe_id=None):
 
 class ContainersView(APIView):
 
-    def get(self, request):
+    def get(self, request, DPE_id=None):
         """
         Find all containers
         ---
@@ -69,7 +69,10 @@ class ContainersView(APIView):
         """
         container_filter = request.GET.get('filter_by_containername')
         service_filter = request.GET.get('filter_by_servicename')
-        containers_data = Container.objects.all()
+        if DPE_id:
+            containers_data = Node.objects.get(node_id=DPE_id).containers
+        else:
+            containers_data = Container.objects.all()
 
         if container_filter:
             containers_data = containers_data.filter(name__contains=container_filter)
@@ -81,82 +84,11 @@ class ContainersView(APIView):
         serializer = ContainerSerializer(containers_data, many=True)
         return Response(serializer.data)
 
-
-class ContainerView(APIView):
-
-    def get(self, request, container_id):
+    def post(self, request, DPE_id=None):
         """
-        Get the registration information of a Clara Container using its id
+        Create a new Clara Container
         ---
-        parameters:
-            - name: container_id
-              description: ID of container
-              required: True
-              paramType: path
-              type: string
-        response_serializer:
-            ClaraNodes.serializers.NodeSerializer
-        responseMessages:
-            - code: 400
-              message: Bad request
-            - code: 401
-              message: Not authenticated
-            - code: 404
-              message: Resource not found
-        """
-        container_id = int(container_id)
-
-        container_object = find_container_object(container_id)
-        if container_object:
-            serializer = ContainerSerializer(container_object)
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-    def delete(self, request, container_id):
-        """
-        Delete an specific Container instance using its id
-        ---
-        parameters:
-            - name: container_id
-              description: ID of container
-              required: True
-              paramType: path
-              type: string
-        responseMessages:
-            - code: 400
-              message: Bad request
-            - code: 401
-              message: Not authenticated
-            - code: 404
-              message: Resource not found
-        """
-        container_id = int(container_id)
-
-        container_object = find_container_object(container_id)
-        if container_object:
-            container_object.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-class DpeContainersView(APIView):
-
-    def get(self, request, DPE_id):
-        """
-        Find all containers for determined dpe
-        ---
-        parameters:
-            - name: filter_by_containername
-              type: string
-              paramType: query
-              description: container name to filter
-            - name: filter_by_servicename
-              type: string
-              paramType: query
-              description: containers containing service
-        response_serializer:
+        request_serializer:
             ClaraNodes.Container.serializers.ContainerSerializer
         responseMessages:
             - code: 400
@@ -166,65 +98,39 @@ class DpeContainersView(APIView):
             - code: 404
               message: Resource not found
         """
-        DPE_id = int(DPE_id)
 
-        container_filter = request.GET.get('filter_by_containername')
-        service_filter = request.GET.get('filter_by_servicename')
-        containers_data = Node.objects.get(node_id=DPE_id).containers.all()
+        try:
+            if DPE_id:
+                node, created = Node.objects.get(node_id=DPE_id).containers.get_or_create(**request.data)
+                if created:
+                    node.save()
+                    return Response(status=status.HTTP_201_CREATED)
 
-        if container_filter:
-            containers_data = containers_data.filter(name__contains=container_filter)
+                else:
+                    return Response(status=status.HTTP_200_OK)
 
-        elif service_filter:
-            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
-            containers_data = containers_data.filter(services=filtered_services)
+            else:
+                node = Node.objects.get(node_id=request.data.pop('dpe'))
+                container, created = node.containers.get_or_create(**request.data)
 
-        serializer = ContainerSerializer(containers_data, many=True)
-        return Response(serializer.data)
+                if created:
+                    container.save()
+                    return Response(status=status.HTTP_201_CREATED)
 
-    def post(self, request, DPE_id):
-        """
-        Create a new Clara Container
-        ---
-        request_serializer:
-            ClaraNodes.Container.serializers.ContainerNestedSerializer
-        responseMessages:
-            - code: 400
-              message: Bad request
-            - code: 401
-              message: Not authenticated
-            - code: 404
-              message: Resource not found
-        """
-        DPE_id = int(DPE_id)
+                else:
+                    return Response(status=status.HTTP_200_OK)
 
-        serializer = ContainerSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                node_object = Node.objects.get(node_id=DPE_id)
-                serializer.save(dpe=node_object)
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
-
-            except Node.DoesNotExist:
-                return Response(serializer.errors,
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Node.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class DpeContainerView(APIView):
+class ContainerView(APIView):
 
     def get(self, request, container_id, DPE_id=None):
         """
         Get the registration information of a Clara Container using its id
         ---
         parameters:
-            - name: DPE_id
-              description: ID of DPE
-              required: True
-              paramType: path
-              type: string
             - name: container_id
               description: ID of container
               required: True
@@ -241,7 +147,6 @@ class DpeContainerView(APIView):
               message: Resource not found
         """
         container_id = int(container_id)
-        DPE_id = int(DPE_id)
 
         container_object = find_container_object(container_id, DPE_id)
         if container_object:
@@ -250,22 +155,16 @@ class DpeContainerView(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, DPE_id, container_id):
+    def delete(self, request, container_id, DPE_id=None):
         """
         Delete an specific Container instance using its id
         ---
         parameters:
-            - name: DPE_id
-              description: ID of DPE
-              required: True
-              paramType: path
-              type: string
             - name: container_id
               description: ID of container
               required: True
               paramType: path
               type: string
-        response_serializer: ClaraNodes.serializers.NodeSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -275,9 +174,8 @@ class DpeContainerView(APIView):
               message: Resource not found
         """
         container_id = int(container_id)
-        DPE_id = int(DPE_id)
 
-        container_object = find_container_object(container_id, DPE_id)
+        container_object = find_container_object(container_id, dpe_id=DPE_id)
         if container_object:
             container_object.delete()
             return Response(status=status.HTTP_202_ACCEPTED)

@@ -38,8 +38,7 @@ def container_validator(container_id):
 
 
 class ContainerSerializer(serializers.ModelSerializer):
-    services = ServiceEngineSerializer(many=True, read_only=True)
-
+    services = ServiceEngineSerializer(many=True, read_only=True, required=False)
     dpe_id = serializers.SerializerMethodField()
     dpe_canonical_name = serializers.SerializerMethodField()
     canonical_name = serializers.SerializerMethodField()
@@ -47,17 +46,14 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ('dpe_id','container_id', 'dpe_canonical_name','canonical_name',
+        fields = ('dpe_id','container_id', 'dpe_canonical_name', 'canonical_name',
                   'name', 'deployed_services','services')
         write_only_fields = ('dpe', 'name')
         read_only_fields = ('services', 'container_id', 'dpe_canonical_name',
                             'canonical_name')
 
     def create(self, validated_data):
-        container = Container(dpe=validated_data['dpe'],
-                              name=validated_data['name'])
-        container.save()
-        return container
+        return Container(**validated_data)
 
     def get_dpe_id(self, obj):
         return int(obj.dpe.node_id)

@@ -20,6 +20,10 @@
 #
 
 from django.conf.urls import patterns, url
-from views import ServiceEngineList
+from ClaraNodes.Container.Service.views import ServicesView, ServiceView
 
-urlpatterns = patterns('', url(r'^$', ServiceEngineList.as_view()))
+urlpatterns = patterns('',
+                       url(r'^$',ServicesView.as_view(), name='service-list'),
+                       url(r'^(?P<service_id>[a-z0-9]+)/?$', ServiceView.as_view(),
+                           name='service-detail'),
+                       )

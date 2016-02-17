@@ -21,8 +21,8 @@
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.generic.base import RedirectView
+from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = patterns('',
@@ -34,7 +34,6 @@ urlpatterns = patterns('',
                                                   namespace='rest_framework')),
                        url(r'^docs/', include('rest_framework_swagger.urls')),
                        url(r'^dpes/', include('ClaraNodes.urls')),
-                       url(r'^dpes/', include('ClaraNodes.Container.nestedUrls')),
                        url(r'^containers/', include('ClaraNodes.Container.urls')),
                        url(r'^services/', include('ClaraNodes.Container.Service.urls')),
                        url(r'^ClaraUI/', include('ClaraUI.urls')),

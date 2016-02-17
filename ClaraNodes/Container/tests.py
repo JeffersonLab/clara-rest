@@ -25,7 +25,8 @@ from rest_framework.test import APITestCase
 
 class ContainerTests(APITestCase):
     fixtures = ['ClaraWebREST/tests/fixtures/Services.yaml']
-    initial_data = {'name': 'abc'}
+    initial_data = {'name': 'abcdefghijklmnopqrs'}
+    initial_data_complete = {'dpe': 1, 'name': 'somelongname.'}
 
     def test_create_node_container(self):
         '''
@@ -39,12 +40,26 @@ class ContainerTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         '''
-        response = self.client.post('/dpes/2/containers/',
-                                    self.initial_data,
+        response = self.client.post('/dpes/1/containers/', self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertContains(response=response, text="abc", count=1,
-                            status_code=201, msg_prefix="", html=False)
+
+    def test_create_node_container_twice(self):
+        '''
+        We must ensure that the container instance gets created
+        correctly into the database
+
+        Parameters
+        ==========
+        URL:/dpes/2/containers/
+        data: {name:abc}
+        method: POST
+        Should Return HTTP_201_CREATED
+        '''
+        self.client.post('/dpes/1/containers/', self.initial_data, format='json')
+        response = self.client.post('/dpes/1/containers/', self.initial_data,
+                                    format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_node_container_bad(self):
         '''

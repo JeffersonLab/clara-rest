@@ -19,12 +19,13 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.conf.urls import patterns, url
-
+from django.conf.urls import patterns, include, url
 from ClaraNodes.views import Dpe, Dpes
 
 urlpatterns = patterns('',
-                       url(r'^$', Dpes.as_view(), name="rest-dpes-list"),
+                       url(r'^$', Dpes.as_view(), name="node-list"),
                        url(r'^(?P<DPE_id>[a-z0-9]+)/?$', Dpe.as_view(),
-                           name="rest-dpe-detail"),
+                           name="node-detail"),
+                       url(r'^(?P<DPE_id>[a-z0-9]+)/containers/',
+                           include('ClaraNodes.Container.urls')),
                        )

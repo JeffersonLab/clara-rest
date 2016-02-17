@@ -20,15 +20,8 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.test import TransactionTestCase
 from rest_framework import status
 from rest_framework.test import APITestCase
-
-
-class ServiceEngineDBTransactionTest(TransactionTestCase):
-
-    def test_create_transaction_without_override(self):
-        pass
 
 
 class ServiceEngineTests(APITestCase):
@@ -40,14 +33,7 @@ class ServiceEngineTests(APITestCase):
                     "version": "1.0",
                     "description": "algo"
                     }
-    initial_data_complete_bad = {
-                                "container": 100000,
-                                "engine_name": "some_engine_to_try_install-2",
-                                "class_name": "some_class",
-                                "author": "Jarvis",
-                                "version": "2.0",
-                                "description": "algo"
-                                }
+
     initial_data_complete = {
                             "container": 3,
                             "engine_name": "some_engine_to_try_install-3",
@@ -56,6 +42,15 @@ class ServiceEngineTests(APITestCase):
                             "version": "3.0",
                             "description": "algo"
                             }
+
+    initial_data_complete_bad = {
+                                "container": 100000,
+                                "engine_name": "some_engine_to_try_install-2",
+                                "class_name": "some_class",
+                                "author": "Jarvis",
+                                "version": "2.0",
+                                "description": "algo"
+                                }
 
     bad_data = {}
 
@@ -130,26 +125,26 @@ class ServiceEngineTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         """
-        # response = self.client.post('/dpes/1/containers/1/services/',
-        #                             self.initial_data,
-        #                             format='json')
-        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # response = self.client.post('/dpes/1/containers/1/services/',
-        #                             self.initial_data,
-        #                             format='json')
-        # self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = self.client.post('/dpes/1/containers/1/services/',
+                                    self.initial_data,
+                                    format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.post('/dpes/1/containers/1/services/',
+                                    self.initial_data,
+                                    format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-    def test_deploy_service_bad(self):
+    def test_deploy_service_with_bad_dpe_id(self):
         """
         We must ensure bad data gets proper exception and response
 
         Parameters
         ==========
         URL:/dpes/100/containers/1/service
-        data: {engine_class:some_class,threads:1,configuration:some_config}
+        data: self.initial_data
         method: POST
-        Should Return HTTP_201_CREATED
+        Should Return HTTP_400_BAD_REQUEST
         """
         response = self.client.post('/dpes/100/containers/1/services/',
                                     self.initial_data,
@@ -160,7 +155,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_get_service_engine(self):
+    def test_get_service_engine_with_correct_paramaters(self):
         """
         From the created service, we need to retrieve its registration
         information
@@ -170,6 +165,15 @@ class ServiceEngineTests(APITestCase):
         self.assertContains(response=response,
                             text="\"engine_name\":\"superReconstructorService\"",
                             count=1, status_code=200, msg_prefix="", html=False)
+
+    def test_get_service_engine_with_bad_paramaters(self):
+        """
+        From the created service, we need to retrieve its registration
+        information
+        """
+        response = self.client.get('/dpes/1/containers/11/services/1')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
     def test_filter_service_request_obtains_filtered_data(self):
         response = self.client.get('/services/?filter_by_servicename=calibration')

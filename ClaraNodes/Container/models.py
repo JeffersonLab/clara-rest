@@ -36,6 +36,9 @@ class Container(models.Model):
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
+    class Meta:
+        unique_together = ('dpe', 'name')
+
     def __str__(self):
         return self.get_canonical_name()
 

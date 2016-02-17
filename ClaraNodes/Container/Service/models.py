@@ -41,11 +41,16 @@ class ServiceEngine(models.Model):
 
     author = models.CharField(blank=False, max_length=40)
     version = models.CharField(blank=False, max_length=40)
-    language = models.CharField(blank=False, max_length=40)
     description = models.CharField(blank=False, max_length=100)
 
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
+    class Meta:
+        unique_together = ('container', 'engine_name' )
+
     def __str__(self):
-        return "%s:%s" % (str(self.container), self.engine_name)
+        return "%s:%s" % (self.container.get_canonical_name(), self.engine_name)
+
+    def get_canonical_name(self):
+        return str(self)

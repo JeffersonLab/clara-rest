@@ -29,29 +29,5 @@ class ServiceEngineSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceEngine
         fields = ('service_id', 'container', 'engine_name', 'class_name',
-                  'author', 'version', 'language', 'description',)
-        read_only_fields = ('service_id', 'container',)
-
-
-class ServiceEngineNestedSerializer(serializers.ModelSerializer):
-    parent_id = None
-    parent_dpe_id = None
-    
-    def __init__(self, *args, **kwargs):
-        self.parent_id = kwargs.pop('container', None)
-        super(ServiceEngineNestedSerializer, self).__init__(*args, **kwargs)
-    
-    class Meta:
-        model = ServiceEngine
-        fields = ('container', 'engine_name', 'class_name', 'author',
-                  'version', 'language', 'description',)
-        read_only_fields = ('container',)
-        
-    def create(self, validated_data):
-        service = ServiceEngine(engine_name=validated_data['engine_name'],
-                                class_name=validated_data['class_name'],
-                                author=validated_data['author'],
-                                version=validated_data['version'],
-                                language=validated_data['language'],
-                                description=validated_data['description'],)    
-        return service
+                  'author', 'version', 'description',)
+        read_only_fields = ('service_id')

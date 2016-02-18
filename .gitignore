@@ -2,11 +2,13 @@
 .project
 .pydevproject
 .coverage
-
+.idea
 *.db
 *.pyc
 */migrations
 
 db.sqlite3
-ui/assets/bower_components
+ClaraUI/assets/bower_components
+ClaraUI/assets/django_extensions
+ClaraUI/assets/favicon.ico
 

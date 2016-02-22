@@ -23,7 +23,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ClaraDataRegistrar.models import DPESnapshot
 from ClaraNodes.Container.Service.serializers import *
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
@@ -201,25 +200,7 @@ class ServiceView(APIView):
         runtime_flag = request.GET.get('runtime')
         if runtime_flag:
             try:
-                dpe_name = str(service_object.container.dpe_id)
-                snap_group = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
-                snapshot = snap_group.order_by('date').last().get_data()
-
-                for c in snapshot['DPERuntime']['containers']:
-                    for s in c['ContainerRuntime']['services']:
-                        if s['ServiceRuntime']['name'] == service_object.engine_name:
-                            s_run_data = s['ServiceRuntime']
-
-                if runtime_flag == "all":
-                    return Response(s_run_data)
-
-                else:
-                    return Response({'dpe': dpe_name,
-                                     'dpe_id': DPE_id,
-                                     'container_id': container_id,
-                                     'service_id': service_id,
-                                     'snapshot_time': s_run_data['snapshot_time'],
-                                     runtime_flag: s_run_data[runtime_flag]})
+                pass
 
             except KeyError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -22,11 +22,10 @@
 
 import unittest
 import json
+import mock
 import datetime
-from xmsg.data import xMsgData_pb2
 from xmsg.core.xMsgMessage import xMsgMessage
 
-from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
 from ClaraNodes.models import Node
@@ -111,9 +110,12 @@ class TestMonitorCallbacks(unittest.TestCase):
     def make_serialized_msg(self, test_case):
         return xMsgMessage.create_with_string("topic", json.dumps(test_case))
 
-    def test_register_dpe_first_time_should_register_dpe_in_db(self):
-        DpeMonitorCallBack().callback(self.make_serialized_msg(reg_msg))
-        self.assertTrue(self.check_in_db())
+    @mock.patch('ClaraWebREST.monitoring.DpeMonitorCallBacks.DpeMonitorCallBack')
+    def test_register_dpe_first_time_should_register_dpe_in_db(self, dpe_monitor):
+        dpe_monitor.save_runtime_data.return_value = ""
+        serialized_msg = self.make_serialized_msg(reg_msg)
+        dpe_monitor.callback(serialized_msg)
+        dpe_monitor.callback.assert_called_with(serialized_msg)
 
 
 if __name__ == "__main__":

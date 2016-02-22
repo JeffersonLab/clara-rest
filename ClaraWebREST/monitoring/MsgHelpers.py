@@ -21,7 +21,6 @@
 #
 
 import json
-from xmsg.data.xMsgData_pb2 import xMsgData
 
 
 class RuntimeMsgHelper(object):

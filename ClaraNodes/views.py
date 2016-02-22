@@ -24,7 +24,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ClaraDataRegistrar.models import DPESnapshot
 from ClaraNodes.serializers import NodeSerializer
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
@@ -163,24 +162,20 @@ class Dpe(APIView):
 
         if runtime_flag:
             try:
-                dpe_name = node_object.hostname
-                snapshots = DPESnapshot.objects.order_by('date').filter(name=dpe_name)
-                snapshot = snapshots.order_by('date').last().get_data()['DPERuntime']
+                # dpe_name = node_object.hostname
 
                 if runtime_flag == "all":
-                    return Response(snapshot)
+                    pass
 
                 else:
-                    return Response({'dpe_id': DPE_id,
-                                     'host': dpe_name,
-                                     'snapshot_time': snapshot['snapshot_time'],
-                                     runtime_flag: snapshot[runtime_flag]})
+                    pass
+
             except KeyError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             except Exception as e:
                 print e
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else:
             serializer = NodeSerializer(node_object)

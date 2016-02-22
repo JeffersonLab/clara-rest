@@ -54,10 +54,6 @@ GET		http://localhost:8000/containers/{container_id}
 DELETE	http://localhost:8000/containers/{container_id}
 GET		http://localhost:8000/services/
 POST	http://localhost:8000/services/
-GET		http://localhost:8000/subscriptions/
-POST	http://localhost:8000/subscriptions/
-GET		http://localhost:8000/subscriptions/{subscription_id}
-DELETE	http://localhost:8000/subscriptions/{subscription_id}
 # You Check documentation and test the API directly at:
 http://localhost:8000/docs
 ```

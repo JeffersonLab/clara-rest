@@ -59,7 +59,6 @@ INSTALLED_APPS = (
     'ClaraNodes',
     'ClaraNodes.Container',
     'ClaraNodes.Container.Service',
-    'ClaraDataRegistrar',
     'ClaraUI',
 )
 

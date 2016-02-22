@@ -22,8 +22,9 @@
 
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
+from influxdb import InfluxDBClient
 
-from ClaraDataRegistrar.models import DPESnapshot
+
 from ClaraWebREST.monitoring.MsgHelpers import RuntimeMsgHelper, RegistrationMsgHelper
 from ClaraNodes.Container.Service.models import ServiceEngine
 from ClaraNodes.Container.models import Container
@@ -39,9 +40,33 @@ class DpeMonitorCallBack(xMsgCallBack):
 
 def save_runtime_data(msg):
     run_data = RuntimeMsgHelper(msg)
-    dpe = DPESnapshot.builder(run_data.to_JSON())
-    dpe.save()
-    xMsgUtil.log("[%s]: Database entry created (Runtime)..." % dpe.name)
+    client = InfluxDBClient(database="claraRuntime")
+
+    json_body = [
+        {
+            "measurement": "mem_usage",
+            "tags": {
+                "host": str(run_data.get_dpe()['hostname']),
+                "region": "jlab-farm"
+            },
+            "fields": {
+                "value": run_data.get_dpe()['memory_usage']
+            }
+        },
+        {
+            "measurement": "cpu_usage",
+            "tags": {
+                "host": str(run_data.get_dpe()['hostname']),
+                "region": "jlab-farm"
+            },
+            "fields": {
+                "value": run_data.get_dpe()['cpu_usage']
+            }
+        }
+    ]
+
+    client.write_points(json_body)
+    xMsgUtil.log("[%s]: Entry created for Runtime..." % run_data.get_dpe()['hostname'])
 
 
 def save_registration_data(msg):

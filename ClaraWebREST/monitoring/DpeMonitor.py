@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2015. Jefferson Lab, xMsg framework (JLAB). All Rights Reserved.
+# Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for educational, research, and not-for-profit purposes,
 # without fee and without a signed licensing agreement.
@@ -38,6 +38,9 @@ from ClaraWebREST.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 
 def run_monitor_subscriber():
+    run_subscriber = None
+    run_subscription = None
+
     try:
         topic = "dpeReport"
         run_subscriber = PeriodicDataSubscriber(topic, topic)

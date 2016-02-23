@@ -40,32 +40,28 @@ class DpeMonitorCallBack(xMsgCallBack):
 
 def save_runtime_data(msg):
     run_data = RuntimeMsgHelper(msg)
+    reg_data = RegistrationMsgHelper(msg)
+
     client = InfluxDBClient(database="claraRuntime")
 
-    json_body = [
+    points = [
         {
-            "measurement": "mem_usage",
-            "tags": {
-                "host": str(run_data.get_dpe()['hostname']),
-                "region": "jlab-farm"
-            },
-            "fields": {
-                "value": run_data.get_dpe()['memory_usage']
-            }
-        },
-        {
-            "measurement": "cpu_usage",
-            "tags": {
-                "host": str(run_data.get_dpe()['hostname']),
-                "region": "jlab-farm"
-            },
-            "fields": {
-                "value": run_data.get_dpe()['cpu_usage']
+            'measurement': 'dpe_runtime',
+            'fields': {
+                'cpu_usage': run_data.get_dpe()['cpu_usage'],
+                'mem_usage': run_data.get_dpe()['memory_usage'],
+                'load': run_data.get_dpe()['load'],
             }
         }
     ]
 
-    client.write_points(json_body)
+    tags = {
+            'host': reg_data.get_dpe()['hostname'],
+            'language': reg_data.get_dpe()['hostname'],
+        }
+
+
+    client.write_points(points=points, tags=tags)
     xMsgUtil.log("[%s]: Entry created for Runtime..." % run_data.get_dpe()['hostname'])
 
 

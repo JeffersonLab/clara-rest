@@ -19,7 +19,6 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -39,7 +38,7 @@ def find_node_object(DPE_id):
         return Node.objects.get(node_id=DPE_id)
 
     except Node.DoesNotExist:
-        raise Http404("Dpe not found!")
+        return None
 
 
 class Dpes(APIView):
@@ -71,6 +70,7 @@ class Dpes(APIView):
         mem_filter = request.GET.get('filter_by_memory')
         container_filter = request.GET.get('filter_by_containername')
         service_filter = request.GET.get('filter_by_servicename')
+
         nodes_data = Node.objects.all()
 
         if name_filter:
@@ -154,32 +154,12 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
-        DPE_id = int(DPE_id)
-
-        runtime_flag = request.GET.get('runtime')
-
-        node_object = find_node_object(DPE_id)
-
-        if runtime_flag:
-            try:
-                # dpe_name = node_object.hostname
-
-                if runtime_flag == "all":
-                    pass
-
-                else:
-                    pass
-
-            except KeyError:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-            except Exception as e:
-                print e
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        else:
+        node_object = find_node_object(int(DPE_id))
+        if node_object:
             serializer = NodeSerializer(node_object)
             return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, DPE_id):
         """
@@ -199,8 +179,9 @@ class Dpe(APIView):
             - code: 404
               message: Resource not found
         """
-        DPE_id = int(DPE_id)
-
-        node_object = find_node_object(DPE_id)
-        node_object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        node_object = find_node_object(int(DPE_id))
+        if node_object:
+            node_object.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)

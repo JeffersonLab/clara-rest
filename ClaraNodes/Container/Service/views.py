@@ -137,6 +137,7 @@ class ServicesView(APIView):
 
         if 'container' in request.data:
             container_object = find_parents(container_id=request.data.pop('container'))
+
         else:
             container_object = find_parents(container_id=container_id, dpe_id=DPE_id)
 
@@ -196,18 +197,5 @@ class ServiceView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         service_object = container_parent.services.get(service_id=service_id)
-
-        runtime_flag = request.GET.get('runtime')
-        if runtime_flag:
-            try:
-                pass
-
-            except KeyError:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-            except Exception:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-
-        else:
-            serializer = ServiceEngineSerializer(service_object)
-            return Response(serializer.data)
+        serializer = ServiceEngineSerializer(service_object)
+        return Response(serializer.data)

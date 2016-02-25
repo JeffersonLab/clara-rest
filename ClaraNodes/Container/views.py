@@ -69,8 +69,10 @@ class ContainersView(APIView):
         """
         container_filter = request.GET.get('filter_by_containername')
         service_filter = request.GET.get('filter_by_servicename')
+
         if DPE_id:
             containers_data = Node.objects.get(node_id=DPE_id).containers
+
         else:
             containers_data = Container.objects.all()
 
@@ -152,6 +154,7 @@ class ContainerView(APIView):
         if container_object:
             serializer = ContainerSerializer(container_object)
             return Response(serializer.data)
+
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -179,5 +182,6 @@ class ContainerView(APIView):
         if container_object:
             container_object.delete()
             return Response(status=status.HTTP_202_ACCEPTED)
+
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)

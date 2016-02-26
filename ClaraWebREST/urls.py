@@ -36,7 +36,6 @@ urlpatterns = patterns('',
                        url(r'^dpes/', include('ClaraNodes.urls')),
                        url(r'^containers/', include('ClaraNodes.Container.urls')),
                        url(r'^services/', include('ClaraNodes.Container.Service.urls')),
-                       url(r'^ClaraUI/', include('ClaraUI.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

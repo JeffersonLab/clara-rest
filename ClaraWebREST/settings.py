@@ -49,9 +49,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
 
-    # Pipeline
-    'pipeline',
-
     #extensions
     'django_extensions',
 
@@ -59,7 +56,6 @@ INSTALLED_APPS = (
     'ClaraNodes',
     'ClaraNodes.Container',
     'ClaraNodes.Container.Service',
-    'ClaraUI',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,76 +94,17 @@ DATABASES = {
 }
 
 # STATICS ###################################################################
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATIC_URL = '/static/'
 # CHANGE FOR PRODUCTION #
-STATIC_ROOT = 'ClaraUI/assets'
+STATIC_ROOT = '/assets'
 #########################
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
 )
 STATIC_FILES_DIRS = (
-    os.path.join(BASE_DIR, 'ClaraUI/assets/'),
+    os.path.join(BASE_DIR, '/assets/'),
 )
-
-# PIPELINE ##################################################################
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'ClaraUI/assets')
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
-PIPELINE_CSSMIN_BINARY = '/usr/bin/env cssmin'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuiCompressor'
-PIPELINE_CSS = {
-    'base': {
-        'source_filenames': (
-            'css/bootstrap.min.css',
-            'css/bootstrap-responsive.min.css',
-            'css/style.css',
-            'css/style-responsive.css',
-
-        ),
-        'output_filename': 'libs.min.css',
-    },
-}
-PIPELINE_JS = {
-    'base': {
-        'source_filenames': (
-            'js/jquery-1.9.1.min.js',
-            'js/jquery-migrate-1.0.0.min.js',
-            'js/jquery-ui-1.10.0.custom.min.js',
-            'js/jquery.ui.touch-punch.js',
-            'js/modernizr.js',
-            'js/bootstrap.min.js',
-            'js/jquery.cookie.js',
-            'js/fullcalendar.min.js',
-            'js/jquery.dataTables.min.js',
-            'js/excanvas.js',
-            'js/jquery.flot.js',
-            'js/jquery.flot.pie.js',
-            'js/jquery.flot.stack.js',
-            'js/jquery.flot.resize.min.js',
-            'js/jquery.chosen.min.js',
-            'js/jquery.uniform.min.js',
-            'js/jquery.cleditor.min.js',
-            'js/jquery.noty.js',
-            'js/jquery.elfinder.min.js',
-            'js/jquery.raty.min.js',
-            'js/jquery.iphone.toggle.js',
-            'js/jquery.uploadify-3.1.min.js',
-            'js/jquery.gritter.min.js',
-            'js/jquery.imagesloaded.js',
-            'js/jquery.masonry.min.js',
-            'js/jquery.knob.modified.js',
-            'js/jquery.sparkline.min.js',
-            'js/counter.js',
-            'js/highcharts.js',
-            'js/retina.js',
-            'js/Graphs.js',
-            'js/custom.js',
-        ),
-        'output_filename': 'libs.min.js',
-    },
-}
 
 # LOCAL AND INTERNATIONALIZATION ############################################
 LANGUAGE_CODE = 'en-us'

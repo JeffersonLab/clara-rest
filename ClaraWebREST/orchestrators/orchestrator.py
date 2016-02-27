@@ -32,8 +32,10 @@ class RESTOrchestrator(ClaraBase):
     """
     def __init__(self):
         super(RESTOrchestrator, self).__init__(name="clara_rest_server",
-                                               frontend="localhost",
-                                               proxy_address="localhost")
+                                               proxy_host="localhost",
+                                               frontend_host="localhost",
+                                               proxy_port=7771,
+                                               frontend_port=8888)
         self.node_connection = self.connect()
 
     def __build_message(self, topic, data):

@@ -1,12 +1,6 @@
-#Clara Web Application
+#Clara REST Interface
 
-User web interface based on django python 1.7
-
-### Installation
-```sh
-$ git clone ssh://git@git.earthdata.nasa.gov:7999/naiads/clara-webapp.git
-$ cd clara-webapp
-```
+REST interface based on django python 1.7
 
 Once in the main folder, run the following command in order to install the dependencies
 
@@ -64,13 +58,6 @@ Tests for each of the Django models can be found in each app package, if you wan
 
 ```sh
 $ python manage.py test
-```
-####Test Coverage Report
-To get a report about the test coverage
-
-```sh
-$ coverage run --source='.' --omit=./ClaraWebREST/wsgi.py manage.py test
-$ coverage report 
 ```
 
 ###TODO

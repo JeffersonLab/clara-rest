@@ -66,8 +66,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pipeline.middleware.MinifyHTMLMiddleware',
-
 )
 
 REST_FRAMEWORK = {
@@ -95,7 +93,6 @@ DATABASES = {
 
 # STATICS ###################################################################
 STATIC_URL = '/static/'
-# CHANGE FOR PRODUCTION #
 STATIC_ROOT = '/assets'
 #########################
 STATICFILES_FINDERS = (

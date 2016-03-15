@@ -34,7 +34,7 @@ class Node(models.Model):
     modified = models.DateTimeField(null=True)
 
     def __str__(self):
-        return "%s_%s" % (self.hostname, self.language)
+        return "%s" % self.hostname
 
     def __int__(self):
         return int(self.node_id)

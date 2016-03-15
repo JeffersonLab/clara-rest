@@ -20,6 +20,7 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
+from clara.base.ClaraUtils import ClaraUtils
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
 from influxdb import InfluxDBClient
@@ -57,10 +58,8 @@ def save_runtime_data(msg):
 
     tags = {
             'host': reg_data.get_dpe()['hostname'],
-            'language': reg_data.get_dpe()['hostname'],
+            'language': reg_data.get_dpe()['language'],
         }
-
-
     client.write_points(points=points, tags=tags)
     xMsgUtil.log("[%s]: Entry created for Runtime..." % run_data.get_dpe()['hostname'])
 
@@ -75,8 +74,10 @@ def save_registration_data(msg):
     node.save()
 
     for cr in containers:
-        cr = cr['ContainerRegistration']
         cr['start_time'] = cr['start_time'].replace("/", "-")
+        if ClaraUtils.is_container_name(cr['name']):
+            cr['name'] = ClaraUtils.get_container_name(cr['name'])
+
         container, _ = Container.objects.get_or_create(dpe=node,
                                                        author=cr['author'],
                                                        name=cr['name'],
@@ -85,7 +86,6 @@ def save_registration_data(msg):
         services = cr.pop('services')
 
         for sr in services:
-            sr = sr['ServiceRegistration']
             sr['start_time'] = sr['start_time'].replace("/", "-")
             service, _ = ServiceEngine.objects.get_or_create(container=container,
                                                              class_name=sr['class_name'],

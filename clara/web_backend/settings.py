@@ -53,9 +53,9 @@ INSTALLED_APPS = (
     'django_extensions',
 
     # Clara apps
-    'clara',
-    'clara.Container',
-    'clara.Container.Service',
+    'clara.rest.DPE',
+    'clara.rest.Container',
+    'clara.rest.Service',
 )
 
 MIDDLEWARE_CLASSES = (

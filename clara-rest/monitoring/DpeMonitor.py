@@ -26,7 +26,7 @@ from xmsg.core.xMsgUtil import xMsgUtil
 
 proj_path = os.path.abspath(os.path.dirname(__file__))[0:-24]
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ClaraWebREST.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "clara-rest.settings")
 
 sys.path.append(proj_path)
 os.chdir(proj_path)

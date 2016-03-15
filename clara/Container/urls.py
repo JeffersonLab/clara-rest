@@ -12,35 +12,20 @@
 # THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# JLAB SPECIFICALLY DISCLAIMS ANY WARRsANTIES, INCLUDING, BUT NOT LIMITED TO,
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 # PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from rest_framework import serializers
+from django.conf.urls import patterns, include, url
+from views import ContainersView, ContainerView
 
-from ClaraNodes.models import Node
-
-
-class NodeSerializer(serializers.ModelSerializer):
-    canonical_name = serializers.SerializerMethodField()
-    deployed_containers = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Node
-        fields = ('node_id', 'canonical_name','hostname', 'language',
-                  'n_cores', 'memory_size', 'deployed_containers',
-                  'start_time', 'modified', )
-
-    def get_canonical_name(self, obj):
-        return str(obj)
-
-    def get_deployed_containers(self, obj):
-        return obj.containers.count()
-
-    def create(self, validated_data):
-        node = Node(**validated_data)
-        node.save()
-        return node
+urlpatterns = patterns('',
+                       url(r'^$', ContainersView.as_view(), name='container-list'),
+                       url(r'^(?P<container_id>[a-z0-9]+)/?$',
+                           ContainerView.as_view(), name='container-detail'),
+                       url(r'^(?P<container_id>[a-z0-9]+)/services/',
+                           include('clara.Container.Service.urls'))
+                       )

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # Copyright (C) 2015. Jefferson Lab, Clara framework (JLAB). All Rights Reserved.
 # Permission to use, copy, modify, and distribute this software and its
@@ -22,35 +21,37 @@
 
 from django.db import models
 
-from ClaraNodes.Container.models import Container
-"""
-A CLARA service engine runs in one container at one DPE.<br>
-Must be threadsafe. Must implement CLARA service engine interface.
-"""
+from ClaraWebREST.orchestrators.orchestrator import RESTOrchestrator
+from ClaraWebREST.utils.Validators import validate_node_existence
+from clara.models import Node
 
 
-class ServiceEngine(models.Model):
-    """
-    A CLARA service engine runs in one container at one DPE.
-    Must be threadsafe. Must implement CLARA service engine interface.
-    """
-    service_id = models.AutoField(primary_key=True)
-    container = models.ForeignKey(Container, related_name='services')
-    class_name = models.CharField(blank=False, max_length=40)
-    engine_name = models.TextField(blank=True, default="")
-
+class Container(models.Model):
+    container_id = models.AutoField(primary_key=True, null=False)
+    dpe = models.ForeignKey(Node, related_name='containers',
+                            validators=[validate_node_existence])
     author = models.CharField(blank=False, max_length=40)
-    version = models.CharField(blank=False, max_length=40)
-    description = models.CharField(blank=False, max_length=100)
+    name = models.CharField(blank=False, max_length=40)
 
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
     class Meta:
-        unique_together = ('container', 'engine_name' )
+        unique_together = ('dpe', 'name')
 
     def __str__(self):
-        return "%s:%s" % (self.container.get_canonical_name(), self.engine_name)
+        return self.get_canonical_name()
+
+    def get_dpe_name(self):
+        return str(self.dpe)
+
+    def get_language(self):
+        return str(self.dpe.language)
 
     def get_canonical_name(self):
-        return str(self)
+        return str(self.get_dpe_name() + ":" + self.name)
+
+    def save(self, *args, **kwargs):
+        orchestrator = RESTOrchestrator()
+        orchestrator.deploy_container(self.get_dpe_name(), self.name)
+        super(Container, self).save(*args, **kwargs)

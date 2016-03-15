@@ -19,13 +19,34 @@
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.conf.urls import patterns, include, url
-from views import ContainersView, ContainerView
+from django.contrib.admin import ModelAdmin, TabularInline, site
 
-urlpatterns = patterns('',
-                       url(r'^$', ContainersView.as_view(), name='container-list'),
-                       url(r'^(?P<container_id>[a-z0-9]+)/?$',
-                           ContainerView.as_view(), name='container-detail'),
-                       url(r'^(?P<container_id>[a-z0-9]+)/services/',
-                           include('ClaraNodes.Container.Service.urls'))
-                       )
+from clara.models import Node
+from clara.Container.models import Container
+from clara.Container.Service.models import ServiceEngine
+
+
+class ContainerInline(TabularInline):
+    model = Container
+    fields = ('name',)
+
+
+class NodeAdmin(ModelAdmin):
+    model = Node
+    readonly_fields = ('modified',)
+    inlines = (ContainerInline, )
+
+
+class ServiceEngineAdmin(ModelAdmin):
+    model = ServiceEngine
+    readonly_fields = ('modified',)
+
+
+class ContainerAdmin(ModelAdmin):
+    model = Container
+    readonly_fields = ('modified',)
+
+site.register(Node, NodeAdmin)
+site.register(Container, ContainerAdmin)
+site.register(ServiceEngine, ServiceEngineAdmin)
+

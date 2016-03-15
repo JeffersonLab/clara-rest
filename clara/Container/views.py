@@ -23,10 +23,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ClaraNodes.Container.serializers import ContainerSerializer
-from ClaraNodes.Container.Service.models import ServiceEngine
-from ClaraNodes.Container.models import Container
-from ClaraNodes.models import Node
+from clara.Container.serializers import ContainerSerializer
+from clara.Container.Service.models import ServiceEngine
+from clara.Container.models import Container
+from clara.models import Node
 """
 Container views:
 Views for json responses for the Clara Containers at Specific Hostname (DPE)
@@ -91,7 +91,7 @@ class ContainersView(APIView):
         Create a new Clara Container
         ---
         request_serializer:
-            ClaraNodes.Container.serializers.ContainerSerializer
+            clara.Container.serializers.ContainerSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -139,7 +139,7 @@ class ContainerView(APIView):
               paramType: path
               type: string
         response_serializer:
-            ClaraNodes.serializers.NodeSerializer
+            clara.serializers.NodeSerializer
         responseMessages:
             - code: 400
               message: Bad request

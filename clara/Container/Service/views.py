@@ -23,10 +23,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ClaraNodes.Container.Service.serializers import *
-from ClaraNodes.Container.Service.models import ServiceEngine
-from ClaraNodes.Container.models import Container
-from ClaraNodes.models import Node
+from clara.Container.Service.serializers import *
+from clara.Container.Service.models import ServiceEngine
+from clara.Container.models import Container
+from clara.models import Node
 """
 Services Views:
 Views for json responses for the Clara ServiceEngines
@@ -75,7 +75,7 @@ class ServicesView(APIView):
               description: filter services by language
               required: False
         response_serializer:
-            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
+            clara.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 401
               message: Not authenticated
@@ -125,9 +125,9 @@ class ServicesView(APIView):
               description: Name of class
               required: True
         request_serializer:
-            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
+            clara.Container.Service.serializers.ServiceEngineSerializer
         response_serializer:
-            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
+            clara.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -178,7 +178,7 @@ class ServiceView(APIView):
               paramType: path
               type: string
         response_serializer:
-            ClaraNodes.Container.Service.serializers.ServiceEngineSerializer
+            clara.Container.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request

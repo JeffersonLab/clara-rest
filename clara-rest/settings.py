@@ -26,7 +26,7 @@ import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClaraWebREST.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clara-rest.settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
 DEBUG = True
@@ -53,9 +53,9 @@ INSTALLED_APPS = (
     'django_extensions',
 
     # Clara apps
-    'ClaraNodes',
-    'ClaraNodes.Container',
-    'ClaraNodes.Container.Service',
+    'clara',
+    'clara.Container',
+    'clara.Container.Service',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,9 +80,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-ROOT_URLCONF = 'ClaraWebREST.urls'
+ROOT_URLCONF = 'clara-rest.urls'
 
-WSGI_APPLICATION = 'ClaraWebREST.wsgi.application'
+WSGI_APPLICATION = 'clara-rest.wsgi.application'
 
 DATABASES = {
     'default': {

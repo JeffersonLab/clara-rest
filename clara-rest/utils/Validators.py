@@ -20,7 +20,7 @@
 #
 
 from django.core.exceptions import ValidationError
-from ClaraNodes.models import Node
+from clara.models import Node
 from ClaraWebREST.utils.CWConstants import DPE_CREATION_LIMIT
 
 

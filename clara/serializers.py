@@ -12,41 +12,35 @@
 # THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF JLAB HAS BEEN ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# JLAB SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# JLAB SPECIFICALLY DISCLAIMS ANY WARRsANTIES, INCLUDING, BUT NOT LIMITED TO,
 # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 # PURPOSE. THE CLARA SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
 # HEREUNDER IS PROVIDED "AS IS". JLAB HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
 # SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #
 
-from django.contrib.admin import ModelAdmin, TabularInline, site
+from rest_framework import serializers
 
-from ClaraNodes.models import Node
-from ClaraNodes.Container.models import Container
-from ClaraNodes.Container.Service.models import ServiceEngine
+from clara.models import Node
 
 
-class ContainerInline(TabularInline):
-    model = Container
-    fields = ('name',)
+class NodeSerializer(serializers.ModelSerializer):
+    canonical_name = serializers.SerializerMethodField()
+    deployed_containers = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Node
+        fields = ('node_id', 'canonical_name','hostname', 'language',
+                  'n_cores', 'memory_size', 'deployed_containers',
+                  'start_time', 'modified', )
 
-class NodeAdmin(ModelAdmin):
-    model = Node
-    readonly_fields = ('modified',)
-    inlines = (ContainerInline, )
+    def get_canonical_name(self, obj):
+        return str(obj)
 
+    def get_deployed_containers(self, obj):
+        return obj.containers.count()
 
-class ServiceEngineAdmin(ModelAdmin):
-    model = ServiceEngine
-    readonly_fields = ('modified',)
-
-
-class ContainerAdmin(ModelAdmin):
-    model = Container
-    readonly_fields = ('modified',)
-
-site.register(Node, NodeAdmin)
-site.register(Container, ContainerAdmin)
-site.register(ServiceEngine, ServiceEngineAdmin)
-
+    def create(self, validated_data):
+        node = Node(**validated_data)
+        node.save()
+        return node

@@ -23,13 +23,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ClaraNodes.serializers import NodeSerializer
-from ClaraNodes.Container.Service.models import ServiceEngine
-from ClaraNodes.Container.models import Container
-from ClaraNodes.models import Node
+from clara.serializers import NodeSerializer
+from clara.Container.Service.models import ServiceEngine
+from clara.Container.models import Container
+from clara.models import Node
 """
-ClaraNodes Views:
-Views for json responses for the Clara ClaraNodes (DPE) components
+clara Views:
+Views for json responses for the Clara clara (DPE) components
 """
 
 
@@ -113,7 +113,7 @@ class Dpes(APIView):
             - name: n_cores
               type: int
               description: number of cores of the DPE to register
-        response_serializer: ClaraNodes.serializers.NodeSerializer
+        response_serializer: clara.serializers.NodeSerializer
         responseMessages:
             - code: 400
               message: Bad Request
@@ -145,7 +145,7 @@ class Dpe(APIView):
               paramType: query
               description: Regular expression of DPE ID
         response_serializer:
-            ClaraNodes.serializers.NodeSerializer
+            clara.serializers.NodeSerializer
         responseMessages:
             - code: 400
               message: Bad request

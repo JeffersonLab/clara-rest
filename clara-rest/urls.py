@@ -33,9 +33,10 @@ urlpatterns = patterns('',
                        url(r'^api-auth/', include('rest_framework.urls',
                                                   namespace='rest_framework')),
                        url(r'^docs/', include('rest_framework_swagger.urls')),
-                       url(r'^dpes/', include('ClaraNodes.urls')),
-                       url(r'^containers/', include('ClaraNodes.Container.urls')),
-                       url(r'^services/', include('ClaraNodes.Container.Service.urls')),
+                       url(r'^dpes/', include('clara.urls')),
+                       url(r'^containers/', include('clara.Container.urls')),
+                       url(r'^services/', include(
+                           'clara.Container.Service.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

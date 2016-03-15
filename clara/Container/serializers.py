@@ -22,9 +22,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from ClaraNodes.Container.Service.serializers import ServiceEngineSerializer
-from ClaraNodes.Container.models import Container
-from ClaraNodes.models import Node
+from clara.Container.Service.serializers import ServiceEngineSerializer
+from clara.Container.models import Container
+from clara.models import Node
 
 
 def container_validator(container_id):

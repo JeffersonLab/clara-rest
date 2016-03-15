@@ -1,8 +1,10 @@
 .DS_Store
+.coverage
+.env
+.idea
 .project
 .pydevproject
-.coverage
-.idea
+
 *.db
 *.pyc
 */migrations

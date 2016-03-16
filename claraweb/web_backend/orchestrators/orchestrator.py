@@ -22,7 +22,6 @@ class RESTOrchestrator(ClaraBase):
     def __build_message(self, topic, data):
         return xMsgMessage.create_with_string(topic, data)
 
-
     def dpe_exit(self, dpe_name):
         """Forces dpe to exit
 

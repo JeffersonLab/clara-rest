@@ -12,13 +12,25 @@ from claraweb.web_backend.monitoring.MsgHelpers import RuntimeMsgHelper, Registr
 
 
 class DpeMonitorCallBack(xMsgCallBack):
+    """ Callback function for the REST server monitoring subscription
+    """
 
     def callback(self, msg):
+        """DPE Monitor Callback, receives xMsgMessage with DPE data.
+
+        Args:
+            msg (xMsgMessage): Message containing the DPE runtime/reg. data
+        """
         save_runtime_data(msg)
         save_registration_data(msg)
 
 
 def save_runtime_data(msg):
+    """Stores the DPE's runtime information for the time series based DPE
+
+    Args:
+        msg (xMsgMessage): Message containing the DPE runtime data
+    """
     run_data = RuntimeMsgHelper(msg)
     reg_data = RegistrationMsgHelper(msg)
 
@@ -44,6 +56,11 @@ def save_runtime_data(msg):
 
 
 def save_registration_data(msg):
+    """Stores the DPE's registration information for the time series based DPE
+
+    Args:
+        msg (xMsgMessage): Message containing the DPE runtime data
+    """
     reg_data = RegistrationMsgHelper(msg)
     dpe = reg_data.get_dpe()
     dpe['start_time'] = dpe['start_time'].replace("/", "-")

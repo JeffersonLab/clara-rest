@@ -3,8 +3,8 @@
 from django.db import models
 
 from claraweb.rest.DPE.models import DPE
-from claraweb.web_backend.orchestrators.orchestrator import RESTOrchestrator
-from claraweb.web_backend.utils.Validators import validate_node_existence
+from claraweb.backend.orchestrators.orchestrator import RESTOrchestrator
+from claraweb.backend.utils.Validators import validate_node_existence
 
 
 class Container(models.Model):

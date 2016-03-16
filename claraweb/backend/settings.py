@@ -6,7 +6,7 @@ import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'claraweb.web_backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'claraweb.backend.settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
 DEBUG = True
@@ -60,9 +60,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-ROOT_URLCONF = 'claraweb.web_backend.urls'
+ROOT_URLCONF = 'claraweb.backend.urls'
 
-WSGI_APPLICATION = 'claraweb.web_backend.wsgi.application'
+WSGI_APPLICATION = 'claraweb.backend.wsgi.application'
 
 DATABASES = {
     'default': {

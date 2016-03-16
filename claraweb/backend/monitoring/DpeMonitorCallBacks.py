@@ -8,7 +8,7 @@ from clara.base.ClaraUtils import ClaraUtils
 from claraweb.rest.DPE.models import DPE
 from claraweb.rest.Container.models import Container
 from claraweb.rest.Service.models import ServiceEngine
-from claraweb.web_backend.monitoring.MsgHelpers import RuntimeMsgHelper, RegistrationMsgHelper
+from claraweb.backend.monitoring.MsgHelpers import RuntimeMsgHelper, RegistrationMsgHelper
 
 
 class DpeMonitorCallBack(xMsgCallBack):

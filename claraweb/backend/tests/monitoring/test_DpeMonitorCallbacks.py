@@ -92,7 +92,7 @@ class TestMonitorCallbacks(unittest.TestCase):
     def make_serialized_msg(self, test_case):
         return xMsgMessage.create_with_string("topic", json.dumps(test_case))
 
-    @mock.patch('claraweb.web_backend.monitoring.DpeMonitorCallBacks.DpeMonitorCallBack')
+    @mock.patch('claraweb.backend.monitoring.DpeMonitorCallBacks.DpeMonitorCallBack')
     def test_register_dpe_first_time_should_register_dpe_in_db(self, dpe_monitor):
         dpe_monitor.save_runtime_data.return_value = ""
         serialized_msg = self.make_serialized_msg(reg_msg)

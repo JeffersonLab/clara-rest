@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from django.core.management.base import BaseCommand
-from claraweb.web_backend.monitoring.DpeMonitor import run_monitor_subscriber
+from claraweb.backend.monitoring.DpeMonitor import run_monitor_subscriber
 
 
 class Command(BaseCommand):

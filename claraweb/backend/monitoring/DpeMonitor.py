@@ -6,16 +6,16 @@ import sys
 import django
 from xmsg.core.xMsgUtil import xMsgUtil
 
-proj_path = os.path.abspath(os.path.dirname(__file__))[0:-23]
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "claraweb.web_backend.settings")
+proj_path = os.path.abspath(os.path.dirname(__file__))[0:-27]
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "claraweb.backend.settings")
 
 sys.path.append(proj_path)
 os.chdir(proj_path)
 django.setup()
 
 
-from claraweb.web_backend.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
-from claraweb.web_backend.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from claraweb.backend.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
+from claraweb.backend.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 
 def run_monitor_subscriber():

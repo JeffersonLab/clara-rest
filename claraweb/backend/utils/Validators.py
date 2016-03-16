@@ -2,7 +2,7 @@
 
 from django.core.exceptions import ValidationError
 from claraweb.rest.DPE.models import DPE
-from claraweb.web_backend.utils.CWConstants import DPE_CREATION_LIMIT
+from claraweb.backend.utils.CWConstants import DPE_CREATION_LIMIT
 
 
 def limit_validator(value):

@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 
 
 class DPETests(APITestCase):
-    fixtures = ['claraweb/web_backend/tests/fixtures/Services.yaml']
+    fixtures = ['claraweb/backend/tests/fixtures/Services.yaml']
     url = '/dpes/'
     url_del = url+'2'
 

@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 
 
 class ContainerTests(APITestCase):
-    fixtures = ['claraweb/web_backend/tests/fixtures/Services.yaml']
+    fixtures = ['claraweb/backend/tests/fixtures/Services.yaml']
     initial_data = {'name': 'abcdefghijklmnopqrs'}
     initial_data_complete = {'dpe': 1, 'name': 'somelongname.'}
 

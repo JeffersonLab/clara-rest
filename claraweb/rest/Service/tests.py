@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 
 class ServiceEngineTests(APITestCase):
-    fixtures = ['claraweb/web_backend/tests/fixtures/Services.yaml',]
+    fixtures = ['claraweb/backend/tests/fixtures/Services.yaml',]
     initial_data = {
                     "engine_name": "some_engine_to_try_install",
                     "class_name": "some_class",

@@ -1,4 +1,5 @@
-#Clara REST Interface
+
+# Clara REST Interface
 
 REST interface based on django python 1.7
 
@@ -59,7 +60,3 @@ Tests for each of the Django models can be found in each app package, if you wan
 ```sh
 $ python manage.py test
 ```
-
-###TODO
-  - Complete the documentation of this README file
-  - Connecting with Clara

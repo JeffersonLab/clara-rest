@@ -1,8 +1,9 @@
-git+ssh://git@git.earthdata.nasa.gov:7999/naiads/xmsg-python.git@v2.3.1
-git+ssh://git@git.earthdata.nasa.gov:7999/naiads/clara-python.git@clara-base-dev
+git+ssh://git@git.earthdata.nasa.gov:7999/naiads/xmsg-python.git@v2.4.1
+git+ssh://git@git.earthdata.nasa.gov:7999/naiads/clara-python.git@dev
 Django==1.7.7
 djangorestframework==3.1.1
 djangorestframework-yaml==1.0.2
+django-extensions==1.6.7
 django-rest-swagger==0.2.9
 PyYAML==3.11
 coverage==3.7.1

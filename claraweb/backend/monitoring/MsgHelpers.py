@@ -51,7 +51,7 @@ class RuntimeMsgHelper(object):
         """
         service_array = []
         for container in self.get_containers():
-            for service in container['ContainerRuntime']['services']:
+            for service in container['services']:
                 service_array.append(service)
         return service_array
 

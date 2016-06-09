@@ -23,6 +23,7 @@ class DpeMonitorCallBack(xMsgCallBack):
         """
         save_runtime_data(msg)
         save_registration_data(msg)
+        return msg
 
 
 def save_runtime_data(msg):
@@ -35,23 +36,42 @@ def save_runtime_data(msg):
     reg_data = RegistrationMsgHelper(msg)
 
     client = InfluxDBClient(database="claraRuntime")
-
+    dpe = run_data.get_dpe()
     points = [
         {
             'measurement': 'dpe_runtime',
             'fields': {
-                'cpu_usage': run_data.get_dpe()['cpu_usage'],
-                'mem_usage': run_data.get_dpe()['memory_usage'],
-                'load': run_data.get_dpe()['load'],
+                'cpu_usage': float(dpe['cpu_usage']),
+                'mem_usage': dpe['memory_usage'],
+                'load': float(dpe['load']),
             }
         }
     ]
+    print run_data.get_dpe()['cpu_usage']
 
     tags = {
             'host': reg_data.get_dpe()['hostname'],
             'language': reg_data.get_dpe()['language'],
         }
     client.write_points(points=points, tags=tags)
+
+    for service in run_data.get_services():
+        points = [
+            {
+                'measurement': 'service_runtime',
+                'fields': {
+                    'bytes_sent': service['bytes_sent'],
+                    'bytes_recv': service['bytes_recv'],
+                    'n_requests': service['n_requests'],
+                    'n_failures': service['n_failures'],
+                }
+            }
+        ]
+        tags = {
+            'service': service['name'],
+        }
+        client.write_points(points=points, tags=tags)
+
     xMsgUtil.log("[%s]: Entry created for Runtime..." % run_data.get_dpe()['hostname'])
 
 

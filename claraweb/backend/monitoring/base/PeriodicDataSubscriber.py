@@ -13,4 +13,5 @@ class PeriodicDataSubscriber(xMsg):
         self.topic = xMsgTopic.build(self.myname)
 
     def subscribe_to_frontend(self, callback):
-        return xMsg.subscribe(self, self.fe_host, self.topic, callback)
+        topic = self.myname
+        return self.subscribe(self.fe_host, topic, callback)

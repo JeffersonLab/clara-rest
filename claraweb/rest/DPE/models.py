@@ -10,6 +10,7 @@ class DPE(models.Model):
     language = models.CharField(blank=False, max_length=20)
     n_cores = models.IntegerField(blank=False)
     memory_size = models.BigIntegerField(blank=False)
+    clara_home = models.CharField(max_length=60)
 
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)

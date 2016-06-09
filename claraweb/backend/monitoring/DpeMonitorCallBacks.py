@@ -66,7 +66,7 @@ def save_registration_data(msg):
     dpe['start_time'] = dpe['start_time'].replace("/", "-")
     containers = dpe.pop('containers')
     node, _ = DPE.objects.get_or_create(defaults={'hostname': dpe['hostname']},
-                                         **dpe)
+                                        **dpe)
     node.save()
 
     for cr in containers:

@@ -3,6 +3,7 @@
 
 import os
 import sys
+
 import django
 from xmsg.core.xMsgUtil import xMsgUtil
 
@@ -13,22 +14,19 @@ sys.path.append(proj_path)
 os.chdir(proj_path)
 django.setup()
 
-
 from claraweb.backend.monitoring.base.PeriodicDataSubscriber import PeriodicDataSubscriber
 from claraweb.backend.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
 
 
-def run_monitor_subscriber():
+def run_monitor_subscriber(fe_host="localhost"):
     """Starts the clara subscription for monitoring"""
     run_subscriber = None
     run_subscription = None
 
     try:
-        topic = "dpeReport"
-        run_subscriber = PeriodicDataSubscriber(topic, topic)
-        run_subscription = run_subscriber.subscribe(DpeMonitorCallBack())
-        xMsgUtil.log("Subscribed to runtime messages with topic %s" % topic)
-        xMsgUtil.keep_alive()
+        run_subscriber = PeriodicDataSubscriber(fe_host, "dpeReport")
+        run_subscription = run_subscriber.subscribe_to_frontend(DpeMonitorCallBack())
+        xMsgUtil.log("Subscribed to runtime messages with topic dpeReport.")
 
     except KeyboardInterrupt:
         run_subscriber.unsubscribe(run_subscription)
@@ -38,7 +36,14 @@ def run_monitor_subscriber():
 
 
 def main():
-    run_monitor_subscriber()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fe_host", help="Frontend host",
+                        type=str, default="localhost")
+    args = parser.parse_args()
+
+    run_monitor_subscriber(args.fe_host)
 
 
 if __name__ == "__main__":

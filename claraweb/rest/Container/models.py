@@ -3,7 +3,6 @@
 from django.db import models
 
 from claraweb.rest.DPE.models import DPE
-from claraweb.backend.orchestrators.orchestrator import RESTOrchestrator
 from claraweb.backend.utils.Validators import validate_node_existence
 
 
@@ -33,6 +32,4 @@ class Container(models.Model):
         return str(self.get_dpe_name() + ":" + self.name)
 
     def save(self, *args, **kwargs):
-        orchestrator = RESTOrchestrator()
-        orchestrator.deploy_container(self.get_dpe_name(), self.name)
         super(Container, self).save(*args, **kwargs)

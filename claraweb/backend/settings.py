@@ -29,9 +29,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
 
-    #extensions
-    'django_extensions',
-
     # Clara apps
     'claraweb.rest.DPE',
     'claraweb.rest.Container',

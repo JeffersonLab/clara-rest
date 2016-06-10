@@ -64,6 +64,9 @@ def save_runtime_data(msg):
                     'bytes_recv': service['bytes_recv'],
                     'n_requests': service['n_requests'],
                     'n_failures': service['n_failures'],
+                    'exec_time': service['exec_time'],
+                    'shm_reads': service['shm_reads'],
+                    'shm_writes': service['shm_writes']
                 }
             }
         ]

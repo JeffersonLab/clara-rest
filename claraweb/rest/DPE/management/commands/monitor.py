@@ -1,7 +1,7 @@
 # coding=utf-8
 from optparse import make_option
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from claraweb.backend.monitoring.DpeMonitor import run_monitor_subscriber
 
 
@@ -21,6 +21,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if not options['fe_host']:
-            raise CommandError("Option `--fe_host=...` must be specified.")
-        print "Now monitoring frontend:%s" % options['fe_host']
-        run_monitor_subscriber(options['fe_host'])
+            run_monitor_subscriber()
+        else:
+            print "Now monitoring frontend:%s" % options['fe_host']
+            run_monitor_subscriber(options['fe_host'])

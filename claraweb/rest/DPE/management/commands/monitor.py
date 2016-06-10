@@ -1,6 +1,7 @@
 # coding=utf-8
 from optparse import make_option
 
+from influxdb import InfluxDBClient
 from django.core.management.base import BaseCommand
 from xmsg.core.xMsg import xMsg
 from xmsg.core.xMsgTopic import xMsgTopic
@@ -22,9 +23,22 @@ class Command(BaseCommand):
             help="specify frontend host",
             metavar="STRING"
         ),
+        make_option(
+            "-s",
+            "--sync_influx_db",
+            dest="sync_db",
+            action="store_true",
+            help="Sync the Influx database",
+        ),
     )
 
     def handle(self, *args, **options):
+        if options['sync_db']:
+            db = "claraRuntime"
+            client = InfluxDBClient(database=db)
+            client.drop_database(db)
+            client.create_database(db)
+
         if not options['fe_host']:
             fe_host = "localhost"
 
@@ -45,4 +59,4 @@ class Command(BaseCommand):
         except KeyboardInterrupt:
             subscriber.unsubscribe(subscription)
             subscriber.destroy()
-            xMsgUtil.log("Runtime subscription terminated")
+            xMsgUtil.log("Runtime data subscription terminated")

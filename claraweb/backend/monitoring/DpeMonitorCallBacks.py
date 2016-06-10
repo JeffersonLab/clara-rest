@@ -37,6 +37,7 @@ def save_runtime_data(msg):
 
     client = InfluxDBClient(database="claraRuntime")
     dpe = run_data.get_dpe()
+    dpe_reg = reg_data.get_dpe()
     points = [
         {
             'measurement': 'dpe_runtime',
@@ -47,11 +48,10 @@ def save_runtime_data(msg):
             }
         }
     ]
-    print run_data.get_dpe()['cpu_usage']
 
     tags = {
-            'host': reg_data.get_dpe()['hostname'],
-            'language': reg_data.get_dpe()['language'],
+            'host': dpe_reg['hostname'],
+            'language': dpe_reg['language'],
         }
     client.write_points(points=points, tags=tags)
 
@@ -72,7 +72,7 @@ def save_runtime_data(msg):
         }
         client.write_points(points=points, tags=tags)
 
-    xMsgUtil.log("[%s]: Entry created for Runtime..." % run_data.get_dpe()['hostname'])
+    xMsgUtil.log("[%s]: Entry created for Runtime..." % dpe['hostname'])
 
 
 def save_registration_data(msg):

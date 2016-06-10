@@ -33,18 +33,3 @@ def run_monitor_subscriber(fe_host="localhost"):
         run_subscriber.destroy()
         xMsgUtil.log("Runtime subscription terminated")
         return
-
-
-def main():
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--fe_host", help="Frontend host",
-                        type=str, default="localhost")
-    args = parser.parse_args()
-
-    run_monitor_subscriber(args.fe_host)
-
-
-if __name__ == "__main__":
-    main()

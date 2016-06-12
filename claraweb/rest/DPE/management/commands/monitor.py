@@ -1,4 +1,6 @@
 # coding=utf-8
+
+import datetime
 from optparse import make_option
 
 from influxdb import InfluxDBClient
@@ -9,6 +11,7 @@ from xmsg.core.xMsgUtil import xMsgUtil
 from xmsg.net.xMsgAddress import ProxyAddress
 
 from claraweb.backend.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
+from claraweb.rest.DPE.models import DPE
 
 
 class Command(BaseCommand):
@@ -20,7 +23,7 @@ class Command(BaseCommand):
             "-f",
             "--fe_host",
             dest="fe_host",
-            help="specify frontend host",
+            help="Specify frontend host",
             metavar="STRING"
         ),
         make_option(
@@ -30,9 +33,33 @@ class Command(BaseCommand):
             action="store_true",
             help="Sync the Influx database",
         ),
+        make_option(
+            "-c",
+            "--clean_old_data",
+            dest="clean_old_data",
+            action="store_true",
+            help="Remove old data from the django database.",
+        ),
     )
 
     def handle(self, *args, **options):
+        if options['clean_old_data']:
+            # Data TTL = Ten minutes
+            delta = datetime.datetime.now() - datetime.timedelta(minutes=10)
+
+            count = 0
+            for dpe in DPE.objects.filter(modified__lt=delta):
+                for container in dpe.containers.all():
+                    for service in container.services.all():
+                        service.delete()
+                        count += 1
+                    container.delete()
+                    count += 1
+                dpe.delete()
+                count += 1
+            print "%d registers deleted..." % count
+            return
+
         if options['sync_db']:
             db = "claraRuntime"
             client = InfluxDBClient(database=db)

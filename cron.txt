@@ -1,0 +1,1 @@
+15  * * * * ./manage monitor --clean_old_data

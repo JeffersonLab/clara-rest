@@ -56,6 +56,10 @@ def save_runtime_data(msg):
     client.write_points(points=points, tags=tags)
 
     for service in run_data.get_services():
+        if service['n_requests'] != 0:
+            n_request_sec = float(service['n_requests']) / float(service['exec_time'])
+        else:
+            n_request_sec = 0.0
         points = [
             {
                 'measurement': 'service_runtime',
@@ -64,6 +68,7 @@ def save_runtime_data(msg):
                     'bytes_recv': service['bytes_recv'],
                     'n_requests': service['n_requests'],
                     'n_failures': service['n_failures'],
+                    'n_requests_sec': n_request_sec,
                     'exec_time': service['exec_time'],
                     'shm_reads': service['shm_reads'],
                     'shm_writes': service['shm_writes']
@@ -115,4 +120,4 @@ def save_registration_data(msg):
                                                              start_time=sr['start_time'])
             service.save()
 
-        xMsgUtil.log("[%s]: Database entry created (Registration)..." % str(node))
+        xMsgUtil.log("[%s]: Entry created for Registration..." % str(node))

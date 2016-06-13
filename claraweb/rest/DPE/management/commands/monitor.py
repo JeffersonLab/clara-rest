@@ -23,7 +23,7 @@ class Command(BaseCommand):
             "-f",
             "--fe_host",
             dest="fe_host",
-            help="Specify frontend host",
+            help="Specify frontend host to monitor",
             metavar="STRING"
         ),
         make_option(
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             "--sync_influx_db",
             dest="sync_db",
             action="store_true",
-            help="Sync the Influx database",
+            help="Sync the Influx database. It will recreate the runtimen db.",
         ),
         make_option(
             "-c",
@@ -65,6 +65,7 @@ class Command(BaseCommand):
             client = InfluxDBClient(database=db)
             client.drop_database(db)
             client.create_database(db)
+            return
 
         if not options['fe_host']:
             fe_host = "localhost"

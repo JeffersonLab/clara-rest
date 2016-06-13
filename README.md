@@ -21,6 +21,8 @@ Once this is done, you can start the development server by doing:
 $ ./manage.py runserver
 ```
 
+
+## Monitoring
 In order to subscribe to the Clara DPE's runtime and registration data we need to start the DPE monitor, this process can run even with the web server not running.   
 
 ```sh
@@ -52,11 +54,17 @@ POST	http://localhost:8000/services/
 # You Check documentation and test the API directly at:
 http://localhost:8000/docs
 ```
-More details about the URLs in: docs/API-current_urls_methods.png
 
-###Testing the application
-Tests for each of the Django models can be found in each app package, if you want to run them, you can type the following in the main directory
+### Other commands for monitoring
+
+If any change is introduced in the runtime database, please execute the following command in order to recreate the influxDB database. This command will DROP the current database and will CREATE a new instance.
 
 ```sh
-$ python manage.py test
+./manage.py monitor --sync_influx_db
+```
+
+The clean_old_data command is meant to clean up the registration database from DPE that have not reported in the last ten minutes. This command is supposed to run as a cron Job, so it is regularly checking currently stored data.
+
+```sh
+./manage.py monitor --clean_old_data
 ```

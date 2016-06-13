@@ -57,7 +57,7 @@ def save_runtime_data(msg):
 
     for service in run_data.get_services():
         if service['n_requests'] != 0:
-            n_request_sec = float(service['n_requests']) / float(service['exec_time'])
+            n_request_sec = float(service['exec_time']) / float(service['n_requests'])
         else:
             n_request_sec = 0.0
         points = [

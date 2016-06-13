@@ -71,7 +71,7 @@ DATABASES = {
 # STATICS ###################################################################
 STATIC_URL = '/static/'
 STATIC_ROOT = '/assets'
-#########################
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -79,6 +79,37 @@ STATICFILES_FINDERS = (
 STATIC_FILES_DIRS = (
     os.path.join(BASE_DIR, '/assets/'),
 )
+
+# SWAGGER ###################################################################
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': [],
+    'api_version': '1.0',
+    'api_path': '/',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'api_key': '',
+    'is_authenticated': False,
+    'is_superuser': False,
+    'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
+    'permission_denied_handler': None,
+    'resource_access_handler': None,
+    'info': {
+        'contact': 'oyarzun@jlab.org',
+        'description': 'This is a Clara REST server. '
+                       'You can find out more about Swagger at '
+                       '<a href="http://swagger.wordnik.com">'
+                       'http://swagger.wordnik.com</a> '
+                       'or on irc.freenode.net, #swagger.',
+        'termsOfServiceUrl': '',
+        'title': 'Clara REST server',
+    },
+    'doc_expansion': 'none',
+}
 
 # LOCAL AND INTERNATIONALIZATION ############################################
 LANGUAGE_CODE = 'en-us'

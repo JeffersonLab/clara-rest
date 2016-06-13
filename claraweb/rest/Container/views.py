@@ -71,7 +71,7 @@ class ContainersView(APIView):
         Create a new Clara Container
         ---
         request_serializer:
-            claraweb.Container.serializers.ContainerSerializer
+            claraweb.rest.Container.serializers.ContainerSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -119,7 +119,7 @@ class ContainerView(APIView):
               paramType: path
               type: string
         response_serializer:
-            claraweb.serializers.NodeSerializer
+            claraweb.rest.DPE.serializers.DPESerializer
         responseMessages:
             - code: 400
               message: Bad request

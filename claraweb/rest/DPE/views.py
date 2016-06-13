@@ -96,7 +96,7 @@ class Dpes(APIView):
             - name: n_cores
               type: int
               description: number of cores of the DPE to register
-        response_serializer: claraweb.serializers.NodeSerializer
+        response_serializer: claraweb.rest.DPE.serializers.DPESerializer
         responseMessages:
             - code: 400
               message: Bad Request
@@ -127,8 +127,7 @@ class Dpe(APIView):
               type: string
               paramType: query
               description: Regular expression of DPE ID
-        response_serializer:
-            claraweb.serializers.NodeSerializer
+        response_serializer: claraweb.rest.DPE.serializers.DPESerializer
         responseMessages:
             - code: 400
               message: Bad request

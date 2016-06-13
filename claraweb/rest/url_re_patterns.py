@@ -1,7 +1,7 @@
 # coding=utf-8
 
 
-class URLPattern:
+class URLPattern(object):
 
     DPE_URL = r'^(?P<DPE_id>[a-z0-9]+)'
     CONTAINER_URL = r'^(?P<container_id>[a-z0-9]+)'

@@ -55,7 +55,7 @@ class ServicesView(APIView):
               description: filter services by language
               required: False
         response_serializer:
-            claraweb.Container.Service.serializers.ServiceEngineSerializer
+            claraweb.rest.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 401
               message: Not authenticated
@@ -105,9 +105,9 @@ class ServicesView(APIView):
               description: Name of class
               required: True
         request_serializer:
-            claraweb.Container.Service.serializers.ServiceEngineSerializer
+            claraweb.rest.Service.serializers.ServiceEngineSerializer
         response_serializer:
-            claraweb.Container.Service.serializers.ServiceEngineSerializer
+            claraweb.rest.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request
@@ -158,7 +158,7 @@ class ServiceView(APIView):
               paramType: path
               type: string
         response_serializer:
-            claraweb.Container.Service.serializers.ServiceEngineSerializer
+            claraweb.rest.Service.serializers.ServiceEngineSerializer
         responseMessages:
             - code: 400
               message: Bad request

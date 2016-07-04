@@ -136,7 +136,7 @@ class ServicesView(APIView):
 
 class ServiceView(APIView):
 
-    def get(self,request, service_id, container_id=None, DPE_id=None):
+    def get(self, request, service_id, container_id=None, DPE_id=None):
         """
         Get the registration information of a Service Engine for specific
         container
@@ -170,12 +170,31 @@ class ServiceView(APIView):
 
         if container_id:
             container_parent = find_parents(container_id, DPE_id)
+            if container_parent:
+                service_object = container_parent.services.get(service_id=service_id)
+                serializer = ServiceEngineSerializer(service_object)
+                return Response(serializer.data)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        elif 'container' in request.data:
+            container_parent = find_parents(request.data.pop('container'), DPE_id)
+            if container_parent:
+                service_object = container_parent.services.get(service_id=service_id)
+                serializer = ServiceEngineSerializer(service_object)
+                return Response(serializer.data)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
-            container_parent = find_parents(request.data('container'), DPE_id)
+            if service_id:
+                service_object = ServiceEngine.objects.get(service_id=service_id)
 
-        if not container_parent:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+                if service_object:
+                    serializer = ServiceEngineSerializer(service_object)
+                    return Response(serializer.data)
 
-        service_object = container_parent.services.get(service_id=service_id)
-        serializer = ServiceEngineSerializer(service_object)
-        return Response(serializer.data)
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)

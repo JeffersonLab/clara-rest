@@ -33,26 +33,26 @@ In order to access the django site, try the URLs, like in the following example.
 
 ```sh
 # HTTP Method	URL
-GET 	http://localhost:8000/dpes
-POST    http://localhost:8000/dpes
-GET 	http://localhost:8000/dpes/{dpe_id}/
-DELETE  http://localhost:8000/dpes/{dpe_id}/
-GET 	http://localhost:8000/dpes/{dpe_id}/containers
-POST 	http://localhost:8000/dpes/{dpe_id}/containers
-DELETE  http://localhost:8000/dpes/{dpe_id}/containers
-GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
-DELETE  http://localhost:8000/dpes/{dpe_id}/containers/{container_id}
-GET		http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
-POST	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/
-GET 	http://localhost:8000/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
-GET		http://localhost:8000/containers/
-POST    http://localhost:8000/containers/
-GET		http://localhost:8000/containers/{container_id}
-DELETE	http://localhost:8000/containers/{container_id}
-GET		http://localhost:8000/services/
-POST	http://localhost:8000/services/
+GET 	http://<clara-host>/dpes
+POST    http://<clara-host>/dpes
+GET 	http://<clara-host>/dpes/{dpe_id}/
+DELETE  http://<clara-host>/dpes/{dpe_id}/
+GET 	http://<clara-host>/dpes/{dpe_id}/containers
+POST 	http://<clara-host>/dpes/{dpe_id}/containers
+DELETE  http://<clara-host>/dpes/{dpe_id}/containers
+GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
+DELETE  http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
+GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/
+POST	http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/
+GET 	http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
+GET		http://<clara-host>/containers/
+POST    http://<clara-host>/containers/
+GET		http://<clara-host>/containers/{container_id}
+DELETE	http://<clara-host>/containers/{container_id}
+GET		http://<clara-host>/services/
+POST	http://<clara-host>/services/
 # You Check documentation and test the API directly at:
-http://localhost:8000/docs
+http://<clara-host>/docs
 ```
 
 ### Other commands for monitoring

@@ -34,27 +34,22 @@ In order to access the django site, try the URLs, like in the following example.
 ```sh
 # HTTP Method	URL
 GET 	http://<clara-host>/dpes
-POST    http://<clara-host>/dpes
 GET 	http://<clara-host>/dpes/{dpe_id}/
 DELETE  http://<clara-host>/dpes/{dpe_id}/
 
 GET 	http://<clara-host>/dpes/{dpe_id}/containers
-POST 	http://<clara-host>/dpes/{dpe_id}/containers
 DELETE  http://<clara-host>/dpes/{dpe_id}/containers
 GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
 DELETE  http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
 
 GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/
-POST	http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/
 GET 	http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
 
 GET		http://<clara-host>/containers/
-POST    http://<clara-host>/containers/
 GET		http://<clara-host>/containers/{container_id}
 DELETE	http://<clara-host>/containers/{container_id}
 
 GET		http://<clara-host>/services/
-POST	http://<clara-host>/services/
 # You Check documentation and test the API directly at:
 http://<clara-host>/docs
 ```

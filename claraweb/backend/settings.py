@@ -87,8 +87,6 @@ SWAGGER_SETTINGS = {
     'api_path': '/',
     'enabled_methods': [
         'get',
-        'post',
-        'put',
         'patch',
         'delete'
     ],
@@ -100,11 +98,7 @@ SWAGGER_SETTINGS = {
     'resource_access_handler': None,
     'info': {
         'contact': 'oyarzun@jlab.org',
-        'description': 'This is a Clara REST server. '
-                       'You can find out more about Swagger at '
-                       '<a href="http://swagger.wordnik.com">'
-                       'http://swagger.wordnik.com</a> '
-                       'or on irc.freenode.net, #swagger.',
+        'description': 'This is a Clara REST server. ',
         'termsOfServiceUrl': '',
         'title': 'Clara REST server',
     },

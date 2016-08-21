@@ -1,2 +1,16 @@
-db.sqlite3
+.DS_Store
+.coverage
+.env
+.idea
+.project
+.pydevproject
+
+*.db
 *.pyc
+*/migrations
+
+db.sqlite3
+ClaraUI/assets/bower_components
+ClaraUI/assets/django_extensions
+ClaraUI/assets/favicon.ico
+

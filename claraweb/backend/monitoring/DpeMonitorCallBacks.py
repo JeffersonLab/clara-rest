@@ -69,7 +69,7 @@ def save_runtime_data(msg):
                     'n_requests': service['n_requests'],
                     'n_failures': service['n_failures'],
                     'n_requests_sec': n_request_sec,
-                    'exec_time': service['exec_time'],
+                    'exec_time': float(service['exec_time']),
                     'shm_reads': service['shm_reads'],
                     'shm_writes': service['shm_writes']
                 }

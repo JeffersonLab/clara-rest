@@ -1,12 +1,12 @@
 
 # Clara REST Interface
 
-REST interface based on django python 1.7
+REST interface based on django python 1.9
 
 Once in the main folder, run the following command in order to install the dependencies
 
 ```sh
-$ pip install --process-dependency-links -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ### Running the App in development mode

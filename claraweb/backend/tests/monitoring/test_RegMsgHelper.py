@@ -173,7 +173,7 @@ TEST_CASE_5 = {
 class TestRegistrationMsgHelper(unittest.TestCase):
 
     def make_serialized_msg(self, case):
-        return xMsgMessage.create_with_string("topic", json.dumps(case))
+        return xMsgMessage.from_string("topic", json.dumps(case))
 
     def test_convert_message_to_json(self):
         parser = RegistrationMsgHelper(self.make_serialized_msg(TEST_CASE_1))

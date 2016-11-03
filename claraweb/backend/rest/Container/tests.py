@@ -89,9 +89,9 @@ class ContainerTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_filter_container_request_obtains_filtered_data(self):
-        response = self.client.get('/containers/' + '?filter_by_containername=abc')
+        response = self.client.get('/containers/?filter_by_containername=abc')
         self.assertEqual(2, len(response.data))
-        response = self.client.get('/containers/' + '?filter_by_servicename=calibration')
+        response = self.client.get('/containers/?filter_by_servicename=calibration')
         self.assertEqual(2, len(response.data))
 
     def test_filter_container_request_obtains_filtered_data_for_specific_dpe(self):

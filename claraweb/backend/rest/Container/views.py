@@ -1,12 +1,14 @@
 # coding=utf-8
 
-from claraweb.rest.Container.models import Container
-from claraweb.rest.Container.serializers import ContainerSerializer
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.Service.models import ServiceEngine
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.Container.serializers import ContainerSerializer
+from claraweb.backend.rest.DPE.models import DPE
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from claraweb.backend.rest.Service.models import ServiceEngine
+
 """
 Container views:
 Views for json responses for the Clara Containers at Specific Hostname (DPE)

@@ -1,14 +1,13 @@
 # coding=utf-8
 
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.DPE.models import DPE
+from claraweb.backend.rest.DPE.serializers import DPESerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from claraweb.rest.Container.models import Container
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.DPE.serializers import DPESerializer
-from claraweb.rest.Service.models import ServiceEngine
-
+from claraweb.backend.rest.Service.models import ServiceEngine
 
 """
 claraweb Views:
@@ -75,7 +74,7 @@ class Dpes(APIView):
             nodes_data = DPE.objects.filter(containers=filtered_containers)
 
         serializer = DPESerializer(nodes_data, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """

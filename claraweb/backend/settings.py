@@ -17,7 +17,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 logging.disable(logging.CRITICAL)
 
 # Application definition
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,10 +30,10 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
 
     # Clara apps
-    'claraweb.rest.DPE',
-    'claraweb.rest.Container',
-    'claraweb.rest.Service',
-)
+    'claraweb.backend.rest.DPE.apps.DPEConfig',
+    'claraweb.backend.rest.Container.apps.ContainerConfig',
+    'claraweb.backend.rest.Service.apps.ServiceConfig',
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

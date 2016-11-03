@@ -1,9 +1,10 @@
 # coding=utf-8
 
-from claraweb.rest.Container.models import Container
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.Service.models import ServiceEngine
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.DPE.models import DPE
 from django.contrib.admin import ModelAdmin, TabularInline, site
+
+from claraweb.backend.rest.Service.models import ServiceEngine
 
 
 class ContainerInline(TabularInline):

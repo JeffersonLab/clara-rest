@@ -1,16 +1,18 @@
 # coding=utf-8
 
-from claraweb.rest.Container.models import Container
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.Service.serializers import *
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.DPE.models import DPE
+from claraweb.backend.rest.Service.serializers import *
 """
 Services Views:
 Views for json responses for the Clara ServiceEngines
 """
+
+
 def find_parents(container_id, dpe_id=None):
     try:
         if dpe_id:

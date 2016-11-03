@@ -2,7 +2,7 @@
 
 from django.db import models
 
-from claraweb.rest.Container.models import Container
+from claraweb.backend.rest.Container.models import Container
 """
 A CLARA service engine runs in one container at one DPE.<br>
 Must be threadsafe. Must implement CLARA service engine interface.

@@ -2,7 +2,7 @@
 
 from django.db import models
 
-from claraweb.rest.DPE.models import DPE
+from claraweb.backend.rest.DPE.models import DPE
 from claraweb.backend.utils.Validators import validate_node_existence
 
 

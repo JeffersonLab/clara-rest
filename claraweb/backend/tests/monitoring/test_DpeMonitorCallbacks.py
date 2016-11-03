@@ -6,11 +6,11 @@ import json
 import unittest
 
 import mock
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.DPE.models import DPE
 from xmsg.core.xMsgMessage import xMsgMessage
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.Service.models import ServiceEngine
-from claraweb.rest.Container.models import Container
 
+from claraweb.backend.rest.Service.models import ServiceEngine
 
 date = datetime.datetime(2015, 9, 24, 14, 9, 12, 647427)
 

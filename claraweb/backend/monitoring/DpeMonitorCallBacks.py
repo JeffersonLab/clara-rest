@@ -1,14 +1,14 @@
 # coding=utf-8
 
+from clara.base.ClaraUtils import ClaraUtils
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.DPE.models import DPE
 from influxdb import InfluxDBClient
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
 
-from clara.base.ClaraUtils import ClaraUtils
-from claraweb.rest.DPE.models import DPE
-from claraweb.rest.Container.models import Container
-from claraweb.rest.Service.models import ServiceEngine
 from claraweb.backend.monitoring.MsgHelpers import RuntimeMsgHelper, RegistrationMsgHelper
+from claraweb.backend.rest.Service.models import ServiceEngine
 
 
 class DpeMonitorCallBack(xMsgCallBack):

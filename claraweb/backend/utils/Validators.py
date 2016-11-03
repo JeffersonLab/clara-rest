@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from django.core.exceptions import ValidationError
-from claraweb.rest.DPE.models import DPE
+from claraweb.backend.rest.DPE.models import DPE
 from claraweb.backend.utils.CWConstants import DPE_CREATION_LIMIT
 
 

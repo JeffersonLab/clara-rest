@@ -7,7 +7,7 @@
 
 *.db
 *.pyc
-*/migrations
+*migrations
 
 db.sqlite3
 *.egg*

@@ -10,12 +10,7 @@ $ pip install -r requirements.txt
 ```
 
 ### Running the App in development mode
-Inside the application folder, you will first need to build the development database. You can do this by running in your terminal:
-
-```sh
-$ ./manage.py syncdb
-```
-Once this is done, you can start the development server by doing:
+Inside the application folder, you can do this by running in your terminal:
 
 ```sh
 $ ./manage.py runserver

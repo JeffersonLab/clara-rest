@@ -27,11 +27,11 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ('dpe_id','container_id', 'dpe_canonical_name', 'canonical_name',
-                  'name', 'deployed_services','services')
-        write_only_fields = ('dpe', 'name')
+        fields = ('dpe_id','container_id', 'dpe_canonical_name',
+                  'canonical_name', 'name', 'deployed_services','services')
+        write_only_fields = ('dpe', 'name',)
         read_only_fields = ('services', 'container_id', 'dpe_canonical_name',
-                            'canonical_name')
+                            'canonical_name',)
 
     def create(self, validated_data):
         return Container(**validated_data)

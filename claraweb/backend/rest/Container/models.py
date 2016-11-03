@@ -19,9 +19,6 @@ class Container(models.Model):
     class Meta:
         unique_together = ('dpe', 'name')
 
-    def __str__(self):
-        return self.get_canonical_name()
-
     def get_dpe_name(self):
         return str(self.dpe)
 

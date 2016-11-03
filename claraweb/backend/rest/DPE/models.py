@@ -15,8 +15,8 @@ class DPE(models.Model):
     start_time = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
 
-    def __str__(self):
-        return "%s" % self.hostname
+    class Meta:
+        managed = True
 
     def __int__(self):
         return int(self.node_id)

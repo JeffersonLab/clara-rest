@@ -11,4 +11,4 @@ class ServiceEngineSerializer(serializers.ModelSerializer):
         model = ServiceEngine
         fields = ('service_id', 'container', 'engine_name', 'class_name',
                   'author', 'version', 'description',)
-        read_only_fields = ('service_id')
+        read_only_fields = ('service_id',)

@@ -29,8 +29,5 @@ class ServiceEngine(models.Model):
     class Meta:
         unique_together = ('container', 'engine_name' )
 
-    def __str__(self):
-        return "%s:%s" % (self.container.get_canonical_name(), self.engine_name)
-
     def get_canonical_name(self):
         return str(self)

@@ -18,14 +18,6 @@ class DPETests(APITestCase):
       "memory_size": 64
     }
 
-    def test_create_node(self):
-        """
-        We must ensure that the DPE node instance gets created
-        correctly into the database
-        """
-        response = self.client.post(self.url, self.initial_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
     def test_delete_node(self):
         """
         We must ensure that the DPE node instance gets deleted

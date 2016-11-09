@@ -76,39 +76,6 @@ class Dpes(APIView):
         serializer = DPESerializer(nodes_data, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        """
-        Start new DPE(s)
-        ---
-        parameters_strategy:
-            form: replace
-        parameters:
-            - name: DPEInfo
-              type: string
-              description: Quantity and types of DPEs to start
-            - name: hostname
-              type: string
-              description: hostname of the DPE to register
-            - name: language
-              type: string
-              description: programming language of the DPE to register
-            - name: n_cores
-              type: int
-              description: number of cores of the DPE to register
-        response_serializer: claraweb.rest.DPE.serializers.DPESerializer
-        responseMessages:
-            - code: 400
-              message: Bad Request
-            - code: 401
-              message: Not authenticated
-        """
-        serializer = DPESerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class Dpe(APIView):
 

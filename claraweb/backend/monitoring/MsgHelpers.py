@@ -41,7 +41,10 @@ class RuntimeMsgHelper(object):
         Returns:
             containers (Array): array with the containers runtime data
         """
-        return json.loads(self._message)['DPERuntime']['containers']
+        dpe_runtime = json.loads(self._message)['DPERuntime']
+        if 'containers' in dpe_runtime:
+            return dpe_runtime['containers']
+        return []
 
     def get_services(self):
         """Returns the services runtime data
@@ -51,8 +54,9 @@ class RuntimeMsgHelper(object):
         """
         service_array = []
         for container in self.get_containers():
-            for service in container['services']:
-                service_array.append(service)
+            if 'services' in container['ContainerRuntime']:
+                for service in container['ContainerRuntime']['services']:
+                    service_array.append(service['ServiceRuntime'])
         return service_array
 
     def to_JSON(self):
@@ -89,8 +93,7 @@ class RegistrationMsgHelper(object):
         Returns:
             DPE_Registration (JSON object)
         """
-        json_object = json.loads(self._message)
-        return json_object['DPERegistration']
+        return json.loads(self._message)['DPERegistration']
 
     def get_containers(self):
         """Returns the containers registered in DPE
@@ -98,8 +101,10 @@ class RegistrationMsgHelper(object):
         Returns:
             containers (Array): array with the containers information
         """
-        json_object = json.loads(self._message)
-        return json_object['DPERegistration']['containers']
+        dpe_registration = json.loads(self._message)['DPERegistration']
+        if 'containers' in dpe_registration:
+            return dpe_registration['containers']
+        return []
 
     def get_services(self):
         """Returns the services registered in DPE
@@ -109,6 +114,7 @@ class RegistrationMsgHelper(object):
         """
         service_array = []
         for container in self.get_containers():
-            for service in container['ContainerRegistration']['services']:
-                service_array.append(service)
+            if 'services' in container['ContainerRegistration']:
+                for service in container['ContainerRegistration']['services']:
+                    service_array.append(service)
         return service_array

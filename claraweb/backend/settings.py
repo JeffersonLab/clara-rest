@@ -16,6 +16,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Django Testing Logger
 logging.disable(logging.CRITICAL)
 
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, 'backend/tests/fixtures/'),
+)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

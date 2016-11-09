@@ -1,13 +1,13 @@
 # coding=utf-8
 
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.Container.serializers import ContainerSerializer
-from claraweb.backend.rest.DPE.models import DPE
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from claraweb.backend.rest.Service.models import ServiceEngine
+from claraweb.backend.rest.Container.models import Container
+from claraweb.backend.rest.Container.serializers import ContainerSerializer
+from claraweb.backend.rest.DPE.models import DPE
 
 """
 Container views:
@@ -30,82 +30,35 @@ def find_container_object(container_id, dpe_id=None):
         return None
 
 
-class ContainersView(APIView):
+class ContainersView(ListCreateAPIView):
 
-    def get(self, request, DPE_id=None):
-        """
-        Find all containers
-        ---
-        parameters:
-            - name: filter_by_containername
-              type: string
-              paramType: query
-              description: container name to filter containers
-            - name: filter_by_servicename
-              type: string
-              paramType: query
-              description: service name to filter containers
-        responseMessages:
-            - code: 401
-              message: Not authenticated
-        """
-        container_filter = request.GET.get('filter_by_containername')
-        service_filter = request.GET.get('filter_by_servicename')
+    serializer_class = ContainerSerializer
 
-        if DPE_id:
-            containers_data = DPE.objects.get(node_id=DPE_id).containers
+    def get_queryset(self):
+        queryset = Container.objects.all()
+        container_name = self.request.query_params.get('name', None)
 
-        else:
-            containers_data = Container.objects.all()
+        if container_name:
+            queryset = queryset.filter(name__contains=container_name)
+        return queryset
 
-        if container_filter:
-            containers_data = containers_data.filter(name__contains=container_filter)
+    def post(self, request, *args, **kwargs):
+        if 'DPE_id' in kwargs:
+            request.data['dpe_id'] = int(kwargs.pop('DPE_id'))
 
-        elif service_filter:
-            filtered_services = ServiceEngine.objects.filter(engine_name__contains=service_filter)
-            containers_data = containers_data.filter(services=filtered_services)
+            try:
+                DPE.objects.get(node_id=request.data['dpe_id'])
+                serializer = ContainerSerializer(data=request.data)
 
-        serializer = ContainerSerializer(containers_data, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, DPE_id=None):
-        """
-        Create a new Clara Container
-        ---
-        request_serializer:
-            claraweb.rest.Container.serializers.ContainerSerializer
-        responseMessages:
-            - code: 400
-              message: Bad request
-            - code: 401
-              message: Not authenticated
-            - code: 404
-              message: Resource not found
-        """
-
-        try:
-            if DPE_id:
-                node, created = DPE.objects.get(node_id=DPE_id).containers.get_or_create(**request.data)
-                if created:
-                    node.save()
-                    return Response(status=status.HTTP_201_CREATED)
-
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(data=serializer.validated_data,
+                                    status=status.HTTP_201_CREATED)
                 else:
-                    return Response(status=status.HTTP_200_OK)
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
 
-            else:
-                node = DPE.objects.get(node_id=request.data.pop('dpe'))
-                container, created = node.containers.get_or_create(**request.data)
-
-                if created:
-                    container.save()
-                    return Response(status=status.HTTP_201_CREATED)
-
-                else:
-                    return Response(status=status.HTTP_200_OK)
-
-        except DPE.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            except DPE.DoesNotExist:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ContainerView(APIView):

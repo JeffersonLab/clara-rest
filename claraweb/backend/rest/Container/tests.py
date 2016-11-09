@@ -43,6 +43,21 @@ class ContainerTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_get_node_container(self):
+        """
+        We must ensure that the container instance gets created
+        correctly into the database
+
+        Parameters
+        ==========
+        URL: /dpes/1/containers/1
+        method: GET
+        Should Return HTTP_200_OK
+        """
+        response = self.client.get('/dpes/1/containers/1', format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('name' in response.data)
+
     def test_create_node_container_bad(self):
         """
         We must ensure that the container instance rejects the creation
@@ -94,8 +109,8 @@ class ContainerTests(APITestCase):
         self.assertEqual(2, len(response.data))
 
     def test_filter_container_request_obtains_filtered_data_for_specific_dpe(self):
-        response = self.client.get('/dpes/3/containers/?name=abc')
-        self.assertEqual(1, len(response.data))
+        response = self.client.get('/dpes/1/containers/?name=abc')
+        self.assertEqual(2, len(response.data))
         # response = self.client.get('/dpes/3/containers/?filter_by_servicename=calibration')
         # self.assertEqual(1, len(response.data))
         # response = self.client.get('/dpes/2/containers/?filter_by_servicename=calibration')

@@ -47,11 +47,11 @@ class Dpes(APIView):
             - code: 401
               message: Not authenticated
         """
-        name_filter = request.GET.get('filter_by_name')
-        cores_filter = request.GET.get('filter_by_cores')
-        mem_filter = request.GET.get('filter_by_memory')
-        container_filter = request.GET.get('filter_by_containername')
-        service_filter = request.GET.get('filter_by_servicename')
+        name_filter = request.GET.get('name')
+        cores_filter = request.GET.get('cores')
+        mem_filter = request.GET.get('memory')
+        container_filter = request.GET.get('containername')
+        service_filter = request.GET.get('servicename')
 
         nodes_data = DPE.objects.all()
 

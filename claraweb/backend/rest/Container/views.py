@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import django_filters
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
@@ -33,13 +34,14 @@ def find_container_object(container_id, dpe_id=None):
 class ContainersView(ListCreateAPIView):
 
     serializer_class = ContainerSerializer
+    filter_fields = ('name',)
 
     def get_queryset(self):
         queryset = Container.objects.all()
         container_name = self.request.query_params.get('name', None)
 
         if container_name:
-            queryset = queryset.filter(name__contains=container_name)
+            queryset = queryset.filter(name__iexact=container_name)
         return queryset
 
     def post(self, request, *args, **kwargs):

@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 
 
 class DPETests(APITestCase):
-    fixtures = ['claraweb/backend/tests/fixtures/Services.yaml']
+    fixtures = ['Services.yaml']
     url = '/dpes/'
     url_del = url+'2'
 
@@ -35,13 +35,9 @@ class DPETests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_filter_dpe_request_obtains_filtered_data(self):
-        response = self.client.get('/dpes/?filter_by_name=192.')
+        response = self.client.get('/dpes/?name=192.')
         self.assertEqual(3, len(response.data))
-        response = self.client.get('/dpes/?filter_by_cores=8')
+        response = self.client.get('/dpes/?cores=8')
         self.assertEqual(3, len(response.data))
-        response = self.client.get('/dpes/?filter_by_memory=64')
+        response = self.client.get('/dpes/?memory=64')
         self.assertEqual(2, len(response.data))
-        response = self.client.get('/dpes/?filter_by_containername=abc')
-        self.assertEqual(2, len(response.data))
-        response = self.client.get('/dpes/?filter_by_servicename=super')
-        self.assertEqual(3, len(response.data))

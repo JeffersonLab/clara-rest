@@ -6,32 +6,32 @@ from rest_framework.test import APITestCase
 
 
 class ServiceEngineTests(APITestCase):
-    fixtures = ['claraweb/backend/tests/fixtures/Services.yaml',]
+    fixtures = ['Services.yaml',]
     initial_data = {
-                    "engine_name": "some_engine_to_try_install",
-                    "class_name": "some_class",
-                    "author": "Jarvis",
-                    "version": "1.0",
-                    "description": "algo"
-                    }
+        "engine_name": "some_engine_to_try_install",
+        "class_name": "some_class",
+        "author": "Jarvis",
+        "version": "1.0",
+        "description": "algo"
+    }
 
     initial_data_complete = {
-                            "container": 3,
-                            "engine_name": "some_engine_to_try_install-3",
-                            "class_name": "some_class",
-                            "author": "Jarvis",
-                            "version": "3.0",
-                            "description": "algo"
-                            }
+        "container": 3,
+        "engine_name": "some_engine_to_try_install-3",
+        "class_name": "some_class",
+        "author": "Jarvis",
+        "version": "3.0",
+        "description": "algo"
+    }
 
     initial_data_complete_bad = {
-                                "container": 100000,
-                                "engine_name": "some_engine_to_try_install-2",
-                                "class_name": "some_class",
-                                "author": "Jarvis",
-                                "version": "2.0",
-                                "description": "algo"
-                                }
+        "container": 100000,
+        "engine_name": "some_engine_to_try_install-2",
+        "class_name": "some_class",
+        "author": "Jarvis",
+        "version": "2.0",
+        "description": "algo"
+    }
 
     bad_data = {}
 
@@ -62,7 +62,8 @@ class ServiceEngineTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         """
-        response = self.client.post('/services/',self.initial_data_complete, format='json')
+        response = self.client.post('/services/', self.initial_data_complete,
+                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_deploy_service_not_nested_url_twice(self):
@@ -76,8 +77,10 @@ class ServiceEngineTests(APITestCase):
         method: POST
         Should Return HTTP_201_CREATED
         """
-        self.client.post('/services/',self.initial_data_complete, format='json')
-        response = self.client.post('/services/',self.initial_data_complete, format='json')
+        self.client.post('/services/', self.initial_data_complete,
+                         format='json')
+        response = self.client.post('/services/', self.initial_data_complete,
+                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_deploy_service_not_nested_url_bad(self):
@@ -91,7 +94,9 @@ class ServiceEngineTests(APITestCase):
         method: POST
         Should Return HTTP_400_BAD_REQUEST
         """
-        response = self.client.post('/services/',self.initial_data_complete_bad, format='json')
+        response = self.client.post('/services/',
+                                    self.initial_data_complete_bad,
+                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_deploy_service_twice_does_not_overwrite(self):
@@ -114,7 +119,6 @@ class ServiceEngineTests(APITestCase):
                                     self.initial_data,
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
 
     def test_deploy_service_with_bad_dpe_id(self):
         """
@@ -155,31 +159,27 @@ class ServiceEngineTests(APITestCase):
         response = self.client.get('/dpes/1/containers/11/services/1')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-
     def test_filter_service_request_obtains_filtered_data(self):
-        response = self.client.get('/services/?filter_by_servicename=calibration')
+        response = self.client.get('/services/?servicename=calibration')
         self.assertEqual(2, len(response.data))
-        response = self.client.get('/services/?filter_by_description=BUGGGGGSS')
+        response = self.client.get('/services/?description=BUGGGGGSS')
         self.assertEqual(2, len(response.data))
-        # response = self.client.get('/services/?filter_by_language=java')
-        # self.assertEqual(4, len(response.data))
-        # response = self.client.get('/services/?filter_by_language=python')
-        # self.assertEqual(1, len(response.data))
-        response = self.client.get('/services/?filter_by_author=Jarvis')
+        response = self.client.get('/services/?author=Jarvis')
         self.assertEqual(4, len(response.data))
-        response = self.client.get('/services/?filter_by_author=Vardan')
+        response = self.client.get('/services/?author=Vardan')
         self.assertEqual(1, len(response.data))
 
-    def test_filter_service_request_obtains_filtered_data_for_specific_container(self):
-        response = self.client.get('/dpes/1/containers/1/services/?filter_by_name=BUGGGGGSS')
+    def test_filter_service_request_obtains_filtered_data_for_specific_container(
+            self):
+        response = self.client.get(
+            '/dpes/1/containers/1/services/?name=BUGGGGGSS')
         self.assertEqual(1, len(response.data))
-        response = self.client.get('/dpes/3/containers/3/services/?filter_by_description=BUGGGGGSS')
+        response = self.client.get(
+            '/dpes/3/containers/3/services/?description=BUGGGGGSS')
         self.assertEqual(1, len(response.data))
-        response = self.client.get('/dpes/3/containers/3/services/?filter_by_description=algo')
+        response = self.client.get(
+            '/dpes/3/containers/3/services/?description=algo')
         self.assertEqual(1, len(response.data))
-        # response = self.client.get('/dpes/3/containers/3/services/?filter_by_language=java')
-        # self.assertEqual(1, len(response.data))
-        # response = self.client.get('/dpes/3/containers/3/services/?filter_by_language=python')
-        # self.assertEqual(1, len(response.data))
-        response = self.client.get('/dpes/3/containers/3/services/?filter_by_author=Jarvis')
+        response = self.client.get(
+            '/dpes/3/containers/3/services/?author=Jarvis')
         self.assertEqual(2, len(response.data))

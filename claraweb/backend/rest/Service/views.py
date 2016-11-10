@@ -32,41 +32,17 @@ class ServicesView(APIView):
 
     def get(self, request, container_id=None, DPE_id=None):
         """
-        Find services that match the optional query parameters.<br>
+        Find services that match the optional query parameters.
         For all services omit the parameters.
         ---
-        parameters:
-            - name: filter_by_description
-              type: string
-              paramType: query
-              description: filter services by description
-              required: False
-            - name: filter_by_name
-              type: string
-              paramType: query
-              description: filter services by name
-              required: False
-            - name: filter_by_author
-              type: string
-              paramType: query
-              description: filter services by author
-              required: False
-            - name: filter_by_language
-              type: string
-              paramType: query
-              description: filter services by language
-              required: False
-        response_serializer:
-            claraweb.rest.Service.serializers.ServiceEngineSerializer
-        responseMessages:
+        response_messages:
             - code: 401
               message: Not authenticated
         """
-        desc_filter = request.GET.get('filter_by_description')
-        name_filter = request.GET.get('filter_by_servicename')
-        lang_filter = request.GET.get('filter_by_language')
-        auth_filter = request.GET.get('filter_by_author')
-
+        desc_filter = request.GET.get('description')
+        name_filter = request.GET.get('servicename')
+        lang_filter = request.GET.get('language')
+        auth_filter = request.GET.get('author')
 
         if container_id:
             container = find_parents(container_id=container_id, dpe_id=DPE_id)

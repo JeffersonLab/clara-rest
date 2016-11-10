@@ -1,21 +1,20 @@
 
-# Clara REST Interface
+# Clara REST API
 
-REST interface based on django python 1.7
+REST interface based on django python 1.9
 
 Once in the main folder, run the following command in order to install the dependencies
 
 ```sh
-$ pip install --process-dependency-links -r requirements.txt
+$ pip install -r requirements.txt
 ```
+
+System requirements:
+
+- InfluxDB server, for the clara runtime database (it needs to have an empty DB called 'claraRuntime') 
 
 ### Running the App in development mode
-Inside the application folder, you will first need to build the development database. You can do this by running in your terminal:
-
-```sh
-$ ./manage.py syncdb
-```
-Once this is done, you can start the development server by doing:
+Inside the application folder, you can do this by running in your terminal:
 
 ```sh
 $ ./manage.py runserver
@@ -33,23 +32,23 @@ In order to access the django site, try the URLs, like in the following example.
 
 ```sh
 # HTTP Method	URL
-GET 	http://<clara-host>/dpes
-GET 	http://<clara-host>/dpes/{dpe_id}/
-DELETE  http://<clara-host>/dpes/{dpe_id}/
+GET /dpes
+GET /dpes/{dpe_id}/
+DELETE /dpes/{dpe_id}/
 
-GET 	http://<clara-host>/dpes/{dpe_id}/containers
-DELETE  http://<clara-host>/dpes/{dpe_id}/containers
-GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
-DELETE  http://<clara-host>/dpes/{dpe_id}/containers/{container_id}
+GET /dpes/{dpe_id}/containers
+DELETE /dpes/{dpe_id}/containers
+GET	/dpes/{dpe_id}/containers/{container_id}
+DELETE /dpes/{dpe_id}/containers/{container_id}
 
-GET		http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/
-GET 	http://<clara-host>/dpes/{dpe_id}/containers/{container_id}/services/{service_id}
+GET /dpes/{dpe_id}/containers/{container_id}/services/
+GET /dpes/{dpe_id}/containers/{container_id}/services/{service_id}
 
-GET		http://<clara-host>/containers/
-GET		http://<clara-host>/containers/{container_id}
-DELETE	http://<clara-host>/containers/{container_id}
+GET	/containers/
+GET	/containers/{container_id}
+DELETE /containers/{container_id}
 
-GET		http://<clara-host>/services/
+GET	/services/
 # You Check documentation and test the API directly at:
 http://<clara-host>/docs
 ```

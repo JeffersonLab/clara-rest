@@ -16,8 +16,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Django Testing Logger
 logging.disable(logging.CRITICAL)
 
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, 'backend/tests/fixtures/'),
+)
+
 # Application definition
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,10 +34,10 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
 
     # Clara apps
-    'claraweb.rest.DPE',
-    'claraweb.rest.Container',
-    'claraweb.rest.Service',
-)
+    'claraweb.backend.rest.DPE.apps.DPEConfig',
+    'claraweb.backend.rest.Container.apps.ContainerConfig',
+    'claraweb.backend.rest.Service.apps.ServiceConfig',
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

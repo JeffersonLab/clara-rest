@@ -7,10 +7,7 @@
 
 *.db
 *.pyc
-*/migrations
+*migrations
 
 db.sqlite3
-ClaraUI/assets/bower_components
-ClaraUI/assets/django_extensions
-ClaraUI/assets/favicon.ico
-
+*.egg*

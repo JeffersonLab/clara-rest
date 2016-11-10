@@ -108,28 +108,3 @@ class Dpe(APIView):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-    def delete(self, request, DPE_id):
-        """
-        Shutdown a Dpe
-        ---
-        parameters:
-            - name: DPE_id
-              description: ID of DPE
-              required: True
-              paramType: path
-              type: string
-        responseMessages:
-            - code: 400
-              message: Bad request
-            - code: 401
-              message: Not authenticated
-            - code: 404
-              message: Resource not found
-        """
-        node_object = find_node_object(int(DPE_id))
-        if node_object:
-            node_object.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)

@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import django_filters
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
@@ -34,7 +33,6 @@ def find_container_object(container_id, dpe_id=None):
 class ContainersView(ListCreateAPIView):
 
     serializer_class = ContainerSerializer
-    filter_fields = ('name',)
 
     def get_queryset(self):
         queryset = Container.objects.all()
@@ -44,7 +42,31 @@ class ContainersView(ListCreateAPIView):
             queryset = queryset.filter(name__iexact=container_name)
         return queryset
 
+    def get(self, request, *args, **kwargs):
+        """
+        Get the registration information of a Clara Containers
+        ---
+        parameters:
+            - name: container_id
+              description: ID of container
+              required: True
+              paramType: path
+              type: string
+
+        responseMessages:
+            - code: 400
+              message: Bad request
+            - code: 401
+              message: Not authenticated
+            - code: 404
+              message: Resource not found
+        """
+        return super(ContainersView, self).get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
+        """
+        Create a new Clara Container
+        """
         if 'DPE_id' in kwargs:
             request.data['dpe_id'] = int(kwargs.pop('DPE_id'))
 

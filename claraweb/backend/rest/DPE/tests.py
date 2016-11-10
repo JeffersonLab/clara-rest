@@ -18,14 +18,6 @@ class DPETests(APITestCase):
       "memory_size": 64
     }
 
-    def test_delete_node(self):
-        """
-        We must ensure that the DPE node instance gets deleted
-        correctly into the database under delete request
-        """
-        response = self.client.delete(self.url_del, format='json')
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
     def test_filter_dpe_request_obtains_filtered_data(self):
         response = self.client.get('/dpes/?name=192.')
         self.assertEqual(3, len(response.data))

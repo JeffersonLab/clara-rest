@@ -1,17 +1,17 @@
 # coding=utf-8
 
 import datetime
-from optparse import make_option
 
-from influxdb import InfluxDBClient
 from django.core.management.base import BaseCommand
+from influxdb import InfluxDBClient
+from optparse import make_option
 from xmsg.core.xMsg import xMsg
 from xmsg.core.xMsgTopic import xMsgTopic
 from xmsg.core.xMsgUtil import xMsgUtil
 from xmsg.net.xMsgAddress import ProxyAddress
 
-from claraweb.backend.monitoring.DpeMonitorCallBacks import DpeMonitorCallBack
-from claraweb.rest.DPE.models import DPE
+from claraweb.backend.monitoring.monitor_callBacks import DpeMonitorCallBack
+from claraweb.backend.rest.DPE.models import DPE
 
 
 class Command(BaseCommand):
@@ -79,10 +79,9 @@ class Command(BaseCommand):
         subscription = None
 
         try:
-            subscription = subscriber.subscribe(ProxyAddress(fe_host),
+            subscription = subscriber.subscribe(ProxyAddress(fe_host, 7771),
                                                 topic, DpeMonitorCallBack())
             xMsgUtil.log("Subscribed to runtime messages with topic dpeReport")
-            xMsgUtil.keep_alive()
 
         except KeyboardInterrupt:
             subscriber.unsubscribe(subscription)

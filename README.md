@@ -9,6 +9,10 @@ Once in the main folder, run the following command in order to install the depen
 $ pip install -r requirements.txt
 ```
 
+System requirements:
+
+- InfluxDB server, for the clara runtime database (it needs to have an empty DB called 'claraRuntime') 
+
 ### Running the App in development mode
 Inside the application folder, you can do this by running in your terminal:
 

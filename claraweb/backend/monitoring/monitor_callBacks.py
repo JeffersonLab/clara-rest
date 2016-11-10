@@ -7,7 +7,7 @@ from influxdb import InfluxDBClient
 from xmsg.core.xMsgCallBack import xMsgCallBack
 from xmsg.core.xMsgUtil import xMsgUtil
 
-from claraweb.backend.monitoring.MsgHelpers import RuntimeMsgHelper, RegistrationMsgHelper
+from claraweb.backend.monitoring.message_helpers import RuntimeMsgHelper, RegistrationMsgHelper
 from claraweb.backend.rest.Service.models import ServiceEngine
 
 

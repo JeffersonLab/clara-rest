@@ -26,7 +26,7 @@ class Container(models.Model):
         return str(self.dpe.language)
 
     def get_canonical_name(self):
-        return self.get_dpe_name() + ":" + self.name
+        return ":".join([self.get_dpe_name(),self.name])
 
     def save(self, *args, **kwargs):
-        super(Container, self).save(*args, **kwargs)
+        return super(Container, self).save(*args, **kwargs)

@@ -39,7 +39,7 @@ class ContainerTests(APITestCase):
         Should Return HTTP_201_CREATED
         """
         self.client.post('/dpes/1/containers/', self.initial_data, format='json')
-        response = self.client.post('/dpes/1/containers/', self.initial_data,
+        response = self.client.post('/dpes/1/containers/', {"name":"hello_world"},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 

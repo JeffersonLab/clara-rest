@@ -71,15 +71,11 @@ class ContainersView(ListCreateAPIView):
             request.data['dpe_id'] = int(kwargs.pop('DPE_id'))
 
             try:
-                DPE.objects.get(node_id=request.data['dpe_id'])
-                serializer = ContainerSerializer(data=request.data)
-
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(data=serializer.validated_data,
-                                    status=status.HTTP_201_CREATED)
-                else:
-                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                dpe = DPE.objects.get(node_id=request.data['dpe_id'])
+                container = Container(dpe=dpe, name=request.data['name'])
+                container.save()
+                return Response(data=ContainerSerializer(container).data,
+                                status=status.HTTP_201_CREATED)
 
             except DPE.DoesNotExist:
                 return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -31,3 +31,6 @@ class ServiceEngine(models.Model):
 
     def get_canonical_name(self):
         return str(self)
+
+    def get_dpe_name(self):
+        return self.container.get_dpe_name()

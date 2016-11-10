@@ -24,6 +24,13 @@ class DPE(models.Model):
     def __int__(self):
         return int(self.node_id)
 
+    def get_host(self):
+        return str(self.hostname.split("_")[0])
+
+    def get_proxy_port(self):
+        # Just for now hardcoded
+        return 7771
+
     def save(self, *args, **kwargs):
         if self.start_time:
             self.modified = datetime.now()

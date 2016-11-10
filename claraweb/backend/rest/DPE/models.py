@@ -18,6 +18,9 @@ class DPE(models.Model):
     class Meta:
         managed = True
 
+    def __str__(self):
+        return self.hostname
+
     def __int__(self):
         return int(self.node_id)
 

@@ -54,9 +54,9 @@ class RuntimeMsgHelper(object):
         """
         service_array = []
         for container in self.get_containers():
-            if 'services' in container['ContainerRuntime']:
-                for service in container['ContainerRuntime']['services']:
-                    service_array.append(service['ServiceRuntime'])
+            if 'services' in container:
+                for service in container['services']:
+                    service_array.append(service)
         return service_array
 
     def to_JSON(self):

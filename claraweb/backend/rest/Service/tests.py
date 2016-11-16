@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+import factory
+from django.db.models.signals import pre_save, pre_delete
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -35,6 +38,7 @@ class ServiceEngineTests(APITestCase):
 
     bad_data = {}
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service(self):
         """
         We must safely deploy a service into a container
@@ -51,6 +55,7 @@ class ServiceEngineTests(APITestCase):
                                     self.initial_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service_not_nested_url(self):
         """
         Service should deploy with a full set of data
@@ -66,6 +71,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service_not_nested_url_twice(self):
         """
         Service should deploy with a full set of data
@@ -83,6 +89,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service_not_nested_url_bad(self):
         """
         Service should not be deployed with bad data
@@ -99,6 +106,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service_twice_does_not_overwrite(self):
         """
         We must safely deploy a service into a container twice does not
@@ -120,6 +128,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_deploy_service_with_bad_dpe_id(self):
         """
         We must ensure bad data gets proper exception and response
@@ -140,6 +149,7 @@ class ServiceEngineTests(APITestCase):
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_get_service_engine_with_correct_paramaters(self):
         """
         From the created service, we need to retrieve its registration
@@ -151,6 +161,7 @@ class ServiceEngineTests(APITestCase):
                             text="\"engine_name\":\"superReconstructorService\"",
                             count=1, status_code=200, msg_prefix="", html=False)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_get_service_engine_with_bad_paramaters(self):
         """
         From the created service, we need to retrieve its registration
@@ -159,6 +170,7 @@ class ServiceEngineTests(APITestCase):
         response = self.client.get('/dpes/1/containers/11/services/1')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_filter_service_request_obtains_filtered_data(self):
         response = self.client.get('/services/?servicename=calibration')
         self.assertEqual(2, len(response.data))
@@ -169,6 +181,7 @@ class ServiceEngineTests(APITestCase):
         response = self.client.get('/services/?author=Vardan')
         self.assertEqual(1, len(response.data))
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_filter_service_request_obtains_filtered_data_for_specific_container(
             self):
         response = self.client.get(

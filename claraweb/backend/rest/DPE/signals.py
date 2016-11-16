@@ -24,12 +24,19 @@ def deploy_container_message_to_dpe(sender, instance=None,
 
 
 @receiver(pre_delete, sender=ServiceEngine)
-def remove_service_message_to_dpe(sender, **kwargs):
-    MinimalOrchestrator(sender.dpe.get_host(),
-                        sender.dpe.get_proxy_port()).remove_service(sender)
+def remove_service_message_to_dpe(sender, instance=None,
+                                  created=False, **kwargs):
+    try:
+        MinimalOrchestrator(instance.container.dpe.get_host(),
+                           instance.container.dpe.get_proxy_port()).remove_service(instance)
+    except:
+        print "connection : %s at port %d " % (instance.container.dpe.get_host(),
+                           instance.container.dpe.get_proxy_port())
+        return
 
 
 @receiver(pre_save, sender=ServiceEngine)
-def deploy_service_message_to_dpe(sender, **kwargs):
-    MinimalOrchestrator(sender.dpe.get_host(),
-                        sender.dpe.get_proxy_port()).deploy_service(sender)
+def deploy_service_message_to_dpe(sender, instance=None,
+                                  created=False, **kwargs):
+    MinimalOrchestrator(instance.container.dpe.get_host(),
+                        instance.container.dpe.get_proxy_port()).deploy_service(instance)

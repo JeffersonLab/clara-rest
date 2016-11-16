@@ -9,16 +9,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'claraweb.backend.settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
-DEBUG = True
-TEMPLATE_DEBUG = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Django Testing Logger
 logging.disable(logging.CRITICAL)
-
-FIXTURE_DIRS = (
-   os.path.join(BASE_DIR, 'backend/tests/fixtures/'),
-)
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,13 +58,6 @@ REST_FRAMEWORK = {
 ROOT_URLCONF = 'claraweb.backend.urls'
 
 WSGI_APPLICATION = 'claraweb.backend.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 # STATICS ###################################################################
 STATIC_URL = '/static/'

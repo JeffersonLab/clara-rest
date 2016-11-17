@@ -3,9 +3,9 @@
 from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.Service.models import ServiceEngine
-from claraweb.backend.utils.minimal_orchestrator import MinimalOrchestrator
+from backend.rest.Container.models import Container
+from backend.rest.Service.models import ServiceEngine
+from backend.utils.minimal_orchestrator import MinimalOrchestrator
 
 
 @receiver(pre_delete, sender=Container)

@@ -3,7 +3,8 @@
 
 import unittest
 import json
-from claraweb.backend.monitoring.message_helpers import RegistrationMsgHelper
+
+from backend.monitoring.message_helpers import RegistrationMsgHelper
 from xmsg.core.xMsgMessage import xMsgMessage
 
 # DPE with no containers

@@ -5,9 +5,9 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.Container.serializers import ContainerSerializer
-from claraweb.backend.rest.DPE.models import DPE
+from backend.rest.Container.models import Container
+from backend.rest.Container.serializers import ContainerSerializer
+from backend.rest.DPE.models import DPE
 
 """
 Container views:

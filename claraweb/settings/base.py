@@ -6,7 +6,7 @@ import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'claraweb.backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
 CORS_ORIGIN_ALLOW_ALL = True

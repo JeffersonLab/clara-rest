@@ -1,6 +1,6 @@
 # NAIADS deps
--e git+https://royarzun@git.earthdata.nasa.gov/scm/naiads/xmsg-python.git#egg=xmsg
--e git+https://royarzun@git.earthdata.nasa.gov/scm/naiads/clara-python.git#egg=clara
+-e git+ssh://git.earthdata.nasa.gov:7999/naiads/xmsg-python.git#egg=xmsg
+-e git+ssh://git.earthdata.nasa.gov:7999/naiads/clara-python.git#egg=clara
 
 # Django deps
 Django==1.9

@@ -6,6 +6,7 @@ import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+print BASE_DIR
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
@@ -28,9 +29,9 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
 
     # Clara apps
-    'claraweb.backend.rest.DPE.apps.DPEConfig',
-    'claraweb.backend.rest.Container.apps.ContainerConfig',
-    'claraweb.backend.rest.Service.apps.ServiceConfig',
+    'backend.rest.DPE.apps.DPEConfig',
+    'backend.rest.Container.apps.ContainerConfig',
+    'backend.rest.Service.apps.ServiceConfig',
 ]
 
 MIDDLEWARE_CLASSES = (

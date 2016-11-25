@@ -1,12 +1,9 @@
-# NAIADS deps
--e git+ssh://git.earthdata.nasa.gov:7999/naiads/xmsg-python.git#egg=xmsg
--e git+ssh://git.earthdata.nasa.gov:7999/naiads/clara-python.git#egg=clara
-
 # Django deps
 Django==1.9
 djangorestframework==3.5.2
 djangorestframework-yaml==1.0.3
 django-rest-swagger==2.1.0
+mysqlclient==1.3.9
 
 # Time based database
 influxdb==2.12.0

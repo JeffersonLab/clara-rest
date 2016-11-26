@@ -1,0 +1,4 @@
+-r base.txt
+
+-e git+git@github.com:JeffersonLab/clara-python.git#egg=clara
+-e git+git@github.com:JeffersonLab/xmsg_python.git#egg=xmsg

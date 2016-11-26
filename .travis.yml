@@ -9,4 +9,4 @@ install:
     - pip install -r claraweb/requirements/dev.txt
 
 script:
-    - ./development.sh
+    - ./runtests.sh

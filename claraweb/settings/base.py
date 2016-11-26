@@ -56,9 +56,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-ROOT_URLCONF = 'claraweb.backend.urls'
+ROOT_URLCONF = 'backend.urls'
 
-WSGI_APPLICATION = 'claraweb.backend.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 # STATICS ###################################################################
 STATIC_URL = '/static/'

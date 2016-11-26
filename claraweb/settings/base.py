@@ -62,14 +62,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # STATICS ###################################################################
 STATIC_URL = '/static/'
-STATIC_ROOT = '/assets'
+STATIC_ROOT = 'assets/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 STATIC_FILES_DIRS = (
-    os.path.join(BASE_DIR, '/assets/'),
+    os.path.join(BASE_DIR, 'assets/'),
 )
 
 # SWAGGER ###################################################################

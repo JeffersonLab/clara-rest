@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  db:
+    image: postgres
+    env_file: ../.env
+  web:
+    build:
+      context: ../claraweb
+    env_file: ../.env

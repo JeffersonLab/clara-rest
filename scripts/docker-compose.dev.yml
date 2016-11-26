@@ -1,0 +1,51 @@
+version: "2"
+
+services:
+#  db:
+#    extends:
+#      file: docker-compose.base.yml
+#      service: db
+#    environment:
+#      MYSQL_USER: rest
+#      MYSQL_PASSWORD: 123
+#      MYSQL_DATABASE: restdb
+#    ports:
+#      - "3306:3306"
+  db:
+    extends:
+      file: docker-compose.base.yml
+      service: db
+    environment:
+      POSTGRES_USER: rest
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: restdb
+    ports:
+      - "3306:3306"
+  web:
+    extends:
+      file: docker-compose.base.yml
+      service: web
+
+    build:
+      args:
+        - DJANGO_ENV=dev
+
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:../claraweb/build/
+    environment:
+      PYTHONPATH: .
+      PYTHONUSERBASE: ../claraweb/build/
+
+    volumes:
+        - ./../claraweb:/claraweb
+
+    ports:
+        - "8000:8000"
+
+    depends_on:
+      - db
+  runtimedb:
+    image: influxdb
+    environment:
+      PYTHONPATH: .

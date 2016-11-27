@@ -29,3 +29,4 @@ WORKDIR $WEBAPP_DIR/build/clara/
 RUN python setup.py install
 WORKDIR $WEBAPP_DIR
 RUN pip install -r $DJANGO_ENV.txt
+RUN python manage.py collectstatic --settings=settings.base --no-input

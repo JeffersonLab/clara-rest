@@ -6,7 +6,6 @@ import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-print BASE_DIR
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
 SECRET_KEY = 'h&@82v87p&lg7bub@b(alnt6+i*-qk518+v_y)v_54%qm7-&6h'
@@ -103,3 +102,20 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
+
+# DATABASES #################################################################
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'restdb.db',
+    }
+}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME', 'restdb'),
+#         'HOST': os.environ.get('DB_HOST', 'db'),
+#         'USER': os.environ.get('DB_USER', 'rest'),
+#         'PASSWORD': os.environ.get('DB_PASS', '123'),
+#     }
+# }

@@ -9,7 +9,8 @@ python-pip \
 python-virtualenv \
 libpq-dev \
 supervisor \
-nginx
+nginx \
+cron
 
 RUN pip install --upgrade pip
 
@@ -37,6 +38,6 @@ RUN python manage.py collectstatic --settings=settings.base --no-input
 RUN python manage.py makemigrations DPE Container Service --settings=settings.base
 RUN python manage.py migrate --settings=settings.base
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN crontab cronjob.txt
+COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN crontab scripts/cron_job.txt
 CMD ["/usr/bin/supervisord"]

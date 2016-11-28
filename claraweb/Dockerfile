@@ -34,7 +34,12 @@ WORKDIR $WEBAPP_DIR
 RUN pip install -r $DJANGO_ENV.txt
 
 RUN python manage.py collectstatic --settings=settings.base --no-input
+RUN python manage.py makemigrations DPE --settings=settings.base
+RUN python manage.py makemigrations Container --settings=settings.base
+RUN python manage.py makemigrations Service --settings=settings.base
+RUN python manage.py migrate --settings=settings.base --run-syncdb --no-input
 
-COPY scripts/supervisord-docker.conf /etc/supervisor/conf.d/supervisord.conf
+COPY scripts/supervisord-docker.conf /etc/supervisor/supervisord.conf
 RUN crontab scripts/cron_job.txt
-CMD ["/usr/bin/supervisord"]
+
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]

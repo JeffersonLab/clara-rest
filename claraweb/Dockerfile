@@ -7,7 +7,6 @@ RUN apt-get update
 RUN apt-get -y install python-dev \
 python-pip \
 python-virtualenv \
-libpq-dev \
 supervisor \
 nginx \
 cron
@@ -35,9 +34,7 @@ WORKDIR $WEBAPP_DIR
 RUN pip install -r $DJANGO_ENV.txt
 
 RUN python manage.py collectstatic --settings=settings.base --no-input
-RUN python manage.py makemigrations DPE Container Service --settings=settings.base
-RUN python manage.py migrate --settings=settings.base
 
-COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY scripts/supervisord-docker.conf /etc/supervisor/conf.d/supervisord.conf
 RUN crontab scripts/cron_job.txt
 CMD ["/usr/bin/supervisord"]

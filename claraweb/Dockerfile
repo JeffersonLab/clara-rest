@@ -7,10 +7,13 @@ RUN apt-get update
 RUN apt-get -y install python-dev \
 python-pip \
 python-virtualenv \
-libpq-dev
+libpq-dev \
+supervisor \
+nginx
 
 RUN pip install --upgrade pip
 
+RUN mkdir -p /var/log/supervisor
 RUN mkdir -p /root/
 RUN touch /root/.bashrc
 RUN mkdir /root/.virtualenvs
@@ -29,4 +32,11 @@ WORKDIR $WEBAPP_DIR/build/clara/
 RUN python setup.py install
 WORKDIR $WEBAPP_DIR
 RUN pip install -r $DJANGO_ENV.txt
+
 RUN python manage.py collectstatic --settings=settings.base --no-input
+RUN python manage.py makemigrations DPE Container Service --settings=settings.base
+RUN python manage.py migrate --settings=settings.base
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN crontab cronjob.txt
+CMD ["/usr/bin/supervisord"]

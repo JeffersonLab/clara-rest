@@ -2,7 +2,7 @@
 Django==1.9
 djangorestframework==3.5.2
 djangorestframework-yaml==1.0.3
-django-rest-swagger==2.1.0
+django-rest-swagger==0.3.10
 
 # Time based database
 influxdb==2.12.0

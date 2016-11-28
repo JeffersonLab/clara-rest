@@ -1,16 +1,6 @@
 version: "2"
 
 services:
-#  db:
-#    extends:
-#      file: docker-compose.base.yml
-#      service: db
-#    environment:
-#      MYSQL_USER: rest
-#      MYSQL_PASSWORD: 123
-#      MYSQL_DATABASE: restdb
-#    ports:
-#      - "3306:3306"
   db:
     extends:
       file: docker-compose.base.yml
@@ -21,6 +11,7 @@ services:
       POSTGRES_DB: restdb
     ports:
       - "3306:3306"
+
   web:
     extends:
       file: docker-compose.base.yml
@@ -45,6 +36,8 @@ services:
 
     depends_on:
       - db
+      - runtimedb
+
   runtimedb:
     image: influxdb
     environment:

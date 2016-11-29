@@ -50,8 +50,6 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework_yaml.renderers.YAMLRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 }
 
@@ -72,29 +70,30 @@ STATIC_FILES_DIRS = (
 )
 
 # SWAGGER ###################################################################
-SWAGGER_SETTINGS = {
-    'exclude_namespaces': [],
-    'api_version': '1.0',
-    'api_path': '/',
-    'enabled_methods': [
-        'get',
-        'patch',
-        'delete'
-    ],
-    'api_key': '',
-    'is_authenticated': False,
-    'is_superuser': False,
-    'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
-    'permission_denied_handler': None,
-    'resource_access_handler': None,
-    'info': {
-        'contact': 'oyarzun@jlab.org',
-        'description': 'This is a Clara REST server. ',
-        'termsOfServiceUrl': '',
-        'title': 'Clara REST server',
-    },
-    'doc_expansion': 'none',
-}
+# SWAGGER_SETTINGS = {
+#     'exclude_namespaces': [],
+#     'api_version': '1.0',
+#     'api_path': '/',
+#     'enabled_methods': [
+#         'get',
+#         'patch',
+#         'delete'
+#     ],
+#     'api_key': '',
+#     'is_authenticated': False,
+#     'is_superuser': False,
+#     'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
+#     'permission_denied_handler': None,
+#     'resource_access_handler': None,
+#     'info': {
+#         'contact': 'oyarzun@jlab.org',
+#         'description': 'This is a Clara REST server. ',
+#         'termsOfServiceUrl': '',
+#         'title': 'Clara REST server',
+#     },
+#     'doc_expansion': 'none',
+#     'base_path': 'localhost:8000/',
+# }
 
 # LOCAL AND INTERNATIONALIZATION ############################################
 LANGUAGE_CODE = 'en-us'
@@ -110,12 +109,3 @@ DATABASES = {
         'NAME': 'restdb.db',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DB_NAME', 'restdb'),
-#         'HOST': os.environ.get('DB_HOST', 'db'),
-#         'USER': os.environ.get('DB_USER', 'rest'),
-#         'PASSWORD': os.environ.get('DB_PASS', '123'),
-#     }
-# }

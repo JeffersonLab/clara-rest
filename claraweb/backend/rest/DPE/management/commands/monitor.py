@@ -88,7 +88,7 @@ class Command(BaseCommand):
 
         try:
             subscription = subscriber.subscribe(ProxyAddress(fe_host, 7771),
-                                                topic, DpeMonitorCallBack('192.168.0.2'))
+                                                topic, DpeMonitorCallBack('localhost'))
             xMsgUtil.log("Subscribed to runtime messages with topic dpeReport")
 
         except KeyboardInterrupt:

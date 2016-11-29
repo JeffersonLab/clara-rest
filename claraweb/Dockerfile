@@ -40,6 +40,6 @@ RUN python manage.py makemigrations Service --settings=settings.base
 RUN python manage.py migrate --settings=settings.base --run-syncdb --no-input
 
 COPY scripts/supervisord-docker.conf /etc/supervisor/supervisord.conf
+RUN service supervisor start &
 RUN crontab scripts/cron_job.txt
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

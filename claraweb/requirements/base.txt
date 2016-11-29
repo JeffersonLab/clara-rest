@@ -1,6 +1,6 @@
 # Django deps
 Django==1.9
-djangorestframework==3.3.0
+djangorestframework==3.5.2
 djangorestframework-yaml==1.0.3
 django-rest-swagger==2.1.0
 

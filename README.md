@@ -38,12 +38,14 @@ $ pip install -r requirements.txt
 System requirements:
 
 - InfluxDB server, for the clara runtime database (it needs to have an empty DB called 'claraRuntime')
+- Clara for python (>=2.0.6) [here](https://github.com/JeffersonLab/clara-python/)
 
 ## Running the App in development mode
 Inside the application folder, you can do this by running in your terminal:
 
 ```sh
-$ ./manage.py runserver
+$ pip install -r claraweb/requirements/dev.txt
+$ ./local_development
 ```
 
 ## Running the App in production

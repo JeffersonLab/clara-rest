@@ -2,7 +2,6 @@
 language: python
 
 before_install:
-    - export PYTHONPATH=$HOME/builds/royarzun/cornershopTodo
     - export PIP_USE_MIRRORS=true
 
 install:

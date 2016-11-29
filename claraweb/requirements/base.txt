@@ -8,6 +8,7 @@ django-rest-swagger==2.1.0
 influxdb==2.12.0
 
 # xMsg deps
+-e git+https://github.com/JeffersonLab/xmsg_python#egg=xmsg
 pyzmq>=14.5.0
 protobuf>=2.6
 enum34>=1.0.4
@@ -16,6 +17,7 @@ netifaces>=0.10.4
 pytest>=2.9.2
 
 # Clara deps
+-e git+https://github.com/JeffersonLab/clara-python#egg=clara
 psutil==4.1.0
 ordered-set==2.0.1
 bitstring==3.1.4

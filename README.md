@@ -1,5 +1,5 @@
 
-# Clara REST API
+# Clara REST API [![Build Status](https://travis-ci.org/JeffersonLab/clara-rest.svg?branch=dev)](https://travis-ci.org/JeffersonLab/clara-rest)
 
 REST interface based on django python 1.9
 

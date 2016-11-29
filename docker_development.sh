@@ -5,5 +5,5 @@ git clone https://github.com/JeffersonLab/clara-python.git ./claraweb/build/clar
 
 cd claraweb
 
-docker-compose -f ../scripts/docker-compose.dev.yml build --no-cache
+docker-compose -f ../scripts/docker-compose.dev.yml build
 docker-compose -f ../scripts/docker-compose.dev.yml up -d

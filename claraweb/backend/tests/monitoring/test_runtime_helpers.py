@@ -4,7 +4,7 @@
 import unittest
 import json
 from xmsg.core.xMsgMessage import xMsgMessage
-from claraweb.backend.monitoring.message_helpers import RuntimeMsgHelper
+from backend.monitoring.message_helpers import RuntimeMsgHelper
 
 # DPE with no containers
 TEST_CASE_1 = {

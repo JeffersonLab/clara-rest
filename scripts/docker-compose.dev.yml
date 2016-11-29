@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  web:
+    extends:
+      file: docker-compose.base.yml
+      service: web
+
+    build:
+      args:
+        - DJANGO_ENV=dev
+
+    command: python manage.py runserver 0.0.0.0:8000
+
+    ports:
+        - "8000:8000"
+        - "9001:9001"
+
+    depends_on:
+      - runtimedb
+
+  runtimedb:
+    image: influxdb
+    ports:
+        - "8083:8083"
+        - "8086:8086"

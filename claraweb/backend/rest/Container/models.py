@@ -2,8 +2,8 @@
 
 from django.db import models
 
-from claraweb.backend.rest.DPE.models import DPE
-from claraweb.backend.utils.validators import validate_node_existence
+from backend.rest.DPE.models import DPE
+from backend.utils.validators import validate_node_existence
 
 
 class Container(models.Model):

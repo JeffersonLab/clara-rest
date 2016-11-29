@@ -7,9 +7,9 @@ import unittest
 
 import mock
 from xmsg.core.xMsgMessage import xMsgMessage
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.DPE.models import DPE
-from claraweb.backend.rest.Service.models import ServiceEngine
+from backend.rest.Container.models import Container
+from backend.rest.DPE.models import DPE
+from backend.rest.Service.models import ServiceEngine
 
 date = datetime.datetime(2015, 9, 24, 14, 9, 12, 647427)
 

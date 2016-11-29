@@ -1,5 +1,8 @@
 # coding=utf-8
 
+import factory
+from django.db.models.signals import pre_save, pre_delete
+
 from rest_framework.test import APITestCase
 
 
@@ -17,6 +20,7 @@ class DPETests(APITestCase):
       "memory_size": 64
     }
 
+    @factory.django.mute_signals(pre_save, pre_delete)
     def test_filter_dpe_request_obtains_filtered_data(self):
         response = self.client.get('/dpes/?name=192.')
         self.assertEqual(3, len(response.data))

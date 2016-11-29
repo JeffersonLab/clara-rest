@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from claraweb.backend.rest.DPE.models import DPE
+from backend.rest.DPE.models import DPE
 
 
 class DPESerializer(serializers.ModelSerializer):

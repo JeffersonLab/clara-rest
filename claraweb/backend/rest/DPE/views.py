@@ -1,13 +1,13 @@
 # coding=utf-8
 
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.DPE.models import DPE
-from claraweb.backend.rest.DPE.serializers import DPESerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from claraweb.backend.rest.Service.models import ServiceEngine
+from backend.rest.Container.models import Container
+from backend.rest.DPE.models import DPE
+from backend.rest.DPE.serializers import DPESerializer
+from backend.rest.Service.models import ServiceEngine
 
 """
 claraweb Views:

@@ -10,8 +10,8 @@ from xmsg.core.xMsgTopic import xMsgTopic
 from xmsg.core.xMsgUtil import xMsgUtil
 from xmsg.net.xMsgAddress import ProxyAddress
 
-from claraweb.backend.monitoring.monitor_callBacks import DpeMonitorCallBack
-from claraweb.backend.rest.DPE.models import DPE
+from backend.monitoring.monitor_callBacks import DpeMonitorCallBack
+from backend.rest.DPE.models import DPE
 
 
 class Command(BaseCommand):
@@ -21,24 +21,33 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option(
             "-f",
-            "--fe_host",
+            "--fe-host",
             dest="fe_host",
             help="Specify frontend host to monitor",
             metavar="STRING"
         ),
         make_option(
             "-s",
-            "--sync_influx_db",
+            "--sync-influx-db",
             dest="sync_db",
             action="store_true",
             help="Sync the Influx database. It will recreate the runtimen db.",
         ),
         make_option(
             "-c",
-            "--clean_old_data",
+            "--clean-old-data",
             dest="clean_old_data",
             action="store_true",
             help="Remove old data from the django database.",
+        ),
+        make_option(
+            "-d",
+            "--db-host",
+            dest="db_host",
+            action="store_true",
+            help="Specify influxdb host",
+            default="localhost",
+            metavar = "STRING"
         ),
     )
 
@@ -65,7 +74,6 @@ class Command(BaseCommand):
             client = InfluxDBClient(database=db)
             client.drop_database(db)
             client.create_database(db)
-            return
 
         if not options['fe_host']:
             fe_host = "localhost"
@@ -80,7 +88,7 @@ class Command(BaseCommand):
 
         try:
             subscription = subscriber.subscribe(ProxyAddress(fe_host, 7771),
-                                                topic, DpeMonitorCallBack())
+                                                topic, DpeMonitorCallBack('localhost'))
             xMsgUtil.log("Subscribed to runtime messages with topic dpeReport")
 
         except KeyboardInterrupt:

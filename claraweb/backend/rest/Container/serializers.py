@@ -3,9 +3,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from claraweb.backend.rest.DPE.models import DPE
-from claraweb.backend.rest.Container.models import Container
-from claraweb.backend.rest.Service.serializers import ServiceEngineSerializer
+from backend.rest.DPE.models import DPE
+from backend.rest.Container.models import Container
+from backend.rest.Service.serializers import ServiceEngineSerializer
 
 
 def container_validator(container_id):

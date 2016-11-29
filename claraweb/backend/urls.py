@@ -14,11 +14,11 @@ urlpatterns = patterns('',
                                    namespace='rest_framework')),
                        url(r'^docs/', schema_view),
                        url(r'^dpes/',
-                           include('claraweb.backend.rest.DPE.urls')),
+                           include('backend.rest.DPE.urls')),
                        url(r'^containers/',
-                           include('claraweb.backend.rest.Container.urls')),
+                           include('backend.rest.Container.urls')),
                        url(r'^services/',
-                           include('claraweb.backend.rest.Service.urls')),
+                           include('backend.rest.Service.urls')),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
